@@ -29,7 +29,7 @@ const SEED_GAMES = [
   { matchup: 'MIA @ LV', sport: 'NFL', sideA: 'MIA', sideB: 'LV', public: 41, lines: [{ book: 'CBS', value: 3 }] },
   { matchup: 'ARI @ LAC', sport: 'NFL', sideA: 'ARI', sideB: 'LAC', public: 47, lines: [{ book: 'CBS', value: 9.5 }] },
   { matchup: 'DAL @ NYG', sport: 'NFL', sideA: 'DAL', sideB: 'NYG', public: 71, lines: [{ book: 'CBS', value: -2.5 }] },
-  { matchup: 'DEN @ KC', sport: 'NFL', sideA: 'DEN', sideB: 'KC', public: 61, lines: [{ book: 'CBS', value: 2.5 }] },
+  { matchup: 'DEN @ KC', sport: 'NFL', sideA: 'DEN', sideB: 'KC', public: 38, lines: [{ book: 'CBS', value: 2.5 }] },
   { matchup: 'NE @ SEA', sport: 'NFL', sideA: 'NE', sideB: 'SEA', lines: [{ book: 'CBS', value: 3.5 }] },
   // Friday night CFB (Week 2)
   { matchup: 'NORE @ UVA', sport: 'CFB', sideA: 'NORE', sideB: 'UVA', lines: [{ book: 'CBS', value: 45.5 }] },
@@ -249,9 +249,12 @@ export default function LineMovementTracker() {
       if (!seed) return g;
       let next = g;
 
-      if (next.publicSnapshots.length === 0 && seed.public !== undefined) {
-        changed = true;
-        next = { ...next, publicSnapshots: [{ id: `p_seed_${now}_${next.id}`, timestamp: now, publicPctA: seed.public }] };
+      if (seed.public !== undefined) {
+        const latestPublic = next.publicSnapshots[next.publicSnapshots.length - 1];
+        if (!latestPublic || latestPublic.publicPctA !== seed.public) {
+          changed = true;
+          next = { ...next, publicSnapshots: [...next.publicSnapshots, { id: `p_seed_${now}_${next.id}`, timestamp: now, publicPctA: seed.public }] };
+        }
       }
 
       seed.lines.forEach((line, li) => {
