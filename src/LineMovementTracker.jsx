@@ -56,6 +56,10 @@ function average(arr) {
   return arr.reduce((a, b) => a + b, 0) / arr.length;
 }
 
+function roundToHalfPoint(n) {
+  return Math.round(n * 2) / 2;
+}
+
 function formatValue(market, v) {
   const n = Number(v);
   if (Number.isNaN(n)) return '—';
@@ -140,8 +144,8 @@ function getCombinedStats(game) {
   if (game.market === 'spread') side = d < 0 ? 'A' : d > 0 ? 'B' : null;
   else side = d > 0 ? 'A' : d < 0 ? 'B' : null;
   return {
-    openDisplay: formatValue(game.market, Number(avgOpen.toFixed(1))),
-    currentDisplay: formatValue(game.market, Number(avgCur.toFixed(1))),
+    openDisplay: formatValue(game.market, roundToHalfPoint(avgOpen)),
+    currentDisplay: formatValue(game.market, roundToHalfPoint(avgCur)),
     movementSide: side,
     magnitude: Math.abs(d),
     rangeMin: Math.min(...curs),
