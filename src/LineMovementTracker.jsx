@@ -15,29 +15,29 @@ const STORAGE_KEY = 'line-tracker:games';
 // it only adds missing books or appends a new snapshot when a book's value has moved.
 // "public" is Covers.com's consensus pick % — CBS doesn't expose a fetchable bet split.
 const SEED_GAMES = [
-  { matchup: 'SF @ LAR', sport: 'NFL', sideA: 'SF', sideB: 'LAR', kickoff: 'Thu, Sep 10, 2026 (time TBD)', lines: [{ book: 'CBS', value: 3.5 }] },
-  { matchup: 'TB @ CIN', sport: 'NFL', sideA: 'TB', sideB: 'CIN', kickoff: 'Sun, Sep 13, 2026 (time TBD)', public: 43, lines: [{ book: 'CBS', value: 3.5 }] },
-  { matchup: 'BUF @ HOU', sport: 'NFL', sideA: 'BUF', sideB: 'HOU', kickoff: 'Sun, Sep 13, 2026 (time TBD)', public: 56, lines: [{ book: 'CBS', value: -1.5 }] },
-  { matchup: 'BAL @ IND', sport: 'NFL', sideA: 'BAL', sideB: 'IND', kickoff: 'Sun, Sep 13, 2026 (time TBD)', public: 57, lines: [{ book: 'CBS', value: -3.5 }] },
-  { matchup: 'CHI @ CAR', sport: 'NFL', sideA: 'CHI', sideB: 'CAR', kickoff: 'Sun, Sep 13, 2026 (time TBD)', public: 72, lines: [{ book: 'CBS', value: -3 }] },
-  { matchup: 'NO @ DET', sport: 'NFL', sideA: 'NO', sideB: 'DET', kickoff: 'Sun, Sep 13, 2026 (time TBD)', public: 23, lines: [{ book: 'CBS', value: 7 }] },
-  { matchup: 'CLE @ JAC', sport: 'NFL', sideA: 'CLE', sideB: 'JAC', kickoff: 'Sun, Sep 13, 2026 (time TBD)', public: 38, lines: [{ book: 'CBS', value: 8.5 }] },
-  { matchup: 'NYJ @ TEN', sport: 'NFL', sideA: 'NYJ', sideB: 'TEN', kickoff: 'Sun, Sep 13, 2026 (time TBD)', public: 40, lines: [{ book: 'CBS', value: 1.5 }] },
-  { matchup: 'ATL @ PIT', sport: 'NFL', sideA: 'ATL', sideB: 'PIT', kickoff: 'Sun, Sep 13, 2026 (time TBD)', public: 39, lines: [{ book: 'CBS', value: 5.5 }] },
-  { matchup: 'GB @ MIN', sport: 'NFL', sideA: 'GB', sideB: 'MIN', kickoff: 'Sun, Sep 13, 2026 (time TBD)', public: 52, lines: [{ book: 'CBS', value: 1.5 }] },
-  { matchup: 'WAS @ PHI', sport: 'NFL', sideA: 'WAS', sideB: 'PHI', kickoff: 'Sun, Sep 13, 2026 (time TBD)', public: 32, lines: [{ book: 'CBS', value: 5.5 }] },
-  { matchup: 'MIA @ LV', sport: 'NFL', sideA: 'MIA', sideB: 'LV', kickoff: 'Sun, Sep 13, 2026 (time TBD)', public: 41, lines: [{ book: 'CBS', value: 3 }] },
-  { matchup: 'ARI @ LAC', sport: 'NFL', sideA: 'ARI', sideB: 'LAC', kickoff: 'Sun, Sep 13, 2026 (time TBD)', public: 47, lines: [{ book: 'CBS', value: 9.5 }] },
-  { matchup: 'DAL @ NYG', sport: 'NFL', sideA: 'DAL', sideB: 'NYG', kickoff: 'Sun, Sep 13, 2026 (time TBD)', public: 71, lines: [{ book: 'CBS', value: -2.5 }] },
+  { matchup: 'SF @ LAR', sport: 'NFL', sideA: 'SF', sideB: 'LAR', kickoff: 'Thu, Sep 10, 2026 (time TBD)', score: { a: 27, b: 7 }, lines: [{ book: 'CBS', value: 3.5 }] },
+  { matchup: 'TB @ CIN', sport: 'NFL', sideA: 'TB', sideB: 'CIN', kickoff: 'Sun, Sep 13, 2026 (time TBD)', score: { a: 27, b: 33 }, public: 43, lines: [{ book: 'CBS', value: 3.5 }] },
+  { matchup: 'BUF @ HOU', sport: 'NFL', sideA: 'BUF', sideB: 'HOU', kickoff: 'Sun, Sep 13, 2026 (time TBD)', score: { a: 36, b: 31 }, public: 56, lines: [{ book: 'CBS', value: -1.5 }] },
+  { matchup: 'BAL @ IND', sport: 'NFL', sideA: 'BAL', sideB: 'IND', kickoff: 'Sun, Sep 13, 2026 (time TBD)', score: { a: 41, b: 23 }, public: 57, lines: [{ book: 'CBS', value: -3.5 }] },
+  { matchup: 'CHI @ CAR', sport: 'NFL', sideA: 'CHI', sideB: 'CAR', kickoff: 'Sun, Sep 13, 2026 (time TBD)', score: { a: 59, b: 37 }, public: 72, lines: [{ book: 'CBS', value: -3 }] },
+  { matchup: 'NO @ DET', sport: 'NFL', sideA: 'NO', sideB: 'DET', kickoff: 'Sun, Sep 13, 2026 (time TBD)', score: { a: 30, b: 31, ot: true }, public: 23, lines: [{ book: 'CBS', value: 7 }] },
+  { matchup: 'CLE @ JAC', sport: 'NFL', sideA: 'CLE', sideB: 'JAC', kickoff: 'Sun, Sep 13, 2026 (time TBD)', score: { a: 10, b: 34 }, public: 38, lines: [{ book: 'CBS', value: 8.5 }] },
+  { matchup: 'NYJ @ TEN', sport: 'NFL', sideA: 'NYJ', sideB: 'TEN', kickoff: 'Sun, Sep 13, 2026 (time TBD)', score: { a: 23, b: 10 }, public: 40, lines: [{ book: 'CBS', value: 1.5 }] },
+  { matchup: 'ATL @ PIT', sport: 'NFL', sideA: 'ATL', sideB: 'PIT', kickoff: 'Sun, Sep 13, 2026 (time TBD)', score: { a: 13, b: 20 }, public: 39, lines: [{ book: 'CBS', value: 5.5 }] },
+  { matchup: 'GB @ MIN', sport: 'NFL', sideA: 'GB', sideB: 'MIN', kickoff: 'Sun, Sep 13, 2026 (time TBD)', score: { a: 22, b: 39 }, public: 52, lines: [{ book: 'CBS', value: 1.5 }] },
+  { matchup: 'WAS @ PHI', sport: 'NFL', sideA: 'WAS', sideB: 'PHI', kickoff: 'Sun, Sep 13, 2026 (time TBD)', score: { a: 22, b: 24 }, public: 32, lines: [{ book: 'CBS', value: 5.5 }] },
+  { matchup: 'MIA @ LV', sport: 'NFL', sideA: 'MIA', sideB: 'LV', kickoff: 'Sun, Sep 13, 2026 (time TBD)', score: { a: 13, b: 27 }, public: 41, lines: [{ book: 'CBS', value: 3 }] },
+  { matchup: 'ARI @ LAC', sport: 'NFL', sideA: 'ARI', sideB: 'LAC', kickoff: 'Sun, Sep 13, 2026 (time TBD)', score: { a: 26, b: 14 }, public: 47, lines: [{ book: 'CBS', value: 9.5 }] },
+  { matchup: 'DAL @ NYG', sport: 'NFL', sideA: 'DAL', sideB: 'NYG', kickoff: 'Sun, Sep 13, 2026 (time TBD)', score: { a: 20, b: 28 }, public: 71, lines: [{ book: 'CBS', value: -2.5 }] },
   { matchup: 'DEN @ KC', sport: 'NFL', sideA: 'DEN', sideB: 'KC', kickoff: 'Mon, Sep 14, 2026 · 7:15 PM CT', public: 38, lines: [{ book: 'CBS', value: 2.5 }] },
-  { matchup: 'NE @ SEA', sport: 'NFL', sideA: 'NE', sideB: 'SEA', kickoff: 'Wed, Sep 9, 2026 (time TBD)', lines: [{ book: 'CBS', value: 3.5 }] },
+  { matchup: 'NE @ SEA', sport: 'NFL', sideA: 'NE', sideB: 'SEA', kickoff: 'Wed, Sep 9, 2026 (time TBD)', score: { a: 10, b: 13 }, lines: [{ book: 'CBS', value: 3.5 }] },
   // Friday night CFB (Week 2) -- team codes for NORE@UVA and NOVA@LOU are unconfirmed, see chat
-  { matchup: 'NORE @ UVA', sport: 'CFB', sideA: 'NORE', sideB: 'UVA', kickoff: 'week of Sep 11-12, 2026 (unconfirmed)', lines: [{ book: 'CBS', value: 45.5 }] },
-  { matchup: 'RICH @ NCST', sport: 'CFB', sideA: 'RICH', sideB: 'NCST', kickoff: 'Fri, Sep 11, 2026 (time TBD)', lines: [{ book: 'CBS', value: 34.5 }] },
-  { matchup: 'NOVA @ LOU', sport: 'CFB', sideA: 'NOVA', sideB: 'LOU', kickoff: 'Fri, Sep 11, 2026 (time TBD, unconfirmed)', lines: [{ book: 'CBS', value: 36.5 }] },
-  { matchup: 'RUT @ BC', sport: 'CFB', sideA: 'RUT', sideB: 'BC', kickoff: 'Fri, Sep 11, 2026 (time TBD)', lines: [{ book: 'CBS', value: 3.5 }] },
+  { matchup: 'NORE @ UVA', sport: 'CFB', sideA: 'NORE', sideB: 'UVA', kickoff: 'week of Sep 11-12, 2026 (unconfirmed)', score: { a: 21, b: 44 }, lines: [{ book: 'CBS', value: 45.5 }] },
+  { matchup: 'RICH @ NCST', sport: 'CFB', sideA: 'RICH', sideB: 'NCST', kickoff: 'Fri, Sep 11, 2026 (time TBD)', score: { a: 0, b: 73 }, lines: [{ book: 'CBS', value: 34.5 }] },
+  { matchup: 'NOVA @ LOU', sport: 'CFB', sideA: 'NOVA', sideB: 'LOU', kickoff: 'Fri, Sep 11, 2026 (time TBD, unconfirmed)', score: { a: 13, b: 59 }, lines: [{ book: 'CBS', value: 36.5 }] },
+  { matchup: 'RUT @ BC', sport: 'CFB', sideA: 'RUT', sideB: 'BC', kickoff: 'Fri, Sep 11, 2026 (time TBD)', score: { a: 21, b: 28 }, lines: [{ book: 'CBS', value: 3.5 }] },
   {
-    matchup: 'MIZZ @ KAN', sport: 'CFB', sideA: 'MIZZ', sideB: 'KAN', kickoff: 'Fri, Sep 11, 2026 (time TBD)',
+    matchup: 'MIZZ @ KAN', sport: 'CFB', sideA: 'MIZZ', sideB: 'KAN', kickoff: 'Fri, Sep 11, 2026 (time TBD)', score: { a: 38, b: 21 },
     lines: [
       { book: 'CBS', value: -4.5 },
       { book: 'DraftKings', value: -4.5, open: -7 },
@@ -67,6 +67,11 @@ function formatDate(ts) {
   return new Date(ts).toLocaleString(undefined, {
     month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit',
   });
+}
+
+function formatScore(game) {
+  if (!game.score) return null;
+  return `${game.sideA} ${game.score.a} - ${game.score.b} ${game.sideB}${game.score.ot ? ' (OT)' : ''}`;
 }
 
 function valueLabel(market) {
@@ -262,6 +267,11 @@ export default function LineMovementTracker() {
         next = { ...next, kickoff: seed.kickoff };
       }
 
+      if (seed.score !== undefined && !next.finished) {
+        changed = true;
+        next = { ...next, score: seed.score, finished: true, finishedAt: now };
+      }
+
       seed.lines.forEach((line, li) => {
         const bookSnaps = next.lineSnapshots.filter((s) => s.book === line.book);
         if (bookSnaps.length === 0) {
@@ -289,6 +299,9 @@ export default function LineMovementTracker() {
         sideA: s.sideA,
         sideB: s.sideB,
         kickoff: s.kickoff,
+        score: s.score,
+        finished: s.score !== undefined,
+        finishedAt: s.score !== undefined ? now : undefined,
         lineSnapshots: s.lines.flatMap((line, li) => buildBookSnapshots(line, `${i}_${li}`)),
         publicSnapshots: s.public !== undefined ? [{ id: `p_seed_${now}_${i}`, timestamp: now, publicPctA: s.public }] : [],
       }));
@@ -788,6 +801,7 @@ export default function LineMovementTracker() {
               <thead>
                 <tr>
                   <th>Game</th>
+                  <th>Score</th>
                   <th>Open</th>
                   <th>Close</th>
                   <th>Move</th>
@@ -808,6 +822,7 @@ export default function LineMovementTracker() {
                         {game.kickoff && <div className="rlmw-final-side">{game.kickoff}</div>}
                         {sharpSide && <div className="rlmw-final-side">line moved to {sharpSide}</div>}
                       </td>
+                      <td className="rlmw-mono">{formatScore(game) || '—'}</td>
                       <td className="rlmw-mono">{combined ? combined.openDisplay : '—'}</td>
                       <td className="rlmw-mono">{combined ? combined.currentDisplay : '—'}</td>
                       <td className="rlmw-mono">{combined ? combined.magnitude.toFixed(1) : '—'}</td>
