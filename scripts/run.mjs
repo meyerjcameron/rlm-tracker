@@ -4,7 +4,9 @@ import { fileURLToPath } from 'node:url';
 import { fetchCbsOdds } from './lib/cbsOdds.mjs';
 import { fetchCoversConsensus, findConsensusForGame } from './lib/covers.mjs';
 import { formatKickoffCentral } from './lib/format.mjs';
-import { isMajorConferenceGame } from './lib/majorConferences.mjs';
+import { conferenceForSchool } from './lib/conferences.mjs';
+import { fetchTop25 } from './lib/rankings.mjs';
+import { canonicalSchool } from './lib/schoolNames.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const OUT_PATH = path.join(__dirname, '..', 'public', 'seed-games.json');
@@ -14,7 +16,7 @@ const SOURCES = [
   { sport: 'CFB', oddsUrl: 'https://www.cbssports.com/college-football/odds/', coversUrl: 'https://contests.covers.com/consensus/topconsensus/ncaaf/overall' },
 ];
 
-function buildSeedGame(cbsGame, consensusRows) {
+function buildSeedGame(cbsGame, consensusRows, top25) {
   const seed = {
     matchup: cbsGame.matchup,
     sport: cbsGame.sport,
@@ -34,6 +36,18 @@ function buildSeedGame(cbsGame, consensusRows) {
     const pct = findConsensusForGame(consensusRows, cbsGame.sideA, cbsGame.sideB);
     if (pct !== null && pct !== undefined) seed.public = pct;
   }
+
+  if (cbsGame.sport === 'CFB') {
+    const confA = conferenceForSchool(cbsGame.nameA);
+    const confB = conferenceForSchool(cbsGame.nameB);
+    seed.conferences = [confA, confB].filter(Boolean);
+    if (top25) {
+      const rankedA = top25.has(canonicalSchool(cbsGame.nameA));
+      const rankedB = top25.has(canonicalSchool(cbsGame.nameB));
+      if (rankedA || rankedB) seed.ranked = true;
+    }
+  }
+
   return seed;
 }
 
@@ -57,15 +71,21 @@ async function run() {
       console.error(`[${source.sport}] covers fetch failed (continuing without public%):`, e.message);
     }
 
+    let top25 = null;
+    if (source.sport === 'CFB') {
+      try {
+        top25 = await fetchTop25();
+      } catch (e) {
+        console.error('Top 25 rankings fetch failed (continuing without ranked tags):', e.message);
+      }
+    }
+
     for (const g of cbsGames) {
       if (g.spreadCurrent === null) {
         skipped.push(g.matchup);
         continue;
       }
-      // CFB is limited to Power 4 (SEC/Big Ten/ACC/Big 12) + Notre Dame games
-      // -- the full FBS slate is hundreds of games a week, way too much noise.
-      if (g.sport === 'CFB' && !isMajorConferenceGame(g.nameA, g.nameB)) continue;
-      allSeeds.push(buildSeedGame(g, consensusRows));
+      allSeeds.push(buildSeedGame(g, consensusRows, top25));
     }
   }
 

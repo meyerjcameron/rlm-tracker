@@ -189,6 +189,7 @@ export default function LineMovementTracker() {
   const [saveError, setSaveError] = useState(false);
   const [onlyChanged, setOnlyChanged] = useState(false);
   const [sportTab, setSportTab] = useState('NFL');
+  const [cfbFilter, setCfbFilter] = useState('ALL');
   const [expanded, setExpanded] = useState({});
   const [selectedView, setSelectedView] = useState({});
   const [lineForms, setLineForms] = useState({});
@@ -252,6 +253,16 @@ export default function LineMovementTracker() {
         next = { ...next, kickoff: seed.kickoff };
       }
 
+      if (seed.conferences !== undefined && JSON.stringify(next.conferences) !== JSON.stringify(seed.conferences)) {
+        changed = true;
+        next = { ...next, conferences: seed.conferences };
+      }
+
+      if (!!seed.ranked !== !!next.ranked) {
+        changed = true;
+        next = { ...next, ranked: !!seed.ranked };
+      }
+
       if (seed.score !== undefined && !next.finished) {
         changed = true;
         next = { ...next, score: seed.score, finished: true, finishedAt: now };
@@ -295,6 +306,8 @@ export default function LineMovementTracker() {
         sideA: s.sideA,
         sideB: s.sideB,
         kickoff: s.kickoff,
+        conferences: s.conferences,
+        ranked: !!s.ranked,
         score: s.score,
         finished: s.score !== undefined,
         finishedAt: s.score !== undefined ? now : undefined,
@@ -302,6 +315,17 @@ export default function LineMovementTracker() {
         publicSnapshots: s.public !== undefined ? [{ id: `p_seed_${now}_${i}`, timestamp: now, publicPctA: s.public }] : [],
       }));
       finalList = [...seeded, ...withUpdates];
+    }
+
+    // Drop unfinished games that no longer appear in the current seed list
+    // (e.g. a game that fell out of scope after a filter change like the
+    // CFB Power-4 restriction). Finished games are historical record and
+    // are never pruned, even if the source stops listing them.
+    if (SEED_GAMES.length) {
+      const seedKeys = new Set(SEED_GAMES.map((s) => s.matchup.toLowerCase()));
+      const beforeCount = finalList.length;
+      finalList = finalList.filter((g) => g.finished || seedKeys.has(g.matchup.toLowerCase()));
+      if (finalList.length !== beforeCount) changed = true;
     }
 
     setGames(finalList);
@@ -396,7 +420,14 @@ export default function LineMovementTracker() {
     persist(updated);
   }
 
-  const bySport = games.filter((g) => g.sport === sportTab);
+  const CFB_TABS = ['ALL', 'Top 25', 'SEC', 'Big Ten', 'ACC', 'Big 12'];
+  const matchesCfbFilter = (g) => {
+    if (sportTab !== 'CFB' || cfbFilter === 'ALL') return true;
+    if (cfbFilter === 'Top 25') return !!g.ranked;
+    return Array.isArray(g.conferences) && g.conferences.includes(cfbFilter);
+  };
+
+  const bySport = games.filter((g) => g.sport === sportTab && matchesCfbFilter(g));
   const liveGames = bySport.filter((g) => !g.finished);
   const finishedGames = [...bySport.filter((g) => g.finished)].sort((a, b) => (b.finishedAt || 0) - (a.finishedAt || 0));
   const filteredGames = onlyChanged ? liveGames.filter(gameHasLineChange) : liveGames;
@@ -414,6 +445,9 @@ export default function LineMovementTracker() {
         .rlmw-sport-tabs { display:flex; gap:4px; margin-top:24px; border-bottom:1px solid #2B3340; }
         .rlmw-sport-tab { padding:8px 16px; font-size:13px; font-weight:600; color:#8993A4; cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-1px; }
         .rlmw-sport-tab.active { color:#ECEFF4; border-bottom-color:#D4A72C; }
+        .rlmw-cfb-tabs { display:flex; gap:6px; margin-top:12px; flex-wrap:wrap; }
+        .rlmw-cfb-tab { padding:5px 12px; font-size:12px; font-weight:600; color:#8993A4; cursor:pointer; border:1px solid #2B3340; border-radius:999px; background:#161B22; }
+        .rlmw-cfb-tab.active { color:#0D1117; background:#D4A72C; border-color:#D4A72C; }
         .rlmw-toolbar { display:flex; align-items:center; gap:12px; margin-top:16px; flex-wrap:wrap; }
         .rlmw-btn-primary { background:#D4A72C; color:#0D1117; border:none; padding:10px 16px; border-radius:6px; font-weight:600; font-size:14px; cursor:pointer; display:inline-flex; align-items:center; gap:6px; font-family:inherit; }
         .rlmw-btn-primary:hover { background:#e0b53d; }
@@ -521,6 +555,20 @@ export default function LineMovementTracker() {
           </div>
         ))}
       </div>
+
+      {sportTab === 'CFB' && (
+        <div className="rlmw-cfb-tabs">
+          {CFB_TABS.map((c) => (
+            <div
+              key={c}
+              className={`rlmw-cfb-tab ${cfbFilter === c ? 'active' : ''}`}
+              onClick={() => setCfbFilter(c)}
+            >
+              {c}
+            </div>
+          ))}
+        </div>
+      )}
 
       <div className="rlmw-toolbar">
         {liveGames.length > 0 && (
