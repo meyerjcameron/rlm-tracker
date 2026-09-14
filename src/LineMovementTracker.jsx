@@ -10,40 +10,12 @@ const MARKETS = [
 const BOOK_SUGGESTIONS = ['DraftKings', 'FanDuel', 'BetMGM', 'Caesars', 'ESPN BET', 'Fanatics', 'Consensus'];
 const STORAGE_KEY = 'line-tracker:games';
 
-// Seeded automatically from CBS Sports (and manually-shared book screenshots) so games load
-// without manual entry. Matched by matchup, so re-seeding never duplicates existing data —
-// it only adds missing books or appends a new snapshot when a book's value has moved.
-// "public" is Covers.com's consensus pick % — CBS doesn't expose a fetchable bet split.
-const SEED_GAMES = [
-  { matchup: 'SF @ LAR', sport: 'NFL', sideA: 'SF', sideB: 'LAR', kickoff: 'Thu, Sep 10, 2026 (time TBD)', score: { a: 27, b: 7 }, lines: [{ book: 'CBS', value: 3.5 }] },
-  { matchup: 'TB @ CIN', sport: 'NFL', sideA: 'TB', sideB: 'CIN', kickoff: 'Sun, Sep 13, 2026 (time TBD)', score: { a: 27, b: 33 }, public: 43, lines: [{ book: 'CBS', value: 3.5 }] },
-  { matchup: 'BUF @ HOU', sport: 'NFL', sideA: 'BUF', sideB: 'HOU', kickoff: 'Sun, Sep 13, 2026 (time TBD)', score: { a: 36, b: 31 }, public: 56, lines: [{ book: 'CBS', value: -1.5 }] },
-  { matchup: 'BAL @ IND', sport: 'NFL', sideA: 'BAL', sideB: 'IND', kickoff: 'Sun, Sep 13, 2026 (time TBD)', score: { a: 41, b: 23 }, public: 57, lines: [{ book: 'CBS', value: -3.5 }] },
-  { matchup: 'CHI @ CAR', sport: 'NFL', sideA: 'CHI', sideB: 'CAR', kickoff: 'Sun, Sep 13, 2026 (time TBD)', score: { a: 59, b: 37 }, public: 72, lines: [{ book: 'CBS', value: -3 }] },
-  { matchup: 'NO @ DET', sport: 'NFL', sideA: 'NO', sideB: 'DET', kickoff: 'Sun, Sep 13, 2026 (time TBD)', score: { a: 30, b: 31, ot: true }, public: 23, lines: [{ book: 'CBS', value: 7 }] },
-  { matchup: 'CLE @ JAC', sport: 'NFL', sideA: 'CLE', sideB: 'JAC', kickoff: 'Sun, Sep 13, 2026 (time TBD)', score: { a: 10, b: 34 }, public: 38, lines: [{ book: 'CBS', value: 8.5 }] },
-  { matchup: 'NYJ @ TEN', sport: 'NFL', sideA: 'NYJ', sideB: 'TEN', kickoff: 'Sun, Sep 13, 2026 (time TBD)', score: { a: 23, b: 10 }, public: 40, lines: [{ book: 'CBS', value: 1.5 }] },
-  { matchup: 'ATL @ PIT', sport: 'NFL', sideA: 'ATL', sideB: 'PIT', kickoff: 'Sun, Sep 13, 2026 (time TBD)', score: { a: 13, b: 20 }, public: 37, replaceLines: true, lines: [{ book: 'CBS', value: 6.5, open: 3.5 }] },
-  { matchup: 'GB @ MIN', sport: 'NFL', sideA: 'GB', sideB: 'MIN', kickoff: 'Sun, Sep 13, 2026 (time TBD)', score: { a: 22, b: 39 }, public: 52, lines: [{ book: 'CBS', value: 1.5 }] },
-  { matchup: 'WAS @ PHI', sport: 'NFL', sideA: 'WAS', sideB: 'PHI', kickoff: 'Sun, Sep 13, 2026 (time TBD)', score: { a: 22, b: 24 }, public: 32, lines: [{ book: 'CBS', value: 5.5 }] },
-  { matchup: 'MIA @ LV', sport: 'NFL', sideA: 'MIA', sideB: 'LV', kickoff: 'Sun, Sep 13, 2026 (time TBD)', score: { a: 13, b: 27 }, public: 41, lines: [{ book: 'CBS', value: 3 }] },
-  { matchup: 'ARI @ LAC', sport: 'NFL', sideA: 'ARI', sideB: 'LAC', kickoff: 'Sun, Sep 13, 2026 (time TBD)', score: { a: 26, b: 14 }, public: 47, lines: [{ book: 'CBS', value: 9.5 }] },
-  { matchup: 'DAL @ NYG', sport: 'NFL', sideA: 'DAL', sideB: 'NYG', kickoff: 'Sun, Sep 13, 2026 (time TBD)', score: { a: 20, b: 28 }, public: 71, lines: [{ book: 'CBS', value: -2.5 }] },
-  { matchup: 'DEN @ KC', sport: 'NFL', sideA: 'DEN', sideB: 'KC', kickoff: 'Mon, Sep 14, 2026 · 7:15 PM CT', public: 38, lines: [{ book: 'CBS', value: 2.5 }] },
-  { matchup: 'NE @ SEA', sport: 'NFL', sideA: 'NE', sideB: 'SEA', kickoff: 'Wed, Sep 9, 2026 (time TBD)', score: { a: 10, b: 13 }, lines: [{ book: 'CBS', value: 3.5 }] },
-  // Friday night CFB (Week 2) -- team codes for NORE@UVA and NOVA@LOU are unconfirmed, see chat
-  { matchup: 'NORE @ UVA', sport: 'CFB', sideA: 'NORE', sideB: 'UVA', kickoff: 'week of Sep 11-12, 2026 (unconfirmed)', score: { a: 21, b: 44 }, lines: [{ book: 'CBS', value: 45.5 }] },
-  { matchup: 'RICH @ NCST', sport: 'CFB', sideA: 'RICH', sideB: 'NCST', kickoff: 'Fri, Sep 11, 2026 (time TBD)', score: { a: 0, b: 73 }, lines: [{ book: 'CBS', value: 34.5 }] },
-  { matchup: 'NOVA @ LOU', sport: 'CFB', sideA: 'NOVA', sideB: 'LOU', kickoff: 'Fri, Sep 11, 2026 (time TBD, unconfirmed)', score: { a: 13, b: 59 }, lines: [{ book: 'CBS', value: 36.5 }] },
-  { matchup: 'RUT @ BC', sport: 'CFB', sideA: 'RUT', sideB: 'BC', kickoff: 'Fri, Sep 11, 2026 (time TBD)', score: { a: 21, b: 28 }, lines: [{ book: 'CBS', value: 3.5 }] },
-  {
-    matchup: 'MIZZ @ KAN', sport: 'CFB', sideA: 'MIZZ', sideB: 'KAN', kickoff: 'Fri, Sep 11, 2026 (time TBD)', score: { a: 38, b: 21 },
-    lines: [
-      { book: 'CBS', value: -4.5 },
-      { book: 'DraftKings', value: -4.5, open: -7 },
-    ],
-  },
-];
+// Seeded from /seed-games.json, which scripts/run.mjs regenerates on a
+// schedule by scraping CBS Sports (lines, scores, kickoff times) and
+// Covers.com (public consensus %) -- see scripts/README for the pipeline.
+// Matched by matchup, so re-seeding never duplicates existing data: it only
+// adds missing games/books or appends a new snapshot when a value changed.
+const SEED_URL = '/seed-games.json';
 
 function impliedProb(odds) {
   const n = Number(odds);
@@ -223,6 +195,15 @@ export default function LineMovementTracker() {
   const [publicForms, setPublicForms] = useState({});
 
   useEffect(() => {
+    (async () => {
+    let SEED_GAMES = [];
+    try {
+      const res = await fetch(SEED_URL, { cache: 'no-store' });
+      if (res.ok) SEED_GAMES = await res.json();
+    } catch (e) {
+      // seed file unreachable (e.g. offline) -- fall back to whatever's already stored
+    }
+
     let current = [];
     let migrated = false;
     try {
@@ -330,6 +311,7 @@ export default function LineMovementTracker() {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(finalList));
       } catch (e) { /* noop */ }
     }
+    })();
   }, []);
 
   function persist(updated) {
