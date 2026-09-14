@@ -15,29 +15,29 @@ const STORAGE_KEY = 'line-tracker:games';
 // it only adds missing books or appends a new snapshot when a book's value has moved.
 // "public" is Covers.com's consensus pick % — CBS doesn't expose a fetchable bet split.
 const SEED_GAMES = [
-  { matchup: 'SF @ LAR', sport: 'NFL', sideA: 'SF', sideB: 'LAR', lines: [{ book: 'CBS', value: 3.5 }] },
-  { matchup: 'TB @ CIN', sport: 'NFL', sideA: 'TB', sideB: 'CIN', public: 43, lines: [{ book: 'CBS', value: 3.5 }] },
-  { matchup: 'BUF @ HOU', sport: 'NFL', sideA: 'BUF', sideB: 'HOU', public: 56, lines: [{ book: 'CBS', value: -1.5 }] },
-  { matchup: 'BAL @ IND', sport: 'NFL', sideA: 'BAL', sideB: 'IND', public: 57, lines: [{ book: 'CBS', value: -3.5 }] },
-  { matchup: 'CHI @ CAR', sport: 'NFL', sideA: 'CHI', sideB: 'CAR', public: 72, lines: [{ book: 'CBS', value: -3 }] },
-  { matchup: 'NO @ DET', sport: 'NFL', sideA: 'NO', sideB: 'DET', public: 23, lines: [{ book: 'CBS', value: 7 }] },
-  { matchup: 'CLE @ JAC', sport: 'NFL', sideA: 'CLE', sideB: 'JAC', public: 38, lines: [{ book: 'CBS', value: 8.5 }] },
-  { matchup: 'NYJ @ TEN', sport: 'NFL', sideA: 'NYJ', sideB: 'TEN', public: 40, lines: [{ book: 'CBS', value: 1.5 }] },
-  { matchup: 'ATL @ PIT', sport: 'NFL', sideA: 'ATL', sideB: 'PIT', public: 39, lines: [{ book: 'CBS', value: 5.5 }] },
-  { matchup: 'GB @ MIN', sport: 'NFL', sideA: 'GB', sideB: 'MIN', public: 52, lines: [{ book: 'CBS', value: 1.5 }] },
-  { matchup: 'WAS @ PHI', sport: 'NFL', sideA: 'WAS', sideB: 'PHI', public: 32, lines: [{ book: 'CBS', value: 5.5 }] },
-  { matchup: 'MIA @ LV', sport: 'NFL', sideA: 'MIA', sideB: 'LV', public: 41, lines: [{ book: 'CBS', value: 3 }] },
-  { matchup: 'ARI @ LAC', sport: 'NFL', sideA: 'ARI', sideB: 'LAC', public: 47, lines: [{ book: 'CBS', value: 9.5 }] },
-  { matchup: 'DAL @ NYG', sport: 'NFL', sideA: 'DAL', sideB: 'NYG', public: 71, lines: [{ book: 'CBS', value: -2.5 }] },
-  { matchup: 'DEN @ KC', sport: 'NFL', sideA: 'DEN', sideB: 'KC', public: 38, lines: [{ book: 'CBS', value: 2.5 }] },
-  { matchup: 'NE @ SEA', sport: 'NFL', sideA: 'NE', sideB: 'SEA', lines: [{ book: 'CBS', value: 3.5 }] },
-  // Friday night CFB (Week 2)
-  { matchup: 'NORE @ UVA', sport: 'CFB', sideA: 'NORE', sideB: 'UVA', lines: [{ book: 'CBS', value: 45.5 }] },
-  { matchup: 'RICH @ NCST', sport: 'CFB', sideA: 'RICH', sideB: 'NCST', lines: [{ book: 'CBS', value: 34.5 }] },
-  { matchup: 'NOVA @ LOU', sport: 'CFB', sideA: 'NOVA', sideB: 'LOU', lines: [{ book: 'CBS', value: 36.5 }] },
-  { matchup: 'RUT @ BC', sport: 'CFB', sideA: 'RUT', sideB: 'BC', lines: [{ book: 'CBS', value: 3.5 }] },
+  { matchup: 'SF @ LAR', sport: 'NFL', sideA: 'SF', sideB: 'LAR', kickoff: 'Thu, Sep 10, 2026 (time TBD)', lines: [{ book: 'CBS', value: 3.5 }] },
+  { matchup: 'TB @ CIN', sport: 'NFL', sideA: 'TB', sideB: 'CIN', kickoff: 'Sun, Sep 13, 2026 (time TBD)', public: 43, lines: [{ book: 'CBS', value: 3.5 }] },
+  { matchup: 'BUF @ HOU', sport: 'NFL', sideA: 'BUF', sideB: 'HOU', kickoff: 'Sun, Sep 13, 2026 (time TBD)', public: 56, lines: [{ book: 'CBS', value: -1.5 }] },
+  { matchup: 'BAL @ IND', sport: 'NFL', sideA: 'BAL', sideB: 'IND', kickoff: 'Sun, Sep 13, 2026 (time TBD)', public: 57, lines: [{ book: 'CBS', value: -3.5 }] },
+  { matchup: 'CHI @ CAR', sport: 'NFL', sideA: 'CHI', sideB: 'CAR', kickoff: 'Sun, Sep 13, 2026 (time TBD)', public: 72, lines: [{ book: 'CBS', value: -3 }] },
+  { matchup: 'NO @ DET', sport: 'NFL', sideA: 'NO', sideB: 'DET', kickoff: 'Sun, Sep 13, 2026 (time TBD)', public: 23, lines: [{ book: 'CBS', value: 7 }] },
+  { matchup: 'CLE @ JAC', sport: 'NFL', sideA: 'CLE', sideB: 'JAC', kickoff: 'Sun, Sep 13, 2026 (time TBD)', public: 38, lines: [{ book: 'CBS', value: 8.5 }] },
+  { matchup: 'NYJ @ TEN', sport: 'NFL', sideA: 'NYJ', sideB: 'TEN', kickoff: 'Sun, Sep 13, 2026 (time TBD)', public: 40, lines: [{ book: 'CBS', value: 1.5 }] },
+  { matchup: 'ATL @ PIT', sport: 'NFL', sideA: 'ATL', sideB: 'PIT', kickoff: 'Sun, Sep 13, 2026 (time TBD)', public: 39, lines: [{ book: 'CBS', value: 5.5 }] },
+  { matchup: 'GB @ MIN', sport: 'NFL', sideA: 'GB', sideB: 'MIN', kickoff: 'Sun, Sep 13, 2026 (time TBD)', public: 52, lines: [{ book: 'CBS', value: 1.5 }] },
+  { matchup: 'WAS @ PHI', sport: 'NFL', sideA: 'WAS', sideB: 'PHI', kickoff: 'Sun, Sep 13, 2026 (time TBD)', public: 32, lines: [{ book: 'CBS', value: 5.5 }] },
+  { matchup: 'MIA @ LV', sport: 'NFL', sideA: 'MIA', sideB: 'LV', kickoff: 'Sun, Sep 13, 2026 (time TBD)', public: 41, lines: [{ book: 'CBS', value: 3 }] },
+  { matchup: 'ARI @ LAC', sport: 'NFL', sideA: 'ARI', sideB: 'LAC', kickoff: 'Sun, Sep 13, 2026 (time TBD)', public: 47, lines: [{ book: 'CBS', value: 9.5 }] },
+  { matchup: 'DAL @ NYG', sport: 'NFL', sideA: 'DAL', sideB: 'NYG', kickoff: 'Sun, Sep 13, 2026 (time TBD)', public: 71, lines: [{ book: 'CBS', value: -2.5 }] },
+  { matchup: 'DEN @ KC', sport: 'NFL', sideA: 'DEN', sideB: 'KC', kickoff: 'Mon, Sep 14, 2026 · 7:15 PM CT', public: 38, lines: [{ book: 'CBS', value: 2.5 }] },
+  { matchup: 'NE @ SEA', sport: 'NFL', sideA: 'NE', sideB: 'SEA', kickoff: 'Wed, Sep 9, 2026 (time TBD)', lines: [{ book: 'CBS', value: 3.5 }] },
+  // Friday night CFB (Week 2) -- team codes for NORE@UVA and NOVA@LOU are unconfirmed, see chat
+  { matchup: 'NORE @ UVA', sport: 'CFB', sideA: 'NORE', sideB: 'UVA', kickoff: 'week of Sep 11-12, 2026 (unconfirmed)', lines: [{ book: 'CBS', value: 45.5 }] },
+  { matchup: 'RICH @ NCST', sport: 'CFB', sideA: 'RICH', sideB: 'NCST', kickoff: 'Fri, Sep 11, 2026 (time TBD)', lines: [{ book: 'CBS', value: 34.5 }] },
+  { matchup: 'NOVA @ LOU', sport: 'CFB', sideA: 'NOVA', sideB: 'LOU', kickoff: 'Fri, Sep 11, 2026 (time TBD, unconfirmed)', lines: [{ book: 'CBS', value: 36.5 }] },
+  { matchup: 'RUT @ BC', sport: 'CFB', sideA: 'RUT', sideB: 'BC', kickoff: 'Fri, Sep 11, 2026 (time TBD)', lines: [{ book: 'CBS', value: 3.5 }] },
   {
-    matchup: 'MIZZ @ KAN', sport: 'CFB', sideA: 'MIZZ', sideB: 'KAN',
+    matchup: 'MIZZ @ KAN', sport: 'CFB', sideA: 'MIZZ', sideB: 'KAN', kickoff: 'Fri, Sep 11, 2026 (time TBD)',
     lines: [
       { book: 'CBS', value: -4.5 },
       { book: 'DraftKings', value: -4.5, open: -7 },
@@ -257,6 +257,11 @@ export default function LineMovementTracker() {
         }
       }
 
+      if (seed.kickoff !== undefined && next.kickoff !== seed.kickoff) {
+        changed = true;
+        next = { ...next, kickoff: seed.kickoff };
+      }
+
       seed.lines.forEach((line, li) => {
         const bookSnaps = next.lineSnapshots.filter((s) => s.book === line.book);
         if (bookSnaps.length === 0) {
@@ -283,6 +288,7 @@ export default function LineMovementTracker() {
         market: 'spread',
         sideA: s.sideA,
         sideB: s.sideB,
+        kickoff: s.kickoff,
         lineSnapshots: s.lines.flatMap((line, li) => buildBookSnapshots(line, `${i}_${li}`)),
         publicSnapshots: s.public !== undefined ? [{ id: `p_seed_${now}_${i}`, timestamp: now, publicPctA: s.public }] : [],
       }));
@@ -422,6 +428,7 @@ export default function LineMovementTracker() {
         .rlmw-card-top { display:flex; justify-content:space-between; align-items:flex-start; gap:8px; }
         .rlmw-matchup { font-family:'Bebas Neue', sans-serif; font-size:22px; letter-spacing:0.3px; line-height:1.1; }
         .rlmw-meta { color:#8993A4; font-size:12.5px; margin-top:3px; }
+        .rlmw-kickoff { color:#D4A72C; font-size:11.5px; margin-top:4px; font-family:'IBM Plex Mono', monospace; }
         .rlmw-icon-btn { background:transparent; border:none; color:#586173; cursor:pointer; padding:4px; border-radius:4px; flex-shrink:0; }
         .rlmw-icon-btn:hover { color:#C65B4E; background:#1D232C; }
         .rlmw-flag { display:flex; align-items:flex-start; gap:8px; background:#12241C; border:1px solid #1F3B2C; color:#34C77B; padding:10px 12px; border-radius:6px; font-size:13px; line-height:1.45; }
@@ -556,6 +563,7 @@ export default function LineMovementTracker() {
                   <div className="rlmw-meta">
                     {MARKETS.find((m) => m.id === game.market).label} · {game.sideA} vs {game.sideB}
                   </div>
+                  {game.kickoff && <div className="rlmw-kickoff">{game.kickoff}</div>}
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                   <span className="rlmw-sport-tag">{game.sport}</span>
@@ -797,6 +805,7 @@ export default function LineMovementTracker() {
                     <tr key={game.id}>
                       <td>
                         <div className="rlmw-final-game-name">{game.matchup}</div>
+                        {game.kickoff && <div className="rlmw-final-side">{game.kickoff}</div>}
                         {sharpSide && <div className="rlmw-final-side">line moved to {sharpSide}</div>}
                       </td>
                       <td className="rlmw-mono">{combined ? combined.openDisplay : '—'}</td>
