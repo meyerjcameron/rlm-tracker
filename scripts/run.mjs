@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 import { fetchCbsOdds } from './lib/cbsOdds.mjs';
 import { fetchCoversConsensus, findConsensusForGame } from './lib/covers.mjs';
 import { formatKickoffCentral } from './lib/format.mjs';
+import { isMajorConferenceGame } from './lib/majorConferences.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const OUT_PATH = path.join(__dirname, '..', 'public', 'seed-games.json');
@@ -61,6 +62,9 @@ async function run() {
         skipped.push(g.matchup);
         continue;
       }
+      // CFB is limited to Power 4 (SEC/Big Ten/ACC/Big 12) + Notre Dame games
+      // -- the full FBS slate is hundreds of games a week, way too much noise.
+      if (g.sport === 'CFB' && !isMajorConferenceGame(g.nameA, g.nameB)) continue;
       allSeeds.push(buildSeedGame(g, consensusRows));
     }
   }

@@ -357,34 +357,6 @@
     ]
   },
   {
-    "matchup": "CSTCAR @ DE",
-    "sport": "CFB",
-    "sideA": "CSTCAR",
-    "sideB": "DE",
-    "replaceLines": true,
-    "lines": [
-      {
-        "book": "CBS",
-        "value": 5.5,
-        "open": 5.5
-      }
-    ]
-  },
-  {
-    "matchup": "NTEXAS @ TXSTSM",
-    "sport": "CFB",
-    "sideA": "NTEXAS",
-    "sideB": "TXSTSM",
-    "replaceLines": true,
-    "lines": [
-      {
-        "book": "CBS",
-        "value": 3,
-        "open": 3.5
-      }
-    ]
-  },
-  {
     "matchup": "AKRON @ MINN",
     "sport": "CFB",
     "sideA": "AKRON",
@@ -409,20 +381,6 @@
         "book": "CBS",
         "value": 20.5,
         "open": 20.5
-      }
-    ]
-  },
-  {
-    "matchup": "BGREEN @ IOWAST",
-    "sport": "CFB",
-    "sideA": "BGREEN",
-    "sideB": "IOWAST",
-    "replaceLines": true,
-    "lines": [
-      {
-        "book": "CBS",
-        "value": 23.5,
-        "open": 23.5
       }
     ]
   },
@@ -542,20 +500,6 @@
     ]
   },
   {
-    "matchup": "WYO @ CMICH",
-    "sport": "CFB",
-    "sideA": "WYO",
-    "sideB": "CMICH",
-    "replaceLines": true,
-    "lines": [
-      {
-        "book": "CBS",
-        "value": 1.5,
-        "open": 1.5
-      }
-    ]
-  },
-  {
     "matchup": "ME @ BC",
     "sport": "CFB",
     "sideA": "ME",
@@ -584,20 +528,6 @@
     ]
   },
   {
-    "matchup": "TEMPLE @ TOLEDO",
-    "sport": "CFB",
-    "sideA": "TEMPLE",
-    "sideB": "TOLEDO",
-    "replaceLines": true,
-    "lines": [
-      {
-        "book": "CBS",
-        "value": 5.5,
-        "open": 2.5
-      }
-    ]
-  },
-  {
     "matchup": "FSU @ BAMA",
     "sport": "CFB",
     "sideA": "FSU",
@@ -608,20 +538,6 @@
         "book": "CBS",
         "value": 20.5,
         "open": 15.5
-      }
-    ]
-  },
-  {
-    "matchup": "DUQ @ WASHST",
-    "sport": "CFB",
-    "sideA": "DUQ",
-    "sideB": "WASHST",
-    "replaceLines": true,
-    "lines": [
-      {
-        "book": "CBS",
-        "value": 35.5,
-        "open": 35.5
       }
     ]
   },
@@ -683,20 +599,6 @@
     "public": 46
   },
   {
-    "matchup": "STONEH @ UMASS",
-    "sport": "CFB",
-    "sideA": "STONEH",
-    "sideB": "UMASS",
-    "replaceLines": true,
-    "lines": [
-      {
-        "book": "CBS",
-        "value": 33.5,
-        "open": 34.5
-      }
-    ]
-  },
-  {
     "matchup": "SMU @ LVILLE",
     "sport": "CFB",
     "sideA": "SMU",
@@ -753,20 +655,6 @@
     ]
   },
   {
-    "matchup": "BALLST @ LIB",
-    "sport": "CFB",
-    "sideA": "BALLST",
-    "sideB": "LIB",
-    "replaceLines": true,
-    "lines": [
-      {
-        "book": "CBS",
-        "value": 14.5,
-        "open": 13.5
-      }
-    ]
-  },
-  {
     "matchup": "LATECH @ BAYLOR",
     "sport": "CFB",
     "sideA": "LATECH",
@@ -809,134 +697,6 @@
     ]
   },
   {
-    "matchup": "SELOU @ LAMON",
-    "sport": "CFB",
-    "sideA": "SELOU",
-    "sideB": "LAMON",
-    "replaceLines": true,
-    "lines": [
-      {
-        "book": "CBS",
-        "value": 11.5,
-        "open": 12.5
-      }
-    ]
-  },
-  {
-    "matchup": "CHARLO @ APLST",
-    "sport": "CFB",
-    "sideA": "CHARLO",
-    "sideB": "APLST",
-    "replaceLines": true,
-    "lines": [
-      {
-        "book": "CBS",
-        "value": 17.5,
-        "open": 19.5
-      }
-    ]
-  },
-  {
-    "matchup": "ECU @ ODU",
-    "sport": "CFB",
-    "sideA": "ECU",
-    "sideB": "ODU",
-    "replaceLines": true,
-    "lines": [
-      {
-        "book": "CBS",
-        "value": 3,
-        "open": 2.5
-      }
-    ],
-    "public": 49
-  },
-  {
-    "matchup": "FIU @ FAU",
-    "sport": "CFB",
-    "sideA": "FIU",
-    "sideB": "FAU",
-    "replaceLines": true,
-    "lines": [
-      {
-        "book": "CBS",
-        "value": 7,
-        "open": 9.5
-      }
-    ],
-    "public": 37
-  },
-  {
-    "matchup": "MRSHL @ MOST",
-    "sport": "CFB",
-    "sideA": "MRSHL",
-    "sideB": "MOST",
-    "replaceLines": true,
-    "lines": [
-      {
-        "book": "CBS",
-        "value": -3.5,
-        "open": -4.5
-      }
-    ]
-  },
-  {
-    "matchup": "UCONN @ USM",
-    "sport": "CFB",
-    "sideA": "UCONN",
-    "sideB": "USM",
-    "replaceLines": true,
-    "lines": [
-      {
-        "book": "CBS",
-        "value": -3,
-        "open": -2.5
-      }
-    ]
-  },
-  {
-    "matchup": "OHIO @ SALA",
-    "sport": "CFB",
-    "sideA": "OHIO",
-    "sideB": "SALA",
-    "replaceLines": true,
-    "lines": [
-      {
-        "book": "CBS",
-        "value": 4.5,
-        "open": 3.5
-      }
-    ]
-  },
-  {
-    "matchup": "NICHST @ SAMST",
-    "sport": "CFB",
-    "sideA": "NICHST",
-    "sideB": "SAMST",
-    "replaceLines": true,
-    "lines": [
-      {
-        "book": "CBS",
-        "value": 18.5,
-        "open": 18.5
-      }
-    ]
-  },
-  {
-    "matchup": "WMICH @ RICE",
-    "sport": "CFB",
-    "sideA": "WMICH",
-    "sideB": "RICE",
-    "replaceLines": true,
-    "lines": [
-      {
-        "book": "CBS",
-        "value": -9.5,
-        "open": -10.5
-      }
-    ]
-  },
-  {
     "matchup": "TROY @ MIZZOU",
     "sport": "CFB",
     "sideA": "TROY",
@@ -947,48 +707,6 @@
         "book": "CBS",
         "value": 26.5,
         "open": 27.5
-      }
-    ]
-  },
-  {
-    "matchup": "NEVADA @ MTSU",
-    "sport": "CFB",
-    "sideA": "NEVADA",
-    "sideB": "MTSU",
-    "replaceLines": true,
-    "lines": [
-      {
-        "book": "CBS",
-        "value": -3.5,
-        "open": -6.5
-      }
-    ]
-  },
-  {
-    "matchup": "TNMART @ MEMP",
-    "sport": "CFB",
-    "sideA": "TNMART",
-    "sideB": "MEMP",
-    "replaceLines": true,
-    "lines": [
-      {
-        "book": "CBS",
-        "value": 34.5,
-        "open": 35.5
-      }
-    ]
-  },
-  {
-    "matchup": "GAS @ JAXST",
-    "sport": "CFB",
-    "sideA": "GAS",
-    "sideB": "JAXST",
-    "replaceLines": true,
-    "lines": [
-      {
-        "book": "CBS",
-        "value": 3.5,
-        "open": 2.5
       }
     ]
   },
@@ -1017,20 +735,6 @@
         "book": "CBS",
         "value": 19,
         "open": 19.5
-      }
-    ]
-  },
-  {
-    "matchup": "DEST @ SFLA",
-    "sport": "CFB",
-    "sideA": "DEST",
-    "sideB": "SFLA",
-    "replaceLines": true,
-    "lines": [
-      {
-        "book": "CBS",
-        "value": 37.5,
-        "open": 37.5
       }
     ]
   },
@@ -1176,20 +880,6 @@
     ]
   },
   {
-    "matchup": "UAB @ UL",
-    "sport": "CFB",
-    "sideA": "UAB",
-    "sideB": "UL",
-    "replaceLines": true,
-    "lines": [
-      {
-        "book": "CBS",
-        "value": 8.5,
-        "open": 7.5
-      }
-    ]
-  },
-  {
     "matchup": "ARKST @ TCU",
     "sport": "CFB",
     "sideA": "ARKST",
@@ -1218,34 +908,6 @@
     ]
   },
   {
-    "matchup": "TAMC @ TULSA",
-    "sport": "CFB",
-    "sideA": "TAMC",
-    "sideB": "TULSA",
-    "replaceLines": true,
-    "lines": [
-      {
-        "book": "CBS",
-        "value": 40.5,
-        "open": 42.5
-      }
-    ]
-  },
-  {
-    "matchup": "JMAD @ SDGST",
-    "sport": "CFB",
-    "sideA": "JMAD",
-    "sideB": "SDGST",
-    "replaceLines": true,
-    "lines": [
-      {
-        "book": "CBS",
-        "value": 2.5,
-        "open": 2.5
-      }
-    ]
-  },
-  {
     "matchup": "NILL @ ARIZ",
     "sport": "CFB",
     "sideA": "NILL",
@@ -1256,48 +918,6 @@
         "book": "CBS",
         "value": 34.5,
         "open": 31.5
-      }
-    ]
-  },
-  {
-    "matchup": "NDST @ SACST",
-    "sport": "CFB",
-    "sideA": "NDST",
-    "sideB": "SACST",
-    "replaceLines": true,
-    "lines": [
-      {
-        "book": "CBS",
-        "value": -27.5,
-        "open": -23.5
-      }
-    ]
-  },
-  {
-    "matchup": "MT @ OREGST",
-    "sport": "CFB",
-    "sideA": "MT",
-    "sideB": "OREGST",
-    "replaceLines": true,
-    "lines": [
-      {
-        "book": "CBS",
-        "value": 15.5,
-        "open": 9.5
-      }
-    ]
-  },
-  {
-    "matchup": "FRESNO @ SJST",
-    "sport": "CFB",
-    "sideA": "FRESNO",
-    "sideB": "SJST",
-    "replaceLines": true,
-    "lines": [
-      {
-        "book": "CBS",
-        "value": -6.5,
-        "open": -5.5
       }
     ]
   },

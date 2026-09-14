@@ -18,9 +18,11 @@ function parseTeamRow($, tr) {
   const href = $tr.find('a[href*="/teams/"]').first().attr('href') || '';
   const hrefMatch = href.match(/\/teams\/([A-Za-z0-9]+)\//);
   const code = (hrefMatch ? hrefMatch[1] : $tr.find('.OddsBlock-teamText--short').first().text().trim()).toUpperCase();
+  const fullName = $tr.find('.OddsBlock-teamText--long').first().text().trim();
   const scoreText = $tr.find('.OddsBlock-betOdds--score').first().text().trim();
   return {
     code,
+    fullName,
     score: scoreText === '' ? null : Number(scoreText),
     openingText: $tr.find('.OddsBlock-betOdds--openingLines').first().text().replace(/\s+/g, ' ').trim(),
     spreadText: $tr.find('.OddsBlock-betOdds--spread').first().text().replace(/\s+/g, ' ').trim(),
@@ -76,6 +78,8 @@ export async function fetchCbsOdds(url, sport) {
       sport,
       sideA: away.code,
       sideB: home.code,
+      nameA: away.fullName,
+      nameB: home.fullName,
       matchup: `${away.code} @ ${home.code}`,
       spreadOpen: awaySpreadOpen,
       spreadCurrent: awaySpreadCurrent,
