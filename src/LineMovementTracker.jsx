@@ -23,7 +23,7 @@ const SEED_GAMES = [
   { matchup: 'NO @ DET', sport: 'NFL', sideA: 'NO', sideB: 'DET', kickoff: 'Sun, Sep 13, 2026 (time TBD)', score: { a: 30, b: 31, ot: true }, public: 23, lines: [{ book: 'CBS', value: 7 }] },
   { matchup: 'CLE @ JAC', sport: 'NFL', sideA: 'CLE', sideB: 'JAC', kickoff: 'Sun, Sep 13, 2026 (time TBD)', score: { a: 10, b: 34 }, public: 38, lines: [{ book: 'CBS', value: 8.5 }] },
   { matchup: 'NYJ @ TEN', sport: 'NFL', sideA: 'NYJ', sideB: 'TEN', kickoff: 'Sun, Sep 13, 2026 (time TBD)', score: { a: 23, b: 10 }, public: 40, lines: [{ book: 'CBS', value: 1.5 }] },
-  { matchup: 'ATL @ PIT', sport: 'NFL', sideA: 'ATL', sideB: 'PIT', kickoff: 'Sun, Sep 13, 2026 (time TBD)', score: { a: 13, b: 20 }, public: 39, lines: [{ book: 'CBS', value: 5.5 }] },
+  { matchup: 'ATL @ PIT', sport: 'NFL', sideA: 'ATL', sideB: 'PIT', kickoff: 'Sun, Sep 13, 2026 (time TBD)', score: { a: 13, b: 20 }, public: 37, replaceLines: true, lines: [{ book: 'CBS', value: 6.5, open: 3.5 }] },
   { matchup: 'GB @ MIN', sport: 'NFL', sideA: 'GB', sideB: 'MIN', kickoff: 'Sun, Sep 13, 2026 (time TBD)', score: { a: 22, b: 39 }, public: 52, lines: [{ book: 'CBS', value: 1.5 }] },
   { matchup: 'WAS @ PHI', sport: 'NFL', sideA: 'WAS', sideB: 'PHI', kickoff: 'Sun, Sep 13, 2026 (time TBD)', score: { a: 22, b: 24 }, public: 32, lines: [{ book: 'CBS', value: 5.5 }] },
   { matchup: 'MIA @ LV', sport: 'NFL', sideA: 'MIA', sideB: 'LV', kickoff: 'Sun, Sep 13, 2026 (time TBD)', score: { a: 13, b: 27 }, public: 41, lines: [{ book: 'CBS', value: 3 }] },
@@ -272,19 +272,30 @@ export default function LineMovementTracker() {
         next = { ...next, score: seed.score, finished: true, finishedAt: now };
       }
 
-      seed.lines.forEach((line, li) => {
-        const bookSnaps = next.lineSnapshots.filter((s) => s.book === line.book);
-        if (bookSnaps.length === 0) {
-          changed = true;
-          next = { ...next, lineSnapshots: [...next.lineSnapshots, ...buildBookSnapshots(line, `${next.id}_${li}`)] };
-        } else {
-          const latest = bookSnaps[bookSnaps.length - 1];
-          if (latest.valueA !== line.value) {
+      if (seed.replaceLines) {
+        // Corrects a book whose earlier scrape only captured one point-in-time
+        // value -- replaces its whole snapshot history with the real open/close
+        // pair (e.g. from CBS's mobile-app-only "Game Odds" view) instead of
+        // diffing against the wrong value that was already recorded.
+        const otherBooksSnaps = next.lineSnapshots.filter((s) => !seed.lines.some((l) => l.book === s.book));
+        const replaced = seed.lines.flatMap((line, li) => buildBookSnapshots(line, `${next.id}_fix_${li}`));
+        changed = true;
+        next = { ...next, lineSnapshots: [...otherBooksSnaps, ...replaced] };
+      } else {
+        seed.lines.forEach((line, li) => {
+          const bookSnaps = next.lineSnapshots.filter((s) => s.book === line.book);
+          if (bookSnaps.length === 0) {
             changed = true;
-            next = { ...next, lineSnapshots: [...next.lineSnapshots, { id: `l_upd_${now}_${next.id}_${li}`, book: line.book, timestamp: now, valueA: line.value }] };
+            next = { ...next, lineSnapshots: [...next.lineSnapshots, ...buildBookSnapshots(line, `${next.id}_${li}`)] };
+          } else {
+            const latest = bookSnaps[bookSnaps.length - 1];
+            if (latest.valueA !== line.value) {
+              changed = true;
+              next = { ...next, lineSnapshots: [...next.lineSnapshots, { id: `l_upd_${now}_${next.id}_${li}`, book: line.book, timestamp: now, valueA: line.value }] };
+            }
           }
-        }
-      });
+        });
+      }
 
       return next;
     });
