@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { LineChart, Line, ResponsiveContainer, YAxis, Tooltip } from 'recharts';
-import { Trash2, Flame, ChevronDown, ChevronRight, X } from 'lucide-react';
+import { Trash2, Flame, ChevronDown, ChevronRight, X, Flag, Undo2 } from 'lucide-react';
 
 const MARKETS = [
   { id: 'spread', label: 'Spread' },
@@ -349,6 +349,21 @@ export default function LineMovementTracker() {
     persist(games.filter((g) => g.id !== gameId));
   }
 
+  function markGameFinished(gameId) {
+    const updated = games.map((g) => (g.id === gameId ? { ...g, finished: true, finishedAt: Date.now() } : g));
+    persist(updated);
+  }
+
+  function reopenGame(gameId) {
+    const updated = games.map((g) => (g.id === gameId ? { ...g, finished: false, finishedAt: undefined, result: undefined } : g));
+    persist(updated);
+  }
+
+  function setGameResult(gameId, result) {
+    const updated = games.map((g) => (g.id === gameId ? { ...g, result: g.result === result ? undefined : result } : g));
+    persist(updated);
+  }
+
   function deleteLineSnapshot(gameId, snapId) {
     const updated = games.map((g) => {
       if (g.id !== gameId) return g;
@@ -366,9 +381,11 @@ export default function LineMovementTracker() {
   }
 
   const bySport = games.filter((g) => g.sport === sportTab);
-  const filteredGames = onlyChanged ? bySport.filter(gameHasLineChange) : bySport;
+  const liveGames = bySport.filter((g) => !g.finished);
+  const finishedGames = [...bySport.filter((g) => g.finished)].sort((a, b) => (b.finishedAt || 0) - (a.finishedAt || 0));
+  const filteredGames = onlyChanged ? liveGames.filter(gameHasLineChange) : liveGames;
   const visibleGames = [...filteredGames].sort((a, b) => gameRLMMagnitude(b) - gameRLMMagnitude(a));
-  const lineChangeCount = bySport.filter(gameHasLineChange).length;
+  const lineChangeCount = liveGames.filter(gameHasLineChange).length;
 
   return (
     <div className="rlmw-root">
@@ -448,6 +465,21 @@ export default function LineMovementTracker() {
         .rlmw-empty h3 { color:#ECEFF4; font-family:'Bebas Neue', sans-serif; font-size:24px; margin:0 0 8px; letter-spacing:0.3px; font-weight:400; }
         .rlmw-save-error { color:#C65B4E; font-size:12px; margin-top:10px; }
         .rlmw-sport-tag { font-size:11px; color:#8993A4; border:1px solid #2B3340; padding:2px 7px; border-radius:4px; white-space:nowrap; }
+        .rlmw-final-section { margin-top:36px; max-width:760px; }
+        .rlmw-final-heading { font-family:'Bebas Neue', sans-serif; font-size:20px; letter-spacing:0.3px; color:#8993A4; margin-bottom:10px; }
+        .rlmw-final-table-wrap { overflow-x:auto; border:1px solid #2B3340; border-radius:8px; }
+        .rlmw-final-table { width:100%; border-collapse:collapse; font-size:13px; }
+        .rlmw-final-table th { text-align:left; color:#8993A4; font-weight:600; font-size:10.5px; text-transform:uppercase; letter-spacing:0.4px; padding:10px 12px; border-bottom:1px solid #2B3340; background:#161B22; white-space:nowrap; }
+        .rlmw-final-table td { padding:10px 12px; border-bottom:1px solid #1D232C; vertical-align:middle; white-space:nowrap; }
+        .rlmw-final-table tr:last-child td { border-bottom:none; }
+        .rlmw-final-game-name { font-weight:600; }
+        .rlmw-final-side { font-size:11px; color:#586173; margin-top:2px; }
+        .rlmw-mono { font-family:'IBM Plex Mono', monospace; }
+        .rlmw-result-pills { display:flex; gap:4px; }
+        .rlmw-result-pill { width:26px; height:26px; border-radius:4px; border:1px solid #2B3340; background:#1D232C; color:#8993A4; font-size:11px; font-weight:700; cursor:pointer; font-family:inherit; }
+        .rlmw-result-pill.active-win { background:#12241C; border-color:#34C77B; color:#34C77B; }
+        .rlmw-result-pill.active-loss { background:#241414; border-color:#C65B4E; color:#C65B4E; }
+        .rlmw-result-pill.active-push { background:#1D232C; border-color:#8993A4; color:#ECEFF4; }
       `}</style>
 
       <datalist id="rlmw-books">
@@ -527,6 +559,9 @@ export default function LineMovementTracker() {
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                   <span className="rlmw-sport-tag">{game.sport}</span>
+                  <button className="rlmw-icon-btn" onClick={() => markGameFinished(game.id)} aria-label="Mark game final">
+                    <Flag size={15} />
+                  </button>
                   <button className="rlmw-icon-btn" onClick={() => deleteGame(game.id)} aria-label="Delete game">
                     <Trash2 size={15} />
                   </button>
@@ -736,6 +771,69 @@ export default function LineMovementTracker() {
           );
         })}
       </div>
+
+      {finishedGames.length > 0 && (
+        <div className="rlmw-final-section">
+          <div className="rlmw-final-heading">Finished ({finishedGames.length})</div>
+          <div className="rlmw-final-table-wrap">
+            <table className="rlmw-final-table">
+              <thead>
+                <tr>
+                  <th>Game</th>
+                  <th>Open</th>
+                  <th>Close</th>
+                  <th>Move</th>
+                  <th>Result</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {finishedGames.map((game) => {
+                  const combined = getCombinedStats(game);
+                  const sharpSide = combined && combined.movementSide
+                    ? (combined.movementSide === 'A' ? game.sideA : game.sideB)
+                    : null;
+                  return (
+                    <tr key={game.id}>
+                      <td>
+                        <div className="rlmw-final-game-name">{game.matchup}</div>
+                        {sharpSide && <div className="rlmw-final-side">line moved to {sharpSide}</div>}
+                      </td>
+                      <td className="rlmw-mono">{combined ? combined.openDisplay : '—'}</td>
+                      <td className="rlmw-mono">{combined ? combined.currentDisplay : '—'}</td>
+                      <td className="rlmw-mono">{combined ? combined.magnitude.toFixed(1) : '—'}</td>
+                      <td>
+                        <div className="rlmw-result-pills">
+                          {['win', 'loss', 'push'].map((r) => (
+                            <button
+                              key={r}
+                              className={`rlmw-result-pill ${game.result === r ? `active-${r}` : ''}`}
+                              onClick={() => setGameResult(game.id, r)}
+                              aria-label={`Mark ${r}`}
+                            >
+                              {r === 'win' ? 'W' : r === 'loss' ? 'L' : 'P'}
+                            </button>
+                          ))}
+                        </div>
+                      </td>
+                      <td>
+                        <div style={{ display: 'flex', gap: 4 }}>
+                          <button className="rlmw-icon-btn" onClick={() => reopenGame(game.id)} aria-label="Reopen game">
+                            <Undo2 size={14} />
+                          </button>
+                          <button className="rlmw-icon-btn" onClick={() => deleteGame(game.id)} aria-label="Delete game">
+                            <Trash2 size={14} />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
