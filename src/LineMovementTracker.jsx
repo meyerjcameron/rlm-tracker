@@ -161,14 +161,12 @@ function gameHasLineChange(game) {
   });
 }
 
-function gameRLMMagnitude(game) {
+function gameMovementMagnitude(game) {
   let max = 0;
-  if (isFlagged(game, 'ALL')) {
-    const c = getCombinedStats(game);
-    if (c) max = Math.max(max, c.magnitude);
-  }
+  const c = getCombinedStats(game);
+  if (c) max = Math.max(max, c.magnitude);
   getBookList(game).forEach((b) => {
-    if (isFlagged(game, b)) max = Math.max(max, getBookMovementMagnitude(game, b));
+    max = Math.max(max, getBookMovementMagnitude(game, b));
   });
   return max;
 }
@@ -250,7 +248,7 @@ export default function LineMovementTracker() {
 
       if (seed.kickoff !== undefined && next.kickoff !== seed.kickoff) {
         changed = true;
-        next = { ...next, kickoff: seed.kickoff };
+        next = { ...next, kickoff: seed.kickoff, kickoffTs: seed.kickoffTs };
       }
 
       if (seed.conferences !== undefined && JSON.stringify(next.conferences) !== JSON.stringify(seed.conferences)) {
@@ -306,6 +304,7 @@ export default function LineMovementTracker() {
         sideA: s.sideA,
         sideB: s.sideB,
         kickoff: s.kickoff,
+        kickoffTs: s.kickoffTs,
         conferences: s.conferences,
         ranked: !!s.ranked,
         score: s.score,
@@ -431,7 +430,13 @@ export default function LineMovementTracker() {
   const liveGames = bySport.filter((g) => !g.finished);
   const finishedGames = [...bySport.filter((g) => g.finished)].sort((a, b) => (b.finishedAt || 0) - (a.finishedAt || 0));
   const filteredGames = onlyChanged ? liveGames.filter(gameHasLineChange) : liveGames;
-  const visibleGames = [...filteredGames].sort((a, b) => gameRLMMagnitude(b) - gameRLMMagnitude(a));
+  const visibleGames = [...filteredGames].sort((a, b) => {
+    if (onlyChanged) return gameMovementMagnitude(b) - gameMovementMagnitude(a);
+    if (a.kickoffTs == null && b.kickoffTs == null) return 0;
+    if (a.kickoffTs == null) return 1;
+    if (b.kickoffTs == null) return -1;
+    return a.kickoffTs - b.kickoffTs;
+  });
   const lineChangeCount = liveGames.filter(gameHasLineChange).length;
 
   return (

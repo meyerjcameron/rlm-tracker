@@ -30,7 +30,10 @@ function buildSeedGame(cbsGame, consensusRows, top25) {
     }],
   };
   const kickoff = formatKickoffCentral(cbsGame.kickoffISO);
-  if (kickoff) seed.kickoff = kickoff;
+  if (kickoff) {
+    seed.kickoff = kickoff;
+    seed.kickoffTs = Date.parse(cbsGame.kickoffISO);
+  }
   if (cbsGame.score) seed.score = cbsGame.score;
   if (consensusRows) {
     const pct = findConsensusForGame(consensusRows, cbsGame.sideA, cbsGame.sideB);

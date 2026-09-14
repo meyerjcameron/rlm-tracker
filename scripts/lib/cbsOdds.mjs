@@ -1,5 +1,6 @@
 import * as cheerio from 'cheerio';
 import { toNflAbbrev } from './teams.mjs';
+import { canonicalSchool } from './schoolNames.mjs';
 
 const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36';
 
@@ -35,7 +36,12 @@ export async function fetchCbsOdds(url, sport) {
   const html = await res.text();
   const $ = cheerio.load(html);
 
-  const kickoffByTeamPair = new Map();
+  // NFL's ".OddsBlock-teamText--long" is mascot-only ("Broncos"), so NFL
+  // games match the ItemList by abbreviation. CFB's is the full school name
+  // ("Texas Tech"), but the ItemList's own name there includes the mascot
+  // too ("Texas Tech Red Raiders") -- so CFB matches by prefix instead.
+  const kickoffByAbbrevPair = new Map();
+  const itemListEntries = [];
   $('script[type="application/ld+json"]').each((_, el) => {
     let data;
     try { data = JSON.parse($(el).contents().text()); } catch (e) { return; }
@@ -44,12 +50,24 @@ export async function fetchCbsOdds(url, sport) {
     items.forEach((it) => {
       const ev = it && it.item;
       if (!ev || !Array.isArray(ev.competitor) || ev.competitor.length !== 2) return;
+      const info = { startDate: ev.startDate, status: ev.eventStatus };
+
       const abbrevs = ev.competitor.map((c) => toNflAbbrev(c.name)).filter(Boolean);
-      if (abbrevs.length !== 2) return;
-      const key = abbrevs.slice().sort().join('|');
-      kickoffByTeamPair.set(key, { startDate: ev.startDate, status: ev.eventStatus });
+      if (abbrevs.length === 2) kickoffByAbbrevPair.set(abbrevs.slice().sort().join('|'), info);
+
+      itemListEntries.push({ names: ev.competitor.map((c) => canonicalSchool(c.name)), info });
     });
   });
+
+  function findKickoffByPrefix(nameA, nameB) {
+    if (!nameA || !nameB) return null;
+    const a = canonicalSchool(nameA);
+    const b = canonicalSchool(nameB);
+    const entry = itemListEntries.find(({ names: [n1, n2] }) => (
+      (n1.startsWith(a) && n2.startsWith(b)) || (n1.startsWith(b) && n2.startsWith(a))
+    ));
+    return entry ? entry.info : null;
+  }
 
   const games = [];
   $('table.OddsBlock-game').each((_, table) => {
@@ -69,7 +87,8 @@ export async function fetchCbsOdds(url, sport) {
     const awaySpreadOpen = homeSpreadOpen === null ? null : -homeSpreadOpen;
     const awaySpreadCurrent = parseFirstNumber(away.spreadText);
 
-    const kickoff = kickoffByTeamPair.get([away.code, home.code].slice().sort().join('|')) || null;
+    const kickoff = kickoffByAbbrevPair.get([away.code, home.code].slice().sort().join('|'))
+      || findKickoffByPrefix(away.fullName, home.fullName);
 
     const isFinal = away.score !== null && home.score !== null && (away.score > 0 || home.score > 0)
       && /OddsBlock-game--final(?!\w)/.test($table.attr('class') || '');
