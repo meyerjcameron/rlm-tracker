@@ -537,12 +537,12 @@ export default function LineMovementTracker() {
       </div>
 
       <div className="rlmw-toolbar">
-        {bySport.length > 0 && (
+        {liveGames.length > 0 && (
           <div
             className={`rlmw-pill-toggle ${onlyChanged ? 'active' : ''}`}
             onClick={() => setOnlyChanged((v) => !v)}
           >
-            <Flame size={14} /> {lineChangeCount} of {bySport.length} showing a line change
+            <Flame size={14} /> {lineChangeCount} of {liveGames.length} showing a line change
           </div>
         )}
       </div>
