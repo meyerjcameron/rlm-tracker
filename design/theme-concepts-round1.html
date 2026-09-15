@@ -1,0 +1,403 @@
+<title>RLM Tracker: Five Directions</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800&family=Space+Mono:wght@400;700&family=Archivo:wght@500;700;800&family=JetBrains+Mono:wght@400;500;700&family=Kalam:wght@700&family=Work+Sans:wght@400;600;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&family=Archivo+Narrow:wght@500;600;700&family=Anton&family=Manrope:wght@500;700;800&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --shell-bg:#0d0f12; --shell-panel:#15181d; --shell-line:#262b32;
+    --shell-text:#e8eaed; --shell-dim:#8a919c; --shell-accent:#e8b84b;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--shell-bg); color:var(--shell-text);
+    font-family:'Archivo',sans-serif; padding-block:28px; padding-inline:20px;
+  }
+  .shell-head{ max-width:1180px; margin:0 auto 22px; }
+  .shell-head h1{
+    font-family:'Archivo',sans-serif; font-weight:800; font-size:clamp(22px,3vw,30px);
+    margin:0 0 6px; letter-spacing:-0.01em; text-wrap:balance;
+  }
+  .shell-head p{ margin:0; color:var(--shell-dim); font-size:14px; max-width:62ch; line-height:1.55; }
+
+  .switcher{
+    max-width:1180px; margin:0 auto 22px; display:flex; gap:8px; flex-wrap:wrap;
+    border-bottom:1px solid var(--shell-line); padding-bottom:14px;
+  }
+  .switcher button{
+    font-family:'Archivo',sans-serif; font-weight:600; font-size:13px; color:var(--shell-dim);
+    background:var(--shell-panel); border:1px solid var(--shell-line); border-radius:8px;
+    padding:9px 14px; cursor:pointer; transition:color .15s,border-color .15s,background .15s;
+  }
+  .switcher button:hover{ color:var(--shell-text); }
+  .switcher button.active{ color:#14161a; background:var(--shell-accent); border-color:var(--shell-accent); }
+  .switcher button .n{ opacity:.6; margin-right:6px; font-family:'JetBrains Mono',monospace; }
+  .switcher button.active .n{ opacity:.5; }
+
+  .stage-wrap{ max-width:1180px; margin:0 auto; }
+  .stage{ display:none; border-radius:14px; overflow:hidden; }
+  .stage.active{ display:block; }
+  .stage-label{
+    max-width:1180px; margin:0 auto 12px; font-family:'JetBrains Mono',monospace;
+    font-size:12px; color:var(--shell-dim); display:flex; gap:10px; align-items:baseline; flex-wrap:wrap;
+  }
+  .stage-label b{ color:var(--shell-text); font-size:13px; }
+
+  /* ============================================================
+     SHARED CARD SKELETON -- every theme below restyles these same
+     classes via CSS custom properties, so structure never repeats.
+     ============================================================ */
+  .app{ padding:28px clamp(16px,3vw,32px) 40px; }
+  .app-head h2{ margin:0 0 6px; }
+  .app-head p{ margin:0 0 18px; max-width:56ch; line-height:1.55; }
+  .tabs{ display:flex; gap:4px; margin-bottom:16px; }
+  .tabs span{ padding:7px 4px; cursor:default; }
+  .pills{ display:flex; gap:10px; margin-bottom:20px; flex-wrap:wrap; }
+  .pill{ display:inline-flex; align-items:center; gap:7px; padding:7px 13px; }
+  .grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:16px; }
+  .card{ padding:18px; }
+  .card-top{ display:flex; justify-content:space-between; align-items:flex-start; gap:10px; margin-bottom:4px; }
+  .matchup{ display:flex; align-items:baseline; gap:7px; flex-wrap:wrap; }
+  .meta{ font-size:12.5px; margin-top:3px; }
+  .book-row{ display:inline-flex; gap:6px; margin:12px 0; }
+  .book-chip{ padding:5px 11px; font-size:12px; }
+  .flag-box{ padding:10px 12px; font-size:13px; line-height:1.5; margin-bottom:12px; }
+  .stats{ display:flex; align-items:center; gap:10px; margin-bottom:12px; }
+  .stat{ flex:1; padding:10px 12px; }
+  .stat-label{ font-size:10.5px; text-transform:uppercase; letter-spacing:.06em; margin-bottom:4px; }
+  .stat-val{ font-size:17px; }
+  .stat-move{ font-size:11px; margin-top:3px; }
+  .arrow{ font-size:15px; opacity:.5; }
+  .book-line{ display:flex; justify-content:space-between; padding:9px 12px; font-size:13px; margin-bottom:12px; }
+  .split-labels{ display:flex; justify-content:space-between; font-size:12px; margin-bottom:6px; }
+  .split-bar{ height:7px; overflow:hidden; display:flex; }
+  .hist{ font-size:11.5px; margin-top:12px; opacity:.75; }
+  .rank{ font-size:10.5px; font-weight:800; padding:1px 6px; }
+  tabular{ font-variant-numeric:tabular-nums; }
+</style>
+
+<!-- ============================= CHROME ============================= -->
+<div class="shell-head">
+  <h1>RLM Tracker &mdash; five directions</h1>
+  <p>Same two cards, five different visual identities. Flip between them to compare type, color and layout side by side before we commit one to the real app.</p>
+</div>
+
+<div class="switcher" id="switcher"></div>
+<div class="stage-label" id="stageLabel"></div>
+<div class="stage-wrap" id="stageWrap"></div>
+
+<script>
+const THEMES = [
+  { key:'wire',  n:'01', name:'Wire Room',  sub:'CRT odds-board amber on black &mdash; a Vegas sportsbook ticker.' },
+  { key:'ledger',n:'02', name:'The Ledger', sub:'Quant trading-terminal cyan &mdash; treats lines as tick data.' },
+  { key:'chalk', n:'03', name:'Chalk Line', sub:'Hand-chalked board green &mdash; the physical betting-shop board.' },
+  { key:'broad', n:'04', name:'Broadsheet', sub:'Newsprint agate type &mdash; sports-page box-score convention.' },
+  { key:'turf',  n:'05', name:'Field Turf', sub:'Bright turf green & white &mdash; a modern mobile sports app.' },
+];
+
+const CARD_HTML = `
+  <div class="app">
+    <div class="app-head">
+      <h2>RLM Tracker</h2>
+      <p>Log lines across sportsbooks alongside the public bet split. Flags a game when the line moves against the side the public is backing.</p>
+    </div>
+    <div class="tabs"><span class="tab-on">NFL</span><span class="tab-off">CFB</span></div>
+    <div class="pills">
+      <span class="pill pill-a">&#8599; 15 of 16 showing a line change</span>
+      <span class="pill pill-b">&#9679; 3 of 16 showing RLM</span>
+    </div>
+    <div class="grid">
+      <div class="card card-flag">
+        <div class="card-top">
+          <div>
+            <div class="matchup">DET <span class="at">@</span> BUF</div>
+            <div class="meta meta-1">Spread &middot; DET vs BUF</div>
+            <div class="meta meta-2">Thu, Sep 17 &middot; 7:15 PM CT</div>
+          </div>
+          <span class="tag">NFL</span>
+        </div>
+        <div class="book-row"><span class="book-chip chip-on">All books</span><span class="book-chip chip-off">CBS</span></div>
+        <div class="flag-box">BUF has the public majority, but the consensus line moved toward BUF.</div>
+        <div class="stats">
+          <div class="stat"><div class="stat-label">Open (avg)</div><div class="stat-val tabular">BUF &minus;3</div></div>
+          <span class="arrow">&rarr;</span>
+          <div class="stat"><div class="stat-label">Current (avg)</div><div class="stat-val tabular">BUF &minus;4.5</div><div class="stat-move">moved 1.5 pts</div></div>
+        </div>
+        <div class="book-line"><span>CBS</span><span class="tabular">opened &minus;3&nbsp;&nbsp;&minus;4.5</span></div>
+        <div class="split-labels"><span>DET 27%</span><span>73% BUF</span></div>
+        <div class="split-bar"><span style="width:27%;" class="split-a"></span><span style="width:73%;" class="split-b"></span></div>
+        <div class="hist">History (3)</div>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <div>
+            <div class="matchup"><span class="rank">#5</span> MIAMI <span class="at">@</span> WAKE</div>
+            <div class="meta meta-1">Spread &middot; MIAMI vs WAKE</div>
+            <div class="meta meta-2">Fri, Sep 18 &middot; 6:30 PM CT</div>
+          </div>
+          <span class="tag">CFB</span>
+        </div>
+        <div class="book-row"><span class="book-chip chip-on">All books</span><span class="book-chip chip-off">CBS</span></div>
+        <div class="stats">
+          <div class="stat"><div class="stat-label">Open (avg)</div><div class="stat-val tabular">MIAMI &minus;19.5</div></div>
+          <span class="arrow">&rarr;</span>
+          <div class="stat"><div class="stat-label">Current (avg)</div><div class="stat-val tabular">MIAMI &minus;20.5</div><div class="stat-move">moved 1.0 pts</div></div>
+        </div>
+        <div class="book-line"><span>CBS</span><span class="tabular">opened &minus;19.5&nbsp;&nbsp;&minus;20.5</span></div>
+        <div class="hist">History (2)</div>
+      </div>
+    </div>
+  </div>
+`;
+
+const swEl = document.getElementById('switcher');
+const stageWrap = document.getElementById('stageWrap');
+const stageLabel = document.getElementById('stageLabel');
+
+THEMES.forEach((t,i)=>{
+  const b = document.createElement('button');
+  b.innerHTML = `<span class="n">${t.n}</span>${t.name}`;
+  b.dataset.key = t.key;
+  b.onclick = ()=>select(t.key);
+  swEl.appendChild(b);
+
+  const stage = document.createElement('div');
+  stage.className = 'stage theme-'+t.key;
+  stage.dataset.key = t.key;
+  stage.innerHTML = CARD_HTML;
+  stageWrap.appendChild(stage);
+});
+
+function select(key){
+  document.querySelectorAll('.switcher button').forEach(b=>b.classList.toggle('active', b.dataset.key===key));
+  document.querySelectorAll('.stage').forEach(s=>s.classList.toggle('active', s.dataset.key===key));
+  const t = THEMES.find(x=>x.key===key);
+  stageLabel.innerHTML = `<b>${t.n} &mdash; ${t.name}</b><span>${t.sub}</span>`;
+}
+select(THEMES[0].key);
+</script>
+
+<!-- ======================================================================
+     THEME 1 -- WIRE ROOM
+     Color: bg #0a0a08, panel #14140f, hairline #2b2a20, amber #ffb020,
+            dim amber #8a5a12, text #ece4cf, RLM signal #5fe0a0
+     Type: display "Big Shoulders Display" 800 (condensed, ticker-board),
+           body/data "Space Mono" (typewriter, every number tabular)
+     Layout: thin amber hairlines, all-caps labels, everything reads like
+           an odds board bulb display -- no rounded corners, no shadows.
+     ====================================================================== -->
+<style>
+.theme-wire{
+  background:#0a0a08; font-family:'Space Mono',monospace; color:#ece4cf;
+}
+.theme-wire .app-head h2{
+  font-family:'Big Shoulders Display',sans-serif; font-weight:800; font-size:34px;
+  letter-spacing:.02em; color:#ffb020; text-transform:uppercase; margin:0 0 8px;
+}
+.theme-wire .app-head p{ color:#8a8370; font-size:13px; }
+.theme-wire .tabs span{ font-family:'Big Shoulders Display',sans-serif; font-weight:700; font-size:15px; text-transform:uppercase; letter-spacing:.04em; }
+.theme-wire .tab-on{ color:#ffb020; border-bottom:2px solid #ffb020; }
+.theme-wire .tab-off{ color:#5c5645; }
+.theme-wire .pill{ border:1px solid #3a3626; color:#c9c2a8; font-size:12px; text-transform:uppercase; letter-spacing:.04em; }
+.theme-wire .pill-a{ color:#ffb020; border-color:#5a4520; }
+.theme-wire .pill-b{ color:#5fe0a0; border-color:#215038; }
+.theme-wire .card{ background:#101008; border:1px solid #2b2a20; position:relative; }
+.theme-wire .card-flag{ border-color:#5fe0a0; box-shadow:inset 3px 0 0 #5fe0a0; }
+.theme-wire .matchup{ font-family:'Big Shoulders Display',sans-serif; font-weight:800; font-size:24px; color:#f4efdd; text-transform:uppercase; }
+.theme-wire .at{ font-family:'Space Mono',monospace; font-size:13px; color:#6b6550; font-weight:400; }
+.theme-wire .meta-1{ color:#8a8370; font-size:12px; text-transform:uppercase; letter-spacing:.03em; }
+.theme-wire .meta-2{ color:#ffb020; font-size:11.5px; margin-top:2px; }
+.theme-wire .tag{ border:1px solid #3a3626; color:#8a8370; font-size:10px; padding:2px 7px; text-transform:uppercase; letter-spacing:.05em; }
+.theme-wire .rank{ background:#ffb020; color:#0a0a08; }
+.theme-wire .book-chip{ border:1px solid #3a3626; color:#8a8370; text-transform:uppercase; font-size:11px; letter-spacing:.03em; }
+.theme-wire .chip-on{ color:#ffb020; border-color:#ffb020; }
+.theme-wire .flag-box{ background:#0e1a13; border:1px solid #215038; color:#8fe8bd; }
+.theme-wire .stat{ background:#171610; border:1px solid #2b2a20; }
+.theme-wire .stat-label{ color:#6b6550; }
+.theme-wire .stat-val{ color:#f4efdd; font-weight:700; }
+.theme-wire .stat-move{ color:#5fe0a0; }
+.theme-wire .arrow{ color:#4a4636; }
+.theme-wire .book-line{ background:#171610; border:1px solid #2b2a20; color:#c9c2a8; }
+.theme-wire .split-labels{ color:#c9c2a8; }
+.theme-wire .split-bar{ background:#171610; }
+.theme-wire .split-a{ background:#5c5645; }
+.theme-wire .split-b{ background:#ffb020; }
+.theme-wire .hist{ color:#5c5645; border-top:1px solid #2b2a20; padding-top:8px; text-transform:uppercase; font-size:10.5px; letter-spacing:.04em; }
+</style>
+
+<!-- ======================================================================
+     THEME 2 -- THE LEDGER
+     Color: bg #05080a, panel #0c1318, hairline #1c2830, cyan #4fd8d0,
+            blue #6c8cff, text #d7e3e0, up #4ade80 / down #f87171
+     Type: display "Archivo" 800 (grotesque, dense), data "JetBrains Mono"
+     Layout: a spreadsheet, not a card grid -- thin row dividers, right
+           aligned tabular numbers, a colored tick mark for direction.
+     ====================================================================== -->
+<style>
+.theme-ledger{ background:#05080a; font-family:'Archivo',sans-serif; color:#d7e3e0; }
+.theme-ledger .app-head h2{ font-family:'Archivo',sans-serif; font-weight:800; font-size:26px; color:#eef6f4; margin:0 0 8px; letter-spacing:-.01em; }
+.theme-ledger .app-head p{ color:#5c7370; font-size:13px; }
+.theme-ledger .tabs span{ font-weight:700; font-size:13px; text-transform:uppercase; letter-spacing:.05em; }
+.theme-ledger .tab-on{ color:#4fd8d0; border-bottom:2px solid #4fd8d0; }
+.theme-ledger .tab-off{ color:#3d4d4b; }
+.theme-ledger .pill{ background:#0c1318; border:1px solid #1c2830; color:#8fa5a2; font-family:'JetBrains Mono',monospace; font-size:11.5px; }
+.theme-ledger .pill-a{ color:#6c8cff; }
+.theme-ledger .pill-b{ color:#4fd8d0; }
+.theme-ledger .grid{ grid-template-columns:1fr; gap:0; border:1px solid #1c2830; }
+.theme-ledger .card{ background:#080d10; border:none; border-bottom:1px solid #1c2830; border-radius:0; }
+.theme-ledger .card:last-child{ border-bottom:none; }
+.theme-ledger .card-flag{ background:#0a1416; box-shadow:inset 3px 0 0 #4fd8d0; }
+.theme-ledger .matchup{ font-family:'Archivo',sans-serif; font-weight:800; font-size:18px; color:#eef6f4; }
+.theme-ledger .at{ color:#3d4d4b; font-size:13px; font-weight:500; }
+.theme-ledger .meta-1{ color:#5c7370; font-size:11.5px; }
+.theme-ledger .meta-2{ color:#6c8cff; font-size:11px; font-family:'JetBrains Mono',monospace; margin-top:2px; }
+.theme-ledger .tag{ font-family:'JetBrains Mono',monospace; color:#3d4d4b; font-size:10px; border:1px solid #1c2830; padding:2px 6px; }
+.theme-ledger .rank{ background:#6c8cff; color:#05080a; font-family:'JetBrains Mono',monospace; }
+.theme-ledger .book-chip{ font-family:'JetBrains Mono',monospace; color:#5c7370; border:1px solid #1c2830; font-size:11px; }
+.theme-ledger .chip-on{ color:#4fd8d0; border-color:#4fd8d0; }
+.theme-ledger .flag-box{ background:transparent; border:1px dashed #274043; color:#7ee8e0; font-family:'JetBrains Mono',monospace; font-size:12px; }
+.theme-ledger .stat{ background:transparent; border-left:2px solid #1c2830; padding-left:12px; }
+.theme-ledger .stat-label{ color:#3d4d4b; font-family:'JetBrains Mono',monospace; }
+.theme-ledger .stat-val{ font-family:'JetBrains Mono',monospace; color:#eef6f4; font-weight:700; }
+.theme-ledger .stat-move{ color:#4ade80; font-family:'JetBrains Mono',monospace; }
+.theme-ledger .arrow{ color:#3d4d4b; }
+.theme-ledger .book-line{ background:transparent; border-top:1px solid #1c2830; border-radius:0; font-family:'JetBrains Mono',monospace; color:#8fa5a2; padding-left:0; padding-right:0; }
+.theme-ledger .split-labels{ color:#8fa5a2; font-family:'JetBrains Mono',monospace; font-size:11px; }
+.theme-ledger .split-bar{ background:#0c1318; }
+.theme-ledger .split-a{ background:#6c8cff; }
+.theme-ledger .split-b{ background:#4fd8d0; }
+.theme-ledger .hist{ color:#3d4d4b; font-family:'JetBrains Mono',monospace; font-size:11px; border-top:none; padding-top:8px; }
+</style>
+
+<!-- ======================================================================
+     THEME 3 -- CHALK LINE
+     Color: bg #16241c, panel #1e2f25, chalk white #f3f1e7, chalk yellow
+            #e8d66b, eraser smudge #4a5a50, RLM chalk-pink #e89bb0
+     Type: display "Kalam" 700 (handwritten, used ONLY for the matchup
+           line so it stays legible at data-density), body "Work Sans"
+     Layout: dashed hand-ruled borders, slight texture, everything else
+           kept clean sans so numbers stay scannable, not novelty.
+     ====================================================================== -->
+<style>
+.theme-chalk{ background:#16241c; font-family:'Work Sans',sans-serif; color:#f3f1e7;
+  background-image:radial-gradient(circle at 20% 15%, rgba(255,255,255,.025), transparent 45%), radial-gradient(circle at 80% 85%, rgba(255,255,255,.02), transparent 40%); }
+.theme-chalk .app-head h2{ font-family:'Kalam',cursive; font-weight:700; font-size:32px; color:#f3f1e7; margin:0 0 8px; }
+.theme-chalk .app-head p{ color:#9db2a5; font-size:13.5px; }
+.theme-chalk .tabs span{ font-weight:700; font-size:14px; }
+.theme-chalk .tab-on{ color:#e8d66b; border-bottom:2px dashed #e8d66b; }
+.theme-chalk .tab-off{ color:#5c6d63; }
+.theme-chalk .pill{ border:1.5px dashed #4a5a50; color:#d8e0d9; font-size:12.5px; }
+.theme-chalk .pill-a{ color:#e8d66b; border-color:#7a7050; }
+.theme-chalk .pill-b{ color:#e89bb0; border-color:#7a4f5a; }
+.theme-chalk .card{ background:#1c2c23; border:1.5px dashed #3d4d43; }
+.theme-chalk .card-flag{ border-color:#e89bb0; border-style:solid; }
+.theme-chalk .matchup{ font-family:'Kalam',cursive; font-weight:700; font-size:25px; color:#f3f1e7; }
+.theme-chalk .at{ font-family:'Work Sans',sans-serif; font-size:14px; color:#7a8d81; }
+.theme-chalk .meta-1{ color:#9db2a5; font-size:12.5px; }
+.theme-chalk .meta-2{ color:#e8d66b; font-size:12px; margin-top:2px; }
+.theme-chalk .tag{ border:1px dashed #4a5a50; color:#9db2a5; font-size:10.5px; padding:2px 7px; }
+.theme-chalk .rank{ background:#e8d66b; color:#16241c; border-radius:3px; }
+.theme-chalk .book-chip{ border:1.5px dashed #4a5a50; color:#d8e0d9; font-size:12px; }
+.theme-chalk .chip-on{ color:#e8d66b; border-color:#e8d66b; border-style:solid; }
+.theme-chalk .flag-box{ background:#241a1f; border:1.5px dashed #7a4f5a; color:#f0c3d0; }
+.theme-chalk .stat{ background:#182720; border:1px solid #3d4d43; border-radius:4px; }
+.theme-chalk .stat-label{ color:#7a8d81; }
+.theme-chalk .stat-val{ color:#f3f1e7; font-weight:700; }
+.theme-chalk .stat-move{ color:#e89bb0; }
+.theme-chalk .arrow{ color:#4a5a50; }
+.theme-chalk .book-line{ background:#182720; border-radius:4px; color:#d8e0d9; }
+.theme-chalk .split-labels{ color:#d8e0d9; }
+.theme-chalk .split-bar{ background:#182720; border-radius:4px; }
+.theme-chalk .split-a{ background:#5c6d63; }
+.theme-chalk .split-b{ background:#e8d66b; }
+.theme-chalk .hist{ color:#5c6d63; border-top:1.5px dashed #3d4d43; padding-top:8px; }
+</style>
+
+<!-- ======================================================================
+     THEME 4 -- BROADSHEET   (light)
+     Color: bg (newsprint, cool grey) #e8e6e0, panel #f2f0ea, ink #1a1a18,
+            rule #c7c3b8, stamp-red #b3392c, navy #34435a
+     Type: display "Source Serif 4" 700 (masthead), data "Archivo Narrow"
+           (agate/box-score convention -- real papers run stats condensed)
+     Layout: column rules like a real sports page, red correction-style
+           box for the RLM flag, no rounded corners, no shadows.
+     ====================================================================== -->
+<style>
+.theme-broad{ background:#e8e6e0; font-family:'Archivo Narrow',sans-serif; color:#1a1a18; }
+.theme-broad .app-head h2{ font-family:'Source Serif 4',serif; font-weight:700; font-size:32px; color:#1a1a18; margin:0 0 6px; border-bottom:3px solid #1a1a18; padding-bottom:10px; display:inline-block; }
+.theme-broad .app-head p{ color:#4a4844; font-size:13.5px; font-family:'Archivo Narrow',sans-serif; }
+.theme-broad .tabs{ border-bottom:1px solid #c7c3b8; }
+.theme-broad .tabs span{ font-weight:700; font-size:13px; text-transform:uppercase; letter-spacing:.05em; }
+.theme-broad .tab-on{ color:#b3392c; border-bottom:2px solid #b3392c; margin-bottom:-1px; }
+.theme-broad .tab-off{ color:#8a8780; }
+.theme-broad .pill{ border:1px solid #1a1a18; color:#1a1a18; font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:.03em; }
+.theme-broad .pill-a{ background:#f2f0ea; }
+.theme-broad .pill-b{ background:#1a1a18; color:#f2f0ea; }
+.theme-broad .grid{ gap:0; }
+.theme-broad .card{ background:#f2f0ea; border:none; border-top:3px solid #1a1a18; border-radius:0; padding-top:14px; }
+.theme-broad .card-flag{ border-top-color:#b3392c; }
+.theme-broad .matchup{ font-family:'Source Serif 4',serif; font-weight:700; font-size:22px; color:#1a1a18; }
+.theme-broad .at{ font-family:'Source Serif 4',serif; font-style:italic; font-size:14px; color:#8a8780; font-weight:600; }
+.theme-broad .meta-1{ color:#4a4844; font-size:12.5px; font-style:italic; }
+.theme-broad .meta-2{ color:#34435a; font-size:12px; font-weight:700; margin-top:2px; }
+.theme-broad .tag{ border:1px solid #1a1a18; color:#1a1a18; font-size:10px; padding:1px 6px; text-transform:uppercase; font-weight:700; }
+.theme-broad .rank{ background:#b3392c; color:#f2f0ea; border-radius:0; }
+.theme-broad .book-chip{ border:1px solid #8a8780; color:#4a4844; font-size:11.5px; font-weight:600; }
+.theme-broad .chip-on{ background:#1a1a18; color:#f2f0ea; border-color:#1a1a18; }
+.theme-broad .flag-box{ background:#f2f0ea; border:1px solid #b3392c; border-left:5px solid #b3392c; color:#7a2a20; font-family:'Source Serif 4',serif; font-style:italic; font-size:13px; }
+.theme-broad .stat{ background:transparent; border-top:1px solid #c7c3b8; border-radius:0; padding-left:0; }
+.theme-broad .stat-label{ color:#8a8780; font-weight:700; text-transform:uppercase; letter-spacing:.04em; }
+.theme-broad .stat-val{ color:#1a1a18; font-weight:700; font-family:'Archivo Narrow',sans-serif; font-size:19px; }
+.theme-broad .stat-move{ color:#34435a; font-weight:700; }
+.theme-broad .arrow{ color:#8a8780; }
+.theme-broad .book-line{ background:transparent; border-bottom:1px solid #c7c3b8; border-radius:0; color:#4a4844; padding-left:0; padding-right:0; }
+.theme-broad .split-labels{ color:#1a1a18; font-weight:700; }
+.theme-broad .split-bar{ background:#c7c3b8; border-radius:0; }
+.theme-broad .split-a{ background:#34435a; }
+.theme-broad .split-b{ background:#b3392c; }
+.theme-broad .hist{ color:#8a8780; border-top:1px solid #c7c3b8; padding-top:8px; font-weight:700; text-transform:uppercase; font-size:10.5px; letter-spacing:.04em; }
+</style>
+
+<!-- ======================================================================
+     THEME 5 -- FIELD TURF   (light)
+     Color: bg #fafaf7, panel #ffffff, turf green #1b8a5a, coral #ff6b4a,
+            ink #14201a, line #e3e6df
+     Type: display "Anton" (tall condensed impact numerals), body "Manrope"
+     Layout: rounded, bright, generous -- the one theme that leans into
+           roundness and color blocks, deliberately contrasting the rest.
+     ====================================================================== -->
+<style>
+.theme-turf{ background:#fafaf7; font-family:'Manrope',sans-serif; color:#14201a; }
+.theme-turf .app-head h2{ font-family:'Anton',sans-serif; font-weight:400; font-size:34px; letter-spacing:.01em; color:#14201a; margin:0 0 6px; text-transform:uppercase; }
+.theme-turf .app-head p{ color:#5c6d63; font-size:13.5px; }
+.theme-turf .tabs span{ font-weight:800; font-size:14px; padding:8px 14px; border-radius:100px; }
+.theme-turf .tab-on{ background:#1b8a5a; color:#fff; }
+.theme-turf .tab-off{ color:#9aa89f; }
+.theme-turf .pill{ border-radius:100px; font-weight:700; font-size:12.5px; }
+.theme-turf .pill-a{ background:#eaf3ee; color:#1b8a5a; }
+.theme-turf .pill-b{ background:#fff0eb; color:#ff6b4a; }
+.theme-turf .card{ background:#fff; border:1px solid #e3e6df; border-radius:20px; box-shadow:0 2px 10px rgba(20,32,26,.05); }
+.theme-turf .card-flag{ border-color:#ff6b4a; box-shadow:0 4px 16px rgba(255,107,74,.14); }
+.theme-turf .matchup{ font-family:'Anton',sans-serif; font-weight:400; font-size:24px; text-transform:uppercase; color:#14201a; }
+.theme-turf .at{ font-family:'Manrope',sans-serif; font-size:14px; color:#9aa89f; font-weight:700; }
+.theme-turf .meta-1{ color:#5c6d63; font-weight:600; font-size:12.5px; }
+.theme-turf .meta-2{ color:#1b8a5a; font-weight:700; font-size:12px; margin-top:2px; }
+.theme-turf .tag{ background:#f0f2ec; color:#5c6d63; font-size:10.5px; padding:3px 9px; border-radius:100px; font-weight:800; }
+.theme-turf .rank{ background:#ffce45; color:#14201a; border-radius:100px; }
+.theme-turf .book-chip{ background:#f0f2ec; color:#5c6d63; border-radius:100px; font-weight:700; font-size:12px; }
+.theme-turf .chip-on{ background:#14201a; color:#fff; }
+.theme-turf .flag-box{ background:#fff0eb; border:none; border-radius:14px; color:#c8492f; font-weight:600; }
+.theme-turf .stat{ background:#f6f8f4; border-radius:14px; }
+.theme-turf .stat-label{ color:#9aa89f; font-weight:800; text-transform:uppercase; letter-spacing:.04em; }
+.theme-turf .stat-val{ color:#14201a; font-weight:800; }
+.theme-turf .stat-move{ color:#1b8a5a; font-weight:700; }
+.theme-turf .arrow{ color:#c7d1c9; }
+.theme-turf .book-line{ background:#f6f8f4; border-radius:12px; color:#5c6d63; font-weight:600; }
+.theme-turf .split-labels{ color:#14201a; font-weight:700; }
+.theme-turf .split-bar{ background:#f0f2ec; border-radius:100px; }
+.theme-turf .split-a{ background:#9aa89f; }
+.theme-turf .split-b{ background:#1b8a5a; }
+.theme-turf .hist{ color:#9aa89f; font-weight:700; border-top:1px solid #e3e6df; padding-top:8px; }
+</style>
