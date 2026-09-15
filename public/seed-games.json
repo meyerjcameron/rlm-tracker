@@ -1,320 +1,274 @@
 [
   {
-    "matchup": "DEN @ KC",
+    "matchup": "DET @ BUF",
     "sport": "NFL",
-    "sideA": "DEN",
-    "sideB": "KC",
+    "sideA": "DET",
+    "sideB": "BUF",
     "replaceLines": true,
     "lines": [
       {
         "book": "CBS",
-        "value": 2.5,
-        "open": 2.5
+        "value": 4.5,
+        "open": 3
       }
     ],
-    "kickoff": "Mon, Sep 14, 2026 · 7:15 PM CT",
-    "kickoffTs": 1789431300000,
-    "public": 61
+    "kickoff": "Thu, Sep 17, 2026 · 7:15 PM CT",
+    "kickoffTs": 1789690500000,
+    "public": 25
   },
   {
-    "matchup": "DAL @ NYG",
+    "matchup": "CIN @ HOU",
     "sport": "NFL",
-    "sideA": "DAL",
-    "sideB": "NYG",
-    "replaceLines": true,
-    "lines": [
-      {
-        "book": "CBS",
-        "value": -3,
-        "open": -3
-      }
-    ],
-    "kickoff": "Sun, Sep 13, 2026 · 7:20 PM CT",
-    "kickoffTs": 1789345200000,
-    "score": {
-      "a": 20,
-      "b": 28
-    }
-  },
-  {
-    "matchup": "GB @ MIN",
-    "sport": "NFL",
-    "sideA": "GB",
-    "sideB": "MIN",
-    "replaceLines": true,
-    "lines": [
-      {
-        "book": "CBS",
-        "value": 2.5,
-        "open": 1.5
-      }
-    ],
-    "kickoff": "Sun, Sep 13, 2026 · 3:25 PM CT",
-    "kickoffTs": 1789331100000,
-    "score": {
-      "a": 22,
-      "b": 39
-    }
-  },
-  {
-    "matchup": "WAS @ PHI",
-    "sport": "NFL",
-    "sideA": "WAS",
-    "sideB": "PHI",
-    "replaceLines": true,
-    "lines": [
-      {
-        "book": "CBS",
-        "value": 6,
-        "open": 5.5
-      }
-    ],
-    "kickoff": "Sun, Sep 13, 2026 · 3:25 PM CT",
-    "kickoffTs": 1789331100000,
-    "score": {
-      "a": 22,
-      "b": 24
-    }
-  },
-  {
-    "matchup": "MIA @ LV",
-    "sport": "NFL",
-    "sideA": "MIA",
-    "sideB": "LV",
-    "replaceLines": true,
-    "lines": [
-      {
-        "book": "CBS",
-        "value": 3,
-        "open": 3.5
-      }
-    ],
-    "kickoff": "Sun, Sep 13, 2026 · 3:25 PM CT",
-    "kickoffTs": 1789331100000,
-    "score": {
-      "a": 13,
-      "b": 27
-    }
-  },
-  {
-    "matchup": "ARI @ LAC",
-    "sport": "NFL",
-    "sideA": "ARI",
-    "sideB": "LAC",
-    "replaceLines": true,
-    "lines": [
-      {
-        "book": "CBS",
-        "value": 9.5,
-        "open": 9.5
-      }
-    ],
-    "kickoff": "Sun, Sep 13, 2026 · 3:25 PM CT",
-    "kickoffTs": 1789331100000,
-    "score": {
-      "a": 26,
-      "b": 14
-    }
-  },
-  {
-    "matchup": "TB @ CIN",
-    "sport": "NFL",
-    "sideA": "TB",
-    "sideB": "CIN",
-    "replaceLines": true,
-    "lines": [
-      {
-        "book": "CBS",
-        "value": 3.5,
-        "open": 3.5
-      }
-    ],
-    "kickoff": "Sun, Sep 13, 2026 · 12:00 PM CT",
-    "kickoffTs": 1789318800000,
-    "score": {
-      "a": 27,
-      "b": 33
-    }
-  },
-  {
-    "matchup": "BUF @ HOU",
-    "sport": "NFL",
-    "sideA": "BUF",
+    "sideA": "CIN",
     "sideB": "HOU",
     "replaceLines": true,
     "lines": [
       {
         "book": "CBS",
-        "value": -1,
-        "open": -1
+        "value": 3,
+        "open": 2.5
       }
     ],
-    "kickoff": "Sun, Sep 13, 2026 · 12:00 PM CT",
-    "kickoffTs": 1789318800000,
-    "score": {
-      "a": 36,
-      "b": 31
-    }
+    "kickoff": "Sun, Sep 20, 2026 · 12:00 PM CT",
+    "kickoffTs": 1789923600000,
+    "public": 43
   },
   {
-    "matchup": "BAL @ IND",
+    "matchup": "PIT @ NE",
     "sport": "NFL",
-    "sideA": "BAL",
-    "sideB": "IND",
+    "sideA": "PIT",
+    "sideB": "NE",
     "replaceLines": true,
     "lines": [
       {
         "book": "CBS",
-        "value": -3,
-        "open": -3.5
+        "value": 5.5,
+        "open": 4.5
       }
     ],
-    "kickoff": "Sun, Sep 13, 2026 · 12:00 PM CT",
-    "kickoffTs": 1789318800000,
-    "score": {
-      "a": 41,
-      "b": 23
-    }
+    "kickoff": "Sun, Sep 20, 2026 · 12:00 PM CT",
+    "kickoffTs": 1789923600000,
+    "public": 43
   },
   {
-    "matchup": "CHI @ CAR",
-    "sport": "NFL",
-    "sideA": "CHI",
-    "sideB": "CAR",
-    "replaceLines": true,
-    "lines": [
-      {
-        "book": "CBS",
-        "value": -3,
-        "open": -3
-      }
-    ],
-    "kickoff": "Sun, Sep 13, 2026 · 12:00 PM CT",
-    "kickoffTs": 1789318800000,
-    "score": {
-      "a": 59,
-      "b": 37
-    }
-  },
-  {
-    "matchup": "NO @ DET",
-    "sport": "NFL",
-    "sideA": "NO",
-    "sideB": "DET",
-    "replaceLines": true,
-    "lines": [
-      {
-        "book": "CBS",
-        "value": 7,
-        "open": 7
-      }
-    ],
-    "kickoff": "Sun, Sep 13, 2026 · 12:00 PM CT",
-    "kickoffTs": 1789318800000,
-    "score": {
-      "a": 30,
-      "b": 31
-    }
-  },
-  {
-    "matchup": "CLE @ JAC",
+    "matchup": "CLE @ TB",
     "sport": "NFL",
     "sideA": "CLE",
-    "sideB": "JAC",
+    "sideB": "TB",
     "replaceLines": true,
     "lines": [
       {
         "book": "CBS",
-        "value": 9,
-        "open": 8.5
+        "value": 8.5,
+        "open": 6.5
       }
     ],
-    "kickoff": "Sun, Sep 13, 2026 · 12:00 PM CT",
-    "kickoffTs": 1789318800000,
-    "score": {
-      "a": 10,
-      "b": 34
-    }
+    "kickoff": "Sun, Sep 20, 2026 · 12:00 PM CT",
+    "kickoffTs": 1789923600000,
+    "public": 22
   },
   {
-    "matchup": "ATL @ PIT",
+    "matchup": "CAR @ ATL",
     "sport": "NFL",
-    "sideA": "ATL",
-    "sideB": "PIT",
+    "sideA": "CAR",
+    "sideB": "ATL",
     "replaceLines": true,
     "lines": [
       {
         "book": "CBS",
-        "value": 6.5,
-        "open": 3.5
+        "value": -1.5,
+        "open": 1.5
       }
     ],
-    "kickoff": "Sun, Sep 13, 2026 · 12:00 PM CT",
-    "kickoffTs": 1789318800000,
-    "score": {
-      "a": 13,
-      "b": 20
-    }
+    "kickoff": "Sun, Sep 20, 2026 · 12:00 PM CT",
+    "kickoffTs": 1789923600000,
+    "public": 64
   },
   {
-    "matchup": "NYJ @ TEN",
+    "matchup": "NO @ BAL",
     "sport": "NFL",
-    "sideA": "NYJ",
+    "sideA": "NO",
+    "sideB": "BAL",
+    "replaceLines": true,
+    "lines": [
+      {
+        "book": "CBS",
+        "value": 8.5,
+        "open": 7.5
+      }
+    ],
+    "kickoff": "Sun, Sep 20, 2026 · 12:00 PM CT",
+    "kickoffTs": 1789923600000,
+    "public": 36
+  },
+  {
+    "matchup": "MIN @ CHI",
+    "sport": "NFL",
+    "sideA": "MIN",
+    "sideB": "CHI",
+    "replaceLines": true,
+    "lines": [
+      {
+        "book": "CBS",
+        "value": 5.5,
+        "open": 3
+      }
+    ],
+    "kickoff": "Sun, Sep 20, 2026 · 12:00 PM CT",
+    "kickoffTs": 1789923600000,
+    "public": 41
+  },
+  {
+    "matchup": "GB @ NYJ",
+    "sport": "NFL",
+    "sideA": "GB",
+    "sideB": "NYJ",
+    "replaceLines": true,
+    "lines": [
+      {
+        "book": "CBS",
+        "value": -3.5,
+        "open": -5.5
+      }
+    ],
+    "kickoff": "Sun, Sep 20, 2026 · 12:00 PM CT",
+    "kickoffTs": 1789923600000,
+    "public": 53
+  },
+  {
+    "matchup": "PHI @ TEN",
+    "sport": "NFL",
+    "sideA": "PHI",
     "sideB": "TEN",
     "replaceLines": true,
     "lines": [
       {
         "book": "CBS",
-        "value": 1.5,
-        "open": 1.5
+        "value": -7,
+        "open": -5.5
       }
     ],
-    "kickoff": "Sun, Sep 13, 2026 · 12:00 PM CT",
-    "kickoffTs": 1789318800000,
-    "score": {
-      "a": 23,
-      "b": 10
-    }
+    "kickoff": "Sun, Sep 20, 2026 · 12:00 PM CT",
+    "kickoffTs": 1789923600000,
+    "public": 78
   },
   {
-    "matchup": "SF @ LAR",
+    "matchup": "JAC @ DEN",
     "sport": "NFL",
-    "sideA": "SF",
+    "sideA": "JAC",
+    "sideB": "DEN",
+    "replaceLines": true,
+    "lines": [
+      {
+        "book": "CBS",
+        "value": 2.5,
+        "open": 3
+      }
+    ],
+    "kickoff": "Sun, Sep 20, 2026 · 3:05 PM CT",
+    "kickoffTs": 1789934700000,
+    "public": 31
+  },
+  {
+    "matchup": "LV @ LAC",
+    "sport": "NFL",
+    "sideA": "LV",
+    "sideB": "LAC",
+    "replaceLines": true,
+    "lines": [
+      {
+        "book": "CBS",
+        "value": 7,
+        "open": 8.5
+      }
+    ],
+    "kickoff": "Sun, Sep 20, 2026 · 3:05 PM CT",
+    "kickoffTs": 1789934700000,
+    "public": 52
+  },
+  {
+    "matchup": "WAS @ DAL",
+    "sport": "NFL",
+    "sideA": "WAS",
+    "sideB": "DAL",
+    "replaceLines": true,
+    "lines": [
+      {
+        "book": "CBS",
+        "value": 4,
+        "open": 4.5
+      }
+    ],
+    "kickoff": "Sun, Sep 20, 2026 · 3:25 PM CT",
+    "kickoffTs": 1789935900000,
+    "public": 51
+  },
+  {
+    "matchup": "SEA @ ARI",
+    "sport": "NFL",
+    "sideA": "SEA",
+    "sideB": "ARI",
+    "replaceLines": true,
+    "lines": [
+      {
+        "book": "CBS",
+        "value": -4.5,
+        "open": -6.5
+      }
+    ],
+    "kickoff": "Sun, Sep 20, 2026 · 3:25 PM CT",
+    "kickoffTs": 1789935900000,
+    "public": 37
+  },
+  {
+    "matchup": "MIA @ SF",
+    "sport": "NFL",
+    "sideA": "MIA",
+    "sideB": "SF",
+    "replaceLines": true,
+    "lines": [
+      {
+        "book": "CBS",
+        "value": 13.5,
+        "open": 12.5
+      }
+    ],
+    "kickoff": "Sun, Sep 20, 2026 · 3:25 PM CT",
+    "kickoffTs": 1789935900000,
+    "public": 26
+  },
+  {
+    "matchup": "IND @ KC",
+    "sport": "NFL",
+    "sideA": "IND",
+    "sideB": "KC",
+    "replaceLines": true,
+    "lines": [
+      {
+        "book": "CBS",
+        "value": 6.5,
+        "open": 6.5
+      }
+    ],
+    "kickoff": "Sun, Sep 20, 2026 · 7:20 PM CT",
+    "kickoffTs": 1789950000000,
+    "public": 62
+  },
+  {
+    "matchup": "NYG @ LAR",
+    "sport": "NFL",
+    "sideA": "NYG",
     "sideB": "LAR",
     "replaceLines": true,
     "lines": [
       {
         "book": "CBS",
-        "value": 3.5,
-        "open": 3.5
+        "value": 7.5,
+        "open": 7
       }
     ],
-    "kickoff": "Thu, Sep 10, 2026 · 7:35 PM CT",
-    "kickoffTs": 1789086900000,
-    "score": {
-      "a": 27,
-      "b": 7
-    }
-  },
-  {
-    "matchup": "NE @ SEA",
-    "sport": "NFL",
-    "sideA": "NE",
-    "sideB": "SEA",
-    "replaceLines": true,
-    "lines": [
-      {
-        "book": "CBS",
-        "value": 3.5,
-        "open": 3.5
-      }
-    ],
-    "kickoff": "Wed, Sep 9, 2026 · 7:20 PM CT",
-    "kickoffTs": 1788999600000,
-    "score": {
-      "a": 10,
-      "b": 13
-    }
+    "kickoff": "Mon, Sep 21, 2026 · 7:15 PM CT",
+    "kickoffTs": 1790036100000
   },
   {
     "matchup": "CUSE @ PITT",
@@ -500,7 +454,7 @@
     ],
     "kickoff": "Sat, Sep 19, 2026 · 11:00 AM CT",
     "kickoffTs": 1789833600000,
-    "public": 67,
+    "public": 69,
     "conferences": [
       "Big Ten"
     ],
@@ -521,7 +475,7 @@
     ],
     "kickoff": "Sat, Sep 19, 2026 · 11:00 AM CT",
     "kickoffTs": 1789833600000,
-    "public": 71,
+    "public": 70,
     "conferences": [
       "SEC",
       "SEC"
@@ -915,7 +869,7 @@
     "lines": [
       {
         "book": "CBS",
-        "value": 45.5,
+        "value": 44.5,
         "open": 44.5
       }
     ],
@@ -1238,7 +1192,7 @@
     "lines": [
       {
         "book": "CBS",
-        "value": 19,
+        "value": 18.5,
         "open": 19.5
       }
     ],
@@ -1356,7 +1310,7 @@
     ],
     "kickoff": "Sat, Sep 19, 2026 · 6:30 PM CT",
     "kickoffTs": 1789860600000,
-    "public": 64,
+    "public": 63,
     "conferences": [
       "SEC",
       "SEC"
@@ -1473,7 +1427,7 @@
     "lines": [
       {
         "book": "CBS",
-        "value": 8.5,
+        "value": 7.5,
         "open": 7.5
       }
     ],
@@ -1529,7 +1483,7 @@
     "lines": [
       {
         "book": "CBS",
-        "value": 40.5,
+        "value": 41.5,
         "open": 42.5
       }
     ],
