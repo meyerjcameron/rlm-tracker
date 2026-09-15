@@ -7,6 +7,8 @@ import { formatKickoffCentral } from './lib/format.mjs';
 import { conferenceForSchool } from './lib/conferences.mjs';
 import { fetchTop25 } from './lib/rankings.mjs';
 import { canonicalSchool } from './lib/schoolNames.mjs';
+import { fetchInjuryReport } from './lib/injuries.mjs';
+import { fetchStarters } from './lib/depthChart.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const OUT_PATH = path.join(__dirname, '..', 'public', 'seed-games.json');
@@ -16,7 +18,42 @@ const SOURCES = [
   { sport: 'CFB', oddsUrl: 'https://www.cbssports.com/college-football/odds/' },
 ];
 
-function buildSeedGame(cbsGame, splits, top25) {
+// NFL only for now -- CBS doesn't maintain depth charts for the ~130 CFB
+// teams the way it does for all 32 NFL teams.
+async function fetchStartersOutByTeam(nflGames) {
+  let injuryReport;
+  try {
+    injuryReport = await fetchInjuryReport();
+  } catch (e) {
+    console.error('[NFL] injury report fetch failed (continuing without injury flags):', e.message);
+    return new Map();
+  }
+
+  const teams = new Map();
+  nflGames.forEach((g) => {
+    if (g.slugA) teams.set(g.sideA, g.slugA);
+    if (g.slugB) teams.set(g.sideB, g.slugB);
+  });
+
+  const result = new Map();
+  const entries = [...teams.entries()].filter(([code]) => injuryReport.get(code)?.length);
+  const CONCURRENCY = 5;
+  for (let i = 0; i < entries.length; i += CONCURRENCY) {
+    const batch = entries.slice(i, i + CONCURRENCY);
+    await Promise.all(batch.map(async ([code, slug]) => {
+      try {
+        const starters = await fetchStarters(code, slug);
+        const startersOut = injuryReport.get(code).filter((p) => starters.has(p.name));
+        if (startersOut.length) result.set(code, startersOut);
+      } catch (e) {
+        console.error(`[NFL] depth chart fetch failed for ${code}:`, e.message);
+      }
+    }));
+  }
+  return result;
+}
+
+function buildSeedGame(cbsGame, splits, top25, startersOutByTeam) {
   const seed = {
     matchup: cbsGame.matchup,
     sport: cbsGame.sport,
@@ -37,6 +74,13 @@ function buildSeedGame(cbsGame, splits, top25) {
   if (splits) {
     const pct = findSplitForGame(splits, cbsGame.sideA, cbsGame.sideB, cbsGame.nameA, cbsGame.nameB);
     if (pct !== null && pct !== undefined) seed.public = Math.round(pct * 10) / 10;
+  }
+
+  if (startersOutByTeam) {
+    const outA = startersOutByTeam.get(cbsGame.sideA);
+    const outB = startersOutByTeam.get(cbsGame.sideB);
+    if (outA && outA.length) seed.injuriesA = outA;
+    if (outB && outB.length) seed.injuriesB = outB;
   }
 
   if (cbsGame.sport === 'CFB') {
@@ -76,12 +120,15 @@ async function run() {
     }
 
     let top25 = null;
+    let startersOutByTeam = null;
     if (source.sport === 'CFB') {
       try {
         top25 = await fetchTop25();
       } catch (e) {
         console.error('Top 25 rankings fetch failed (continuing without ranked tags):', e.message);
       }
+    } else if (source.sport === 'NFL') {
+      startersOutByTeam = await fetchStartersOutByTeam(cbsGames);
     }
 
     for (const g of cbsGames) {
@@ -89,7 +136,7 @@ async function run() {
         skipped.push(g.matchup);
         continue;
       }
-      allSeeds.push(buildSeedGame(g, splits, top25));
+      allSeeds.push(buildSeedGame(g, splits, top25, startersOutByTeam));
     }
   }
 
