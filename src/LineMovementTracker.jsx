@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { LineChart, Line, ResponsiveContainer, YAxis, Tooltip } from 'recharts';
+import { LineChart, Line, ResponsiveContainer, XAxis, YAxis, Tooltip } from 'recharts';
 import { Trash2, Flame, ChevronDown, ChevronRight, X, Flag, Undo2 } from 'lucide-react';
 
 const MARKETS = [
@@ -42,6 +42,10 @@ function formatDate(ts) {
   return new Date(ts).toLocaleString(undefined, {
     month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit',
   });
+}
+
+function formatShortDate(ts) {
+  return new Date(ts).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
 }
 
 function formatScore(game) {
@@ -500,7 +504,7 @@ export default function LineMovementTracker() {
         .rlmw-stat-date { font-size:10.5px; color:#586173; margin-top:2px; }
         .rlmw-stat-move { font-size:10.5px; color:#34C77B; margin-top:2px; }
         .rlmw-arrow { color:#586173; flex-shrink:0; }
-        .rlmw-chart-wrap { height:70px; margin-top:-4px; }
+        .rlmw-chart-wrap { height:90px; margin-top:-4px; }
         .rlmw-chart-empty { height:70px; display:flex; align-items:center; justify-content:center; color:#586173; font-size:12px; border:1px dashed #2B3340; border-radius:6px; text-align:center; padding:0 12px; }
         .rlmw-book-rows { display:flex; flex-direction:column; gap:6px; }
         .rlmw-book-row { display:flex; justify-content:space-between; align-items:center; background:#1D232C; border-radius:6px; padding:8px 10px; font-size:13px; gap:8px; }
@@ -616,6 +620,7 @@ export default function LineMovementTracker() {
             : null;
           const chartData = bookSnaps.map((s) => ({
             v: game.market === 'moneyline' ? Number((impliedProb(s.valueA) * 100).toFixed(1)) : bookSign * s.valueA,
+            timestamp: s.timestamp,
           }));
 
           const historyItems = [
@@ -726,11 +731,19 @@ export default function LineMovementTracker() {
                   {bookSnaps.length >= 2 ? (
                     <div className="rlmw-chart-wrap">
                       <ResponsiveContainer width="100%" height="100%">
-                        <LineChart data={chartData}>
+                        <LineChart data={chartData} margin={{ top: 4, right: 4, left: 4, bottom: 0 }}>
                           <YAxis hide domain={['dataMin', 'dataMax']} />
+                          <XAxis
+                            dataKey="timestamp"
+                            tickFormatter={formatShortDate}
+                            tick={{ fill: '#586173', fontSize: 10 }}
+                            axisLine={{ stroke: '#2B3340' }}
+                            tickLine={false}
+                            interval="preserveStartEnd"
+                          />
                           <Tooltip
                             contentStyle={{ background: '#1D232C', border: '1px solid #2B3340', borderRadius: 6, fontSize: 12 }}
-                            labelFormatter={() => ''}
+                            labelFormatter={(ts) => formatDate(ts)}
                             formatter={(v) => [game.market === 'moneyline' ? `${v}% implied` : v, valueLabel(game.market)]}
                           />
                           <Line
