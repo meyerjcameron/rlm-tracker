@@ -7,7 +7,6 @@ const MARKETS = [
   { id: 'moneyline', label: 'Moneyline' },
   { id: 'total', label: 'Total' },
 ];
-const BOOK_SUGGESTIONS = ['DraftKings', 'FanDuel', 'BetMGM', 'Caesars', 'ESPN BET', 'Fanatics', 'Consensus'];
 const STORAGE_KEY = 'line-tracker:games';
 
 // Seeded from /seed-games.json, which scripts/run.mjs regenerates on a
@@ -190,8 +189,6 @@ export default function LineMovementTracker() {
   const [cfbFilter, setCfbFilter] = useState('ALL');
   const [expanded, setExpanded] = useState({});
   const [selectedView, setSelectedView] = useState({});
-  const [lineForms, setLineForms] = useState({});
-  const [publicForms, setPublicForms] = useState({});
 
   useEffect(() => {
     (async () => {
@@ -347,43 +344,6 @@ export default function LineMovementTracker() {
     }
   }
 
-  function addLineSnapshot(gameId) {
-    const form = lineForms[gameId];
-    if (!form || !form.book || !form.book.trim() || form.value === '' || form.value === undefined) return;
-    const updated = games.map((g) => {
-      if (g.id !== gameId) return g;
-      return {
-        ...g,
-        lineSnapshots: [...g.lineSnapshots, {
-          id: `l_${Date.now()}`,
-          book: form.book.trim(),
-          timestamp: Date.now(),
-          valueA: Number(form.value),
-        }],
-      };
-    });
-    persist(updated);
-    setLineForms((p) => ({ ...p, [gameId]: { book: form.book, value: '' } }));
-  }
-
-  function addPublicSnapshot(gameId) {
-    const form = publicForms[gameId];
-    if (!form || form.value === '' || form.value === undefined) return;
-    const updated = games.map((g) => {
-      if (g.id !== gameId) return g;
-      return {
-        ...g,
-        publicSnapshots: [...g.publicSnapshots, {
-          id: `p_${Date.now()}`,
-          timestamp: Date.now(),
-          publicPctA: Math.max(0, Math.min(100, Number(form.value))),
-        }],
-      };
-    });
-    persist(updated);
-    setPublicForms((p) => ({ ...p, [gameId]: { value: '' } }));
-  }
-
   function deleteGame(gameId) {
     persist(games.filter((g) => g.id !== gameId));
   }
@@ -511,12 +471,6 @@ export default function LineMovementTracker() {
         .rlmw-history { border-top:1px solid #2B3340; padding-top:10px; display:flex; flex-direction:column; gap:6px; }
         .rlmw-history-row { display:flex; justify-content:space-between; align-items:center; font-size:12px; color:#8993A4; font-family:'IBM Plex Mono', monospace; gap:8px; }
         .rlmw-history-row .rlmw-icon-btn { padding:2px; }
-        .rlmw-add-section { display:flex; flex-direction:column; gap:10px; border-top:1px solid #2B3340; padding-top:12px; }
-        .rlmw-add-row { display:flex; gap:8px; align-items:flex-end; }
-        .rlmw-update-field { flex:1; display:flex; flex-direction:column; gap:4px; min-width:0; }
-        .rlmw-update-field label { font-size:10.5px; color:#8993A4; }
-        .rlmw-update-btn { background:#1D232C; border:1px solid #2B3340; color:#ECEFF4; padding:9px 12px; border-radius:6px; cursor:pointer; font-size:13px; white-space:nowrap; font-family:inherit; }
-        .rlmw-update-btn:hover { border-color:#D4A72C; color:#D4A72C; }
         .rlmw-empty { border:1px dashed #2B3340; border-radius:8px; padding:48px 24px; text-align:center; color:#8993A4; margin-top:24px; max-width:480px; }
         .rlmw-empty h3 { color:#ECEFF4; font-family:'Bebas Neue', sans-serif; font-size:24px; margin:0 0 8px; letter-spacing:0.3px; font-weight:400; }
         .rlmw-save-error { color:#C65B4E; font-size:12px; margin-top:10px; }
@@ -537,10 +491,6 @@ export default function LineMovementTracker() {
         .rlmw-result-pill.active-loss { background:#241414; border-color:#C65B4E; color:#C65B4E; }
         .rlmw-result-pill.active-push { background:#1D232C; border-color:#8993A4; color:#ECEFF4; }
       `}</style>
-
-      <datalist id="rlmw-books">
-        {BOOK_SUGGESTIONS.map((b) => <option key={b} value={b} />)}
-      </datalist>
 
       <div className="rlmw-title">RLM Tracker</div>
       <div className="rlmw-sub">
@@ -603,8 +553,6 @@ export default function LineMovementTracker() {
           const majority = getPublicMajority(game);
           const publicLatest = game.publicSnapshots[game.publicSnapshots.length - 1];
           const isExpanded = !!expanded[game.id];
-          const lForm = lineForms[game.id] || { book: '', value: '' };
-          const pForm = publicForms[game.id] || { value: '' };
 
           const combined = getCombinedStats(game);
           const bookOC = view !== 'ALL' ? bookOpenCurrent(game, view) : null;
@@ -799,45 +747,6 @@ export default function LineMovementTracker() {
                 </div>
               )}
 
-              <div className="rlmw-add-section">
-                <div className="rlmw-add-row">
-                  <div className="rlmw-update-field">
-                    <label>Sportsbook</label>
-                    <input
-                      className="rlmw-input rlmw-input-mono"
-                      list="rlmw-books"
-                      placeholder="DraftKings"
-                      value={lForm.book}
-                      onChange={(e) => setLineForms((p) => ({ ...p, [game.id]: { ...lForm, book: e.target.value } }))}
-                    />
-                  </div>
-                  <div className="rlmw-update-field">
-                    <label>{valueLabel(game.market)}{game.market !== 'total' ? ` (${game.sideA})` : ''}</label>
-                    <input
-                      className="rlmw-input rlmw-input-mono"
-                      type="number"
-                      step={game.market === 'moneyline' ? '1' : '0.5'}
-                      value={lForm.value}
-                      onChange={(e) => setLineForms((p) => ({ ...p, [game.id]: { ...lForm, value: e.target.value } }))}
-                    />
-                  </div>
-                  <button className="rlmw-update-btn" onClick={() => addLineSnapshot(game.id)}>Log line</button>
-                </div>
-                <div className="rlmw-add-row">
-                  <div className="rlmw-update-field">
-                    <label>% on {game.market === 'total' ? 'Over' : game.sideA}</label>
-                    <input
-                      className="rlmw-input rlmw-input-mono"
-                      type="number"
-                      min="0"
-                      max="100"
-                      value={pForm.value}
-                      onChange={(e) => setPublicForms((p) => ({ ...p, [game.id]: { value: e.target.value } }))}
-                    />
-                  </div>
-                  <button className="rlmw-update-btn" onClick={() => addPublicSnapshot(game.id)}>Log public %</button>
-                </div>
-              </div>
             </div>
           );
         })}
