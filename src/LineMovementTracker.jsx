@@ -342,6 +342,11 @@ export default function LineMovementTracker() {
         next = { ...next, ranked: !!seed.ranked };
       }
 
+      if (seed.rankA !== next.rankA || seed.rankB !== next.rankB) {
+        changed = true;
+        next = { ...next, rankA: seed.rankA, rankB: seed.rankB };
+      }
+
       if (seed.score !== undefined && !next.finished) {
         changed = true;
         next = { ...next, score: seed.score, finished: true, finishedAt: now };
@@ -394,6 +399,8 @@ export default function LineMovementTracker() {
         kickoffTs: s.kickoffTs,
         conferences: s.conferences,
         ranked: !!s.ranked,
+        rankA: s.rankA,
+        rankB: s.rankB,
         score: s.score,
         finished: s.score !== undefined,
         finishedAt: s.score !== undefined ? now : undefined,
@@ -538,7 +545,9 @@ export default function LineMovementTracker() {
         .rlmw-card { background:#161B22; border:1px solid #2B3340; border-radius:8px; padding:18px; display:flex; flex-direction:column; gap:12px; }
         .rlmw-card.flagged { border-color:#34C77B; }
         .rlmw-card-top { display:flex; justify-content:space-between; align-items:flex-start; gap:8px; }
-        .rlmw-matchup { font-family:'Bebas Neue', sans-serif; font-size:22px; letter-spacing:0.3px; line-height:1.1; }
+        .rlmw-matchup { font-family:'Bebas Neue', sans-serif; font-size:22px; letter-spacing:0.3px; line-height:1.1; display:flex; align-items:baseline; gap:6px; flex-wrap:wrap; }
+        .rlmw-matchup-at { font-family:'IBM Plex Sans', sans-serif; font-size:14px; color:#586173; font-weight:400; }
+        .rlmw-rank { font-family:'IBM Plex Mono', monospace; font-size:11px; font-weight:700; color:#0D1117; background:#D4A72C; padding:1px 5px; border-radius:4px; letter-spacing:0; }
         .rlmw-meta { color:#8993A4; font-size:12.5px; margin-top:3px; }
         .rlmw-kickoff { color:#D4A72C; font-size:11.5px; margin-top:4px; font-family:'IBM Plex Mono', monospace; }
         .rlmw-icon-btn { background:transparent; border:none; color:#586173; cursor:pointer; padding:4px; border-radius:4px; flex-shrink:0; }
@@ -689,7 +698,13 @@ export default function LineMovementTracker() {
             <div key={game.id} className={`rlmw-card ${flagged ? 'flagged' : ''}`}>
               <div className="rlmw-card-top">
                 <div>
-                  <div className="rlmw-matchup">{game.matchup}</div>
+                  <div className="rlmw-matchup">
+                    {game.rankA && <span className="rlmw-rank">#{game.rankA}</span>}
+                    {game.sideA}
+                    <span className="rlmw-matchup-at">@</span>
+                    {game.rankB && <span className="rlmw-rank">#{game.rankB}</span>}
+                    {game.sideB}
+                  </div>
                   <div className="rlmw-meta">
                     {MARKETS.find((m) => m.id === game.market).label} · {game.sideA} vs {game.sideB}
                   </div>

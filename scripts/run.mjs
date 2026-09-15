@@ -44,9 +44,11 @@ function buildSeedGame(cbsGame, consensusRows, top25) {
     const confB = conferenceForSchool(cbsGame.nameB);
     seed.conferences = [confA, confB].filter(Boolean);
     if (top25) {
-      const rankedA = top25.has(canonicalSchool(cbsGame.nameA));
-      const rankedB = top25.has(canonicalSchool(cbsGame.nameB));
-      if (rankedA || rankedB) seed.ranked = true;
+      const rankA = top25.get(canonicalSchool(cbsGame.nameA));
+      const rankB = top25.get(canonicalSchool(cbsGame.nameB));
+      if (rankA) seed.rankA = rankA;
+      if (rankB) seed.rankB = rankB;
+      if (rankA || rankB) seed.ranked = true;
     }
   }
 

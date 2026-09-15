@@ -29,7 +29,7 @@
     ],
     "kickoff": "Sun, Sep 20, 2026 · 12:00 PM CT",
     "kickoffTs": 1789923600000,
-    "public": 42
+    "public": 43
   },
   {
     "matchup": "PIT @ NE",
@@ -45,7 +45,7 @@
     ],
     "kickoff": "Sun, Sep 20, 2026 · 12:00 PM CT",
     "kickoffTs": 1789923600000,
-    "public": 43
+    "public": 44
   },
   {
     "matchup": "CLE @ TB",
@@ -56,7 +56,7 @@
       {
         "book": "CBS",
         "value": 8.5,
-        "open": 6.5
+        "open": 8.5
       }
     ],
     "kickoff": "Sun, Sep 20, 2026 · 12:00 PM CT",
@@ -93,7 +93,7 @@
     ],
     "kickoff": "Sun, Sep 20, 2026 · 12:00 PM CT",
     "kickoffTs": 1789923600000,
-    "public": 37
+    "public": 38
   },
   {
     "matchup": "MIN @ CHI",
@@ -125,7 +125,7 @@
     ],
     "kickoff": "Sun, Sep 20, 2026 · 12:00 PM CT",
     "kickoffTs": 1789923600000,
-    "public": 52
+    "public": 53
   },
   {
     "matchup": "PHI @ TEN",
@@ -173,7 +173,7 @@
     ],
     "kickoff": "Sun, Sep 20, 2026 · 3:05 PM CT",
     "kickoffTs": 1789934700000,
-    "public": 53
+    "public": 54
   },
   {
     "matchup": "WAS @ DAL",
@@ -183,7 +183,7 @@
     "lines": [
       {
         "book": "CBS",
-        "value": 4,
+        "value": 3.5,
         "open": 4.5
       }
     ],
@@ -199,13 +199,13 @@
     "lines": [
       {
         "book": "CBS",
-        "value": -4,
+        "value": -4.5,
         "open": -6.5
       }
     ],
     "kickoff": "Sun, Sep 20, 2026 · 3:25 PM CT",
     "kickoffTs": 1789935900000,
-    "public": 37
+    "public": 38
   },
   {
     "matchup": "MIA @ SF",
@@ -237,7 +237,7 @@
     ],
     "kickoff": "Sun, Sep 20, 2026 · 7:20 PM CT",
     "kickoffTs": 1789950000000,
-    "public": 56
+    "public": 55
   },
   {
     "matchup": "NYG @ LAR",
@@ -291,6 +291,7 @@
       "ACC",
       "ACC"
     ],
+    "rankA": 5,
     "ranked": true
   },
   {
@@ -311,6 +312,8 @@
       "Big 12",
       "Big 12"
     ],
+    "rankA": 22,
+    "rankB": 13,
     "ranked": true
   },
   {
@@ -330,6 +333,7 @@
     "conferences": [
       "Big Ten"
     ],
+    "rankB": 21,
     "ranked": true
   },
   {
@@ -428,10 +432,11 @@
     ],
     "kickoff": "Sat, Sep 19, 2026 · 11:00 AM CT",
     "kickoffTs": 1789833600000,
-    "public": 63,
+    "public": 64,
     "conferences": [
       "Big Ten"
     ],
+    "rankB": 14,
     "ranked": true
   },
   {
@@ -453,6 +458,7 @@
       "SEC",
       "SEC"
     ],
+    "rankA": 2,
     "ranked": true
   },
   {
@@ -472,6 +478,7 @@
     "conferences": [
       "Big Ten"
     ],
+    "rankB": 6,
     "ranked": true
   },
   {
@@ -647,6 +654,7 @@
       "ACC",
       "SEC"
     ],
+    "rankB": 10,
     "ranked": true
   },
   {
@@ -683,6 +691,7 @@
       "SEC",
       "SEC"
     ],
+    "rankB": 9,
     "ranked": true
   },
   {
@@ -702,6 +711,7 @@
     "conferences": [
       "Big 12"
     ],
+    "rankB": 17,
     "ranked": true
   },
   {
@@ -722,6 +732,7 @@
       "Big Ten",
       "Big Ten"
     ],
+    "rankA": 12,
     "ranked": true
   },
   {
@@ -742,6 +753,7 @@
     "conferences": [
       "Big Ten"
     ],
+    "rankB": 19,
     "ranked": true
   },
   {
@@ -776,6 +788,8 @@
       "ACC",
       "ACC"
     ],
+    "rankA": 16,
+    "rankB": 23,
     "ranked": true
   },
   {
@@ -828,6 +842,7 @@
     "conferences": [
       "Big Ten"
     ],
+    "rankB": 4,
     "ranked": true
   },
   {
@@ -881,6 +896,7 @@
     "conferences": [
       "Big Ten"
     ],
+    "rankB": 18,
     "ranked": true
   },
   {
@@ -1050,6 +1066,7 @@
     "conferences": [
       "SEC"
     ],
+    "rankB": 20,
     "ranked": true
   },
   {
@@ -1202,6 +1219,7 @@
     "conferences": [
       "SEC"
     ],
+    "rankB": 24,
     "ranked": true
   },
   {
@@ -1221,6 +1239,7 @@
     "conferences": [
       "Big 12"
     ],
+    "rankA": 11,
     "ranked": true
   },
   {
@@ -1242,6 +1261,8 @@
       "SEC",
       "SEC"
     ],
+    "rankA": 7,
+    "rankB": 8,
     "ranked": true
   },
   {
@@ -1300,6 +1321,7 @@
       "Big 12",
       "ACC"
     ],
+    "rankB": 25,
     "ranked": true
   },
   {
@@ -1319,6 +1341,7 @@
     "conferences": [
       "Independent"
     ],
+    "rankB": 3,
     "ranked": true
   },
   {
@@ -1338,6 +1361,7 @@
     "conferences": [
       "SEC"
     ],
+    "rankB": 15,
     "ranked": true
   },
   {
@@ -1391,6 +1415,7 @@
     "conferences": [
       "SEC"
     ],
+    "rankB": 1,
     "ranked": true
   },
   {
