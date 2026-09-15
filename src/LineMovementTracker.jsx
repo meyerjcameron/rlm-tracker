@@ -74,6 +74,10 @@ function formatShortDate(ts) {
   return new Date(ts).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
 }
 
+function formatPct(n) {
+  return Math.round(n);
+}
+
 function formatScore(game) {
   if (!game.score) return null;
   return `${game.sideA} ${game.score.a} - ${game.score.b} ${game.sideB}${game.score.ot ? ' (OT)' : ''}`;
@@ -863,10 +867,10 @@ export default function LineMovementTracker() {
                   <div className="rlmw-public-source">Public bet % — real sportsbook split (matches CBS)</div>
                   <div className="rlmw-splitbar-labels">
                     <span className={`rlmw-side-label ${majority === 'A' ? 'majority' : ''}`}>
-                      {game.sideA} {publicLatest.publicPctA}%
+                      {game.sideA} {formatPct(publicLatest.publicPctA)}%
                     </span>
                     <span className={`rlmw-side-label ${majority === 'B' ? 'majority' : ''}`}>
-                      {100 - publicLatest.publicPctA}% {game.sideB}
+                      {formatPct(100 - publicLatest.publicPctA)}% {game.sideB}
                     </span>
                   </div>
                   <div className="rlmw-splitbar">
@@ -894,7 +898,7 @@ export default function LineMovementTracker() {
                       <span>
                         {item.kind === 'line'
                           ? `${item.book}: ${formatValue(game.market, item.valueA)}`
-                          : `Public: ${item.publicPctA}% / ${100 - item.publicPctA}%`}
+                          : `Public: ${formatPct(item.publicPctA)}% / ${formatPct(100 - item.publicPctA)}%`}
                       </span>
                       <button
                         className="rlmw-icon-btn"
@@ -993,7 +997,7 @@ export default function LineMovementTracker() {
                                 <span>
                                   {item.kind === 'line'
                                     ? `${item.book}: ${formatValue(game.market, item.valueA)}`
-                                    : `Public: ${item.publicPctA}% / ${100 - item.publicPctA}%`}
+                                    : `Public: ${formatPct(item.publicPctA)}% / ${formatPct(100 - item.publicPctA)}%`}
                                 </span>
                                 <button
                                   className="rlmw-icon-btn"
