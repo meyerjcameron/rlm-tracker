@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { LineChart, Line, ResponsiveContainer, XAxis, YAxis, Tooltip } from 'recharts';
-import { Trash2, Flame, TrendingUp, ChevronDown, ChevronRight, X, Flag, Undo2, HeartPulse } from 'lucide-react';
+import { Trash2, Flame, TrendingUp, ChevronDown, ChevronRight, X, Flag, Undo2 } from 'lucide-react';
 
 const MARKETS = [
   { id: 'spread', label: 'Spread' },
@@ -276,6 +276,7 @@ export default function LineMovementTracker() {
   const [sportTab, setSportTab] = useState('NFL');
   const [cfbFilter, setCfbFilter] = useState('ALL');
   const [expanded, setExpanded] = useState({});
+  const [injuryExpanded, setInjuryExpanded] = useState({});
   const [selectedView, setSelectedView] = useState({});
 
   useEffect(() => {
@@ -587,8 +588,7 @@ export default function LineMovementTracker() {
         .rlmw-icon-btn:hover { color:#C65B4E; background:#1D232C; }
         .rlmw-flag { display:flex; align-items:flex-start; gap:8px; background:#12241C; border:1px solid #1F3B2C; color:#34C77B; padding:10px 12px; border-radius:6px; font-size:13px; line-height:1.45; }
         .rlmw-flag svg { flex-shrink:0; margin-top:1px; }
-        .rlmw-injury { display:flex; align-items:flex-start; gap:8px; background:#241416; border:1px solid #4a2226; color:#e08a8a; padding:10px 12px; border-radius:6px; font-size:12.5px; line-height:1.5; }
-        .rlmw-injury svg { flex-shrink:0; margin-top:1px; color:#d9534f; }
+        .rlmw-injury-report .rlmw-history-row { color:#e08a8a; }
         .rlmw-book-pills { display:flex; gap:6px; flex-wrap:wrap; }
         .rlmw-book-pill { font-size:12px; padding:5px 10px; border-radius:999px; border:1px solid #2B3340; background:#1D232C; color:#8993A4; cursor:pointer; white-space:nowrap; display:inline-flex; align-items:center; gap:4px; font-family:inherit; }
         .rlmw-book-pill.active { border-color:#D4A72C; color:#D4A72C; background:#241F14; }
@@ -795,17 +795,6 @@ export default function LineMovementTracker() {
                 </div>
               )}
 
-              {(game.injuriesA?.length > 0 || game.injuriesB?.length > 0) && (
-                <div className="rlmw-injury">
-                  <HeartPulse size={15} />
-                  <span>
-                    {[
-                      game.injuriesA?.length > 0 && `${game.sideA}: ${game.injuriesA.map((p) => `${p.name} (${p.position}, ${p.status})`).join(', ')}`,
-                      game.injuriesB?.length > 0 && `${game.sideB}: ${game.injuriesB.map((p) => `${p.name} (${p.position}, ${p.status})`).join(', ')}`,
-                    ].filter(Boolean).join(' · ')}
-                  </span>
-                </div>
-              )}
 
               {view === 'ALL' ? (
                 <>
@@ -958,6 +947,33 @@ export default function LineMovementTracker() {
                       >
                         <X size={13} />
                       </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {(game.injuriesA?.length > 0 || game.injuriesB?.length > 0) && (
+                <button
+                  className="rlmw-history-toggle"
+                  onClick={() => setInjuryExpanded((p) => ({ ...p, [game.id]: !p[game.id] }))}
+                >
+                  <ChevronDown size={13} style={{ transform: injuryExpanded[game.id] ? 'rotate(180deg)' : 'none' }} />
+                  Injury Report ({(game.injuriesA?.length || 0) + (game.injuriesB?.length || 0)})
+                </button>
+              )}
+
+              {injuryExpanded[game.id] && (
+                <div className="rlmw-history rlmw-injury-report">
+                  {(game.injuriesA || []).map((p, i) => (
+                    <div key={`a_${i}`} className="rlmw-history-row">
+                      <span>{game.sideA}</span>
+                      <span>{p.name} &middot; {p.position} &middot; {p.status}</span>
+                    </div>
+                  ))}
+                  {(game.injuriesB || []).map((p, i) => (
+                    <div key={`b_${i}`} className="rlmw-history-row">
+                      <span>{game.sideB}</span>
+                      <span>{p.name} &middot; {p.position} &middot; {p.status}</span>
                     </div>
                   ))}
                 </div>
