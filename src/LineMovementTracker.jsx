@@ -307,30 +307,34 @@ export default function LineMovementTracker() {
         next = { ...next, score: seed.score, finished: true, finishedAt: now };
       }
 
-      if (seed.replaceLines) {
-        // Corrects a book whose earlier scrape only captured one point-in-time
-        // value -- replaces its whole snapshot history with the real open/close
-        // pair (e.g. from CBS's mobile-app-only "Game Odds" view) instead of
-        // diffing against the wrong value that was already recorded.
-        const otherBooksSnaps = next.lineSnapshots.filter((s) => !seed.lines.some((l) => l.book === s.book));
-        const replaced = seed.lines.flatMap((line, li) => buildBookSnapshots(line, `${next.id}_fix_${li}`));
-        changed = true;
-        next = { ...next, lineSnapshots: [...otherBooksSnaps, ...replaced] };
-      } else {
-        seed.lines.forEach((line, li) => {
-          const bookSnaps = next.lineSnapshots.filter((s) => s.book === line.book);
-          if (bookSnaps.length === 0) {
-            changed = true;
-            next = { ...next, lineSnapshots: [...next.lineSnapshots, ...buildBookSnapshots(line, `${next.id}_${li}`)] };
-          } else {
-            const latest = bookSnaps[bookSnaps.length - 1];
-            if (latest.valueA !== line.value) {
-              changed = true;
-              next = { ...next, lineSnapshots: [...next.lineSnapshots, { id: `l_upd_${now}_${next.id}_${li}`, book: line.book, timestamp: now, valueA: line.value }] };
-            }
-          }
-        });
-      }
+      seed.lines.forEach((line, li) => {
+        const bookSnaps = next.lineSnapshots.filter((s) => s.book === line.book).sort((a, b) => a.timestamp - b.timestamp);
+        const otherSnaps = next.lineSnapshots.filter((s) => s.book !== line.book);
+
+        if (bookSnaps.length === 0) {
+          changed = true;
+          next = { ...next, lineSnapshots: [...next.lineSnapshots, ...buildBookSnapshots(line, `${next.id}_${li}`)] };
+          return;
+        }
+
+        const recordedOpen = bookSnaps[0];
+        const recordedCurrent = bookSnaps[bookSnaps.length - 1];
+        const knownOpenValue = line.open !== undefined ? line.open : line.value;
+
+        if (knownOpenValue !== recordedOpen.valueA) {
+          // The real open value differs from what's on file (a correction,
+          // or this book's true open just became known for the first time)
+          // -- reset with fresh timestamps, since there's no better
+          // historical date available for the corrected open than now.
+          changed = true;
+          next = { ...next, lineSnapshots: [...otherSnaps, ...buildBookSnapshots(line, `${next.id}_fix_${li}`)] };
+        } else if (line.value !== recordedCurrent.valueA) {
+          // Open is unchanged, so its real historical date is preserved --
+          // just log the new current value with today's date.
+          changed = true;
+          next = { ...next, lineSnapshots: [...next.lineSnapshots, { id: `l_upd_${now}_${next.id}_${li}`, book: line.book, timestamp: now, valueA: line.value }] };
+        }
+      });
 
       return next;
     });

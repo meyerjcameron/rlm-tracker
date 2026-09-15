@@ -22,7 +22,6 @@ function buildSeedGame(cbsGame, consensusRows, top25) {
     sport: cbsGame.sport,
     sideA: cbsGame.sideA,
     sideB: cbsGame.sideB,
-    replaceLines: true,
     lines: [{
       book: 'CBS',
       value: cbsGame.spreadCurrent,
