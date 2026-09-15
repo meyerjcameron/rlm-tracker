@@ -68,6 +68,10 @@ function movementSide(market, openRaw, currentRaw) {
   return d > 0 ? 'A' : d < 0 ? 'B' : null;
 }
 
+function teamForSide(game, side) {
+  return side === 'B' ? game.sideB : game.sideA;
+}
+
 function getBookList(game) {
   const seen = [];
   game.lineSnapshots.forEach((s) => { if (!seen.includes(s.book)) seen.push(s.book); });
@@ -114,9 +118,24 @@ function getCombinedStats(game) {
   let side = null;
   if (game.market === 'spread') side = d < 0 ? 'A' : d > 0 ? 'B' : null;
   else side = d > 0 ? 'A' : d < 0 ? 'B' : null;
+
+  // For spread, always display the number from whichever team the line is
+  // currently moving toward -- e.g. a favorite going from -3 to -5 still
+  // reads as that favorite's own number, but a favorite shrinking from -6
+  // to -4 (line moving toward the underdog) flips to show the underdog's
+  // own (positive) number instead, rather than the favorite's shrinking one.
+  const displaySide = game.market === 'spread' && side === 'B' ? 'B' : 'A';
+  const displayOpen = displaySide === 'B' ? -avgOpen : avgOpen;
+  const displayCur = displaySide === 'B' ? -avgCur : avgCur;
+  const favoriteSide = game.market === 'spread'
+    ? (avgCur < -0.001 ? 'A' : avgCur > 0.001 ? 'B' : null)
+    : null;
+
   return {
-    openDisplay: formatValue(game.market, roundToHalfPoint(avgOpen)),
-    currentDisplay: formatValue(game.market, roundToHalfPoint(avgCur)),
+    openDisplay: formatValue(game.market, roundToHalfPoint(displayOpen)),
+    currentDisplay: formatValue(game.market, roundToHalfPoint(displayCur)),
+    displaySide,
+    favoriteSide,
     movementSide: side,
     magnitude: Math.abs(d),
     rangeMin: Math.min(...curs),
@@ -461,6 +480,7 @@ export default function LineMovementTracker() {
         .rlmw-book-row-value { font-family:'IBM Plex Mono', monospace; }
         .rlmw-book-row-delta { font-size:10.5px; color:#586173; }
         .rlmw-range-note { font-size:11.5px; color:#8993A4; }
+        .rlmw-favorite { font-size:11.5px; color:#D4A72C; font-weight:600; letter-spacing:0.2px; }
         .rlmw-splitbar-labels { display:flex; justify-content:space-between; font-size:12px; margin-bottom:5px; }
         .rlmw-splitbar { height:8px; border-radius:4px; overflow:hidden; display:flex; background:#1D232C; }
         .rlmw-splitbar-a { background:#4C7A9A; height:100%; }
@@ -557,8 +577,15 @@ export default function LineMovementTracker() {
           const combined = getCombinedStats(game);
           const bookOC = view !== 'ALL' ? bookOpenCurrent(game, view) : null;
           const bookSnaps = view !== 'ALL' ? getBookSnaps(game, view) : [];
+          const bookMoveSide = bookOC && game.market === 'spread'
+            ? movementSide(game.market, bookOC.open.valueA, bookOC.current.valueA) : null;
+          const bookDisplaySide = bookMoveSide === 'B' ? 'B' : 'A';
+          const bookSign = bookDisplaySide === 'B' ? -1 : 1;
+          const bookFavoriteSide = bookOC && game.market === 'spread'
+            ? (bookOC.current.valueA < -0.001 ? 'A' : bookOC.current.valueA > 0.001 ? 'B' : null)
+            : null;
           const chartData = bookSnaps.map((s) => ({
-            v: game.market === 'moneyline' ? Number((impliedProb(s.valueA) * 100).toFixed(1)) : s.valueA,
+            v: game.market === 'moneyline' ? Number((impliedProb(s.valueA) * 100).toFixed(1)) : bookSign * s.valueA,
           }));
 
           const historyItems = [
@@ -619,15 +646,20 @@ export default function LineMovementTracker() {
 
               {view === 'ALL' ? (
                 <>
+                  {game.market === 'spread' && (
+                    <div className="rlmw-favorite">
+                      {combined.favoriteSide ? `${teamForSide(game, combined.favoriteSide)} favored` : "Pick'em"}
+                    </div>
+                  )}
                   <div className="rlmw-stats">
                     <div className="rlmw-stat">
                       <div className="rlmw-stat-label">Open (avg)</div>
-                      <div className="rlmw-stat-value">{combined.openDisplay}</div>
+                      <div className="rlmw-stat-value">{teamForSide(game, combined.displaySide)} {combined.openDisplay}</div>
                     </div>
                     <ChevronRight className="rlmw-arrow" size={18} />
                     <div className="rlmw-stat">
                       <div className="rlmw-stat-label">Current (avg)</div>
-                      <div className="rlmw-stat-value">{combined.currentDisplay}</div>
+                      <div className="rlmw-stat-value">{teamForSide(game, combined.displaySide)} {combined.currentDisplay}</div>
                     </div>
                   </div>
                   {game.market !== 'moneyline' && books.length > 1 && (
@@ -640,6 +672,7 @@ export default function LineMovementTracker() {
                       const oc = bookOpenCurrent(game, b);
                       const bFlagged = isFlagged(game, b);
                       const moved = oc.open.id !== oc.current.id;
+                      const sign = combined.displaySide === 'B' ? -1 : 1;
                       return (
                         <div key={b} className="rlmw-book-row">
                           <div className="rlmw-book-row-name">
@@ -647,8 +680,8 @@ export default function LineMovementTracker() {
                             <span>{b}</span>
                           </div>
                           <div className="rlmw-book-row-right">
-                            {moved && <span className="rlmw-book-row-delta">opened {formatValue(game.market, oc.open.valueA)}</span>}
-                            <span className="rlmw-book-row-value">{formatValue(game.market, oc.current.valueA)}</span>
+                            {moved && <span className="rlmw-book-row-delta">opened {formatValue(game.market, sign * oc.open.valueA)}</span>}
+                            <span className="rlmw-book-row-value">{formatValue(game.market, sign * oc.current.valueA)}</span>
                           </div>
                         </div>
                       );
@@ -682,16 +715,21 @@ export default function LineMovementTracker() {
                   ) : (
                     <div className="rlmw-chart-empty">Add another update from {view} to see movement</div>
                   )}
+                  {game.market === 'spread' && (
+                    <div className="rlmw-favorite">
+                      {bookFavoriteSide ? `${teamForSide(game, bookFavoriteSide)} favored` : "Pick'em"}
+                    </div>
+                  )}
                   <div className="rlmw-stats">
                     <div className="rlmw-stat">
                       <div className="rlmw-stat-label">Open</div>
-                      <div className="rlmw-stat-value">{formatValue(game.market, bookOC.open.valueA)}</div>
+                      <div className="rlmw-stat-value">{teamForSide(game, bookDisplaySide)} {formatValue(game.market, bookSign * bookOC.open.valueA)}</div>
                       <div className="rlmw-stat-date">{formatDate(bookOC.open.timestamp)}</div>
                     </div>
                     <ChevronRight className="rlmw-arrow" size={18} />
                     <div className="rlmw-stat">
                       <div className="rlmw-stat-label">Current</div>
-                      <div className="rlmw-stat-value">{formatValue(game.market, bookOC.current.valueA)}</div>
+                      <div className="rlmw-stat-value">{teamForSide(game, bookDisplaySide)} {formatValue(game.market, bookSign * bookOC.current.valueA)}</div>
                       <div className="rlmw-stat-date">{formatDate(bookOC.current.timestamp)}</div>
                     </div>
                   </div>
@@ -782,8 +820,8 @@ export default function LineMovementTracker() {
                         {sharpSide && <div className="rlmw-final-side">line moved to {sharpSide}</div>}
                       </td>
                       <td className="rlmw-mono">{formatScore(game) || '—'}</td>
-                      <td className="rlmw-mono">{combined ? combined.openDisplay : '—'}</td>
-                      <td className="rlmw-mono">{combined ? combined.currentDisplay : '—'}</td>
+                      <td className="rlmw-mono">{combined ? `${teamForSide(game, combined.displaySide)} ${combined.openDisplay}` : '—'}</td>
+                      <td className="rlmw-mono">{combined ? `${teamForSide(game, combined.displaySide)} ${combined.currentDisplay}` : '—'}</td>
                       <td className="rlmw-mono">{combined ? combined.magnitude.toFixed(1) : '—'}</td>
                       <td>
                         <div className="rlmw-result-pills">
