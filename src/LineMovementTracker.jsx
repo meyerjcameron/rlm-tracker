@@ -78,6 +78,12 @@ function formatPct(n) {
   return Math.round(n);
 }
 
+function recordWinPct(record) {
+  const decided = record.win + record.loss;
+  if (!decided) return null;
+  return Math.round((record.win / decided) * 100);
+}
+
 function formatScore(game) {
   if (!game.score) return null;
   return `${game.sideA} ${game.score.a} - ${game.score.b} ${game.sideB}${game.score.ot ? ' (OT)' : ''}`;
@@ -505,6 +511,22 @@ export default function LineMovementTracker() {
   const bySport = games.filter((g) => g.sport === sportTab && matchesCfbFilter(g));
   const liveGames = bySport.filter((g) => !g.finished);
   const finishedGames = [...bySport.filter((g) => g.finished)].sort((a, b) => (b.finishedAt || 0) - (a.finishedAt || 0));
+
+  // Season journal: every graded finished game (result picked) with a real
+  // line movement and a known public side gets bucketed as RLM (the line
+  // moved against the public) or Chalk (the line moved with the public) --
+  // games with no movement, or no public data, can't be classified either
+  // way and are left out of both records.
+  const rlmRecord = { win: 0, loss: 0, push: 0 };
+  const chalkRecord = { win: 0, loss: 0, push: 0 };
+  finishedGames.forEach((g) => {
+    if (!g.result) return;
+    const combined = getCombinedStats(g);
+    const majority = getPublicMajority(g);
+    if (!combined || !combined.movementSide || !majority) return;
+    const bucket = combined.movementSide !== majority ? rlmRecord : chalkRecord;
+    bucket[g.result] += 1;
+  });
   let filteredGames = liveGames;
   if (onlyChanged) filteredGames = filteredGames.filter(gameHasLineChange);
   if (onlyRLM) filteredGames = filteredGames.filter((g) => isFlagged(g, 'ALL'));
@@ -604,6 +626,14 @@ export default function LineMovementTracker() {
         .rlmw-empty h3 { color:#ECEFF4; font-family:'Bebas Neue', sans-serif; font-size:24px; margin:0 0 8px; letter-spacing:0.3px; font-weight:400; }
         .rlmw-save-error { color:#C65B4E; font-size:12px; margin-top:10px; }
         .rlmw-sport-tag { font-size:11px; color:#8993A4; border:1px solid #2B3340; padding:2px 7px; border-radius:4px; white-space:nowrap; }
+        .rlmw-journal { margin-top:36px; max-width:520px; }
+        .rlmw-journal-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+        .rlmw-journal-card { background:#161B22; border:1px solid #2B3340; border-radius:8px; padding:16px; border-top-width:3px; border-top-style:solid; }
+        .rlmw-journal-card--rlm { border-top-color:#34C77B; }
+        .rlmw-journal-card--chalk { border-top-color:#4C7A9A; }
+        .rlmw-journal-label { font-size:11px; color:#8993A4; text-transform:uppercase; letter-spacing:.04em; margin-bottom:6px; }
+        .rlmw-journal-record { font-family:'IBM Plex Mono', monospace; font-size:24px; font-weight:700; color:#ECEFF4; }
+        .rlmw-journal-pct { font-size:12px; color:#8993A4; margin-top:4px; }
         .rlmw-final-section { margin-top:36px; max-width:760px; }
         .rlmw-final-heading { font-family:'Bebas Neue', sans-serif; font-size:20px; letter-spacing:0.3px; color:#8993A4; margin-bottom:10px; }
         .rlmw-final-table-wrap { overflow-x:auto; border:1px solid #2B3340; border-radius:8px; }
@@ -937,6 +967,24 @@ export default function LineMovementTracker() {
           );
         })}
       </div>
+
+      {(rlmRecord.win + rlmRecord.loss + rlmRecord.push + chalkRecord.win + chalkRecord.loss + chalkRecord.push) > 0 && (
+        <div className="rlmw-journal">
+          <div className="rlmw-final-heading">Season Journal</div>
+          <div className="rlmw-journal-grid">
+            <div className="rlmw-journal-card rlmw-journal-card--rlm">
+              <div className="rlmw-journal-label">RLM plays</div>
+              <div className="rlmw-journal-record">{rlmRecord.win}-{rlmRecord.loss}-{rlmRecord.push}</div>
+              {recordWinPct(rlmRecord) !== null && <div className="rlmw-journal-pct">{recordWinPct(rlmRecord)}% win rate</div>}
+            </div>
+            <div className="rlmw-journal-card rlmw-journal-card--chalk">
+              <div className="rlmw-journal-label">Chalk plays</div>
+              <div className="rlmw-journal-record">{chalkRecord.win}-{chalkRecord.loss}-{chalkRecord.push}</div>
+              {recordWinPct(chalkRecord) !== null && <div className="rlmw-journal-pct">{recordWinPct(chalkRecord)}% win rate</div>}
+            </div>
+          </div>
+        </div>
+      )}
 
       {finishedGames.length > 0 && (
         <div className="rlmw-final-section">
