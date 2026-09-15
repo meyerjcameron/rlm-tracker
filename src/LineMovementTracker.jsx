@@ -229,6 +229,7 @@ export default function LineMovementTracker() {
   const [loaded, setLoaded] = useState(false);
   const [saveError, setSaveError] = useState(false);
   const [onlyChanged, setOnlyChanged] = useState(false);
+  const [onlyRLM, setOnlyRLM] = useState(false);
   const [sportTab, setSportTab] = useState('NFL');
   const [cfbFilter, setCfbFilter] = useState('ALL');
   const [expanded, setExpanded] = useState({});
@@ -438,15 +439,18 @@ export default function LineMovementTracker() {
   const bySport = games.filter((g) => g.sport === sportTab && matchesCfbFilter(g));
   const liveGames = bySport.filter((g) => !g.finished);
   const finishedGames = [...bySport.filter((g) => g.finished)].sort((a, b) => (b.finishedAt || 0) - (a.finishedAt || 0));
-  const filteredGames = onlyChanged ? liveGames.filter(gameHasLineChange) : liveGames;
+  let filteredGames = liveGames;
+  if (onlyChanged) filteredGames = filteredGames.filter(gameHasLineChange);
+  if (onlyRLM) filteredGames = filteredGames.filter((g) => isFlagged(g, 'ALL'));
   const visibleGames = [...filteredGames].sort((a, b) => {
-    if (onlyChanged) return gameMovementMagnitude(b) - gameMovementMagnitude(a);
+    if (onlyChanged || onlyRLM) return gameMovementMagnitude(b) - gameMovementMagnitude(a);
     if (a.kickoffTs == null && b.kickoffTs == null) return 0;
     if (a.kickoffTs == null) return 1;
     if (b.kickoffTs == null) return -1;
     return a.kickoffTs - b.kickoffTs;
   });
   const lineChangeCount = liveGames.filter(gameHasLineChange).length;
+  const rlmCount = liveGames.filter((g) => isFlagged(g, 'ALL')).length;
 
   return (
     <div className="rlmw-root">
@@ -578,12 +582,20 @@ export default function LineMovementTracker() {
 
       <div className="rlmw-toolbar">
         {liveGames.length > 0 && (
-          <div
-            className={`rlmw-pill-toggle ${onlyChanged ? 'active' : ''}`}
-            onClick={() => setOnlyChanged((v) => !v)}
-          >
-            <Flame size={14} /> {lineChangeCount} of {liveGames.length} showing a line change
-          </div>
+          <>
+            <div
+              className={`rlmw-pill-toggle ${onlyChanged ? 'active' : ''}`}
+              onClick={() => setOnlyChanged((v) => !v)}
+            >
+              <Flame size={14} /> {lineChangeCount} of {liveGames.length} showing a line change
+            </div>
+            <div
+              className={`rlmw-pill-toggle ${onlyRLM ? 'active' : ''}`}
+              onClick={() => setOnlyRLM((v) => !v)}
+            >
+              <Flame size={14} /> {rlmCount} of {liveGames.length} showing RLM
+            </div>
+          </>
         )}
       </div>
 
