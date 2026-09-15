@@ -16,6 +16,32 @@ const STORAGE_KEY = 'line-tracker:games';
 // adds missing games/books or appends a new snapshot when a value changed.
 const SEED_URL = '/seed-games.json';
 
+// One-time backfill for Week 1 games that finished, then rolled off CBS's
+// live odds page entirely before some browsers ever loaded the automated
+// pipeline -- those browsers' very first snapshot of these games fell back
+// to open===current (0.0 move) because the real open data was gone by the
+// time they were first seen. These are the true values, pulled from a git
+// history snapshot taken while CBS still listed them. `force: true` makes
+// the merge overwrite the existing (wrong) open even though opens are
+// otherwise permanent once recorded -- see the merge logic below.
+const HISTORICAL_LINE_CORRECTIONS = [
+  { matchup: 'DAL @ NYG', force: true, lines: [{ book: 'CBS', value: -3, open: -3 }] },
+  { matchup: 'GB @ MIN', force: true, lines: [{ book: 'CBS', value: 2.5, open: 1.5 }] },
+  { matchup: 'WAS @ PHI', force: true, lines: [{ book: 'CBS', value: 6, open: 5.5 }] },
+  { matchup: 'MIA @ LV', force: true, lines: [{ book: 'CBS', value: 3, open: 3.5 }] },
+  { matchup: 'ARI @ LAC', force: true, lines: [{ book: 'CBS', value: 9.5, open: 9.5 }] },
+  { matchup: 'TB @ CIN', force: true, lines: [{ book: 'CBS', value: 3.5, open: 3.5 }] },
+  { matchup: 'BUF @ HOU', force: true, lines: [{ book: 'CBS', value: -1, open: -1 }] },
+  { matchup: 'BAL @ IND', force: true, lines: [{ book: 'CBS', value: -3, open: -3.5 }] },
+  { matchup: 'CHI @ CAR', force: true, lines: [{ book: 'CBS', value: -3, open: -3 }] },
+  { matchup: 'NO @ DET', force: true, lines: [{ book: 'CBS', value: 7, open: 7 }] },
+  { matchup: 'CLE @ JAC', force: true, lines: [{ book: 'CBS', value: 9, open: 8.5 }] },
+  { matchup: 'ATL @ PIT', force: true, lines: [{ book: 'CBS', value: 6.5, open: 3.5 }] },
+  { matchup: 'NYJ @ TEN', force: true, lines: [{ book: 'CBS', value: 1.5, open: 1.5 }] },
+  { matchup: 'SF @ LAR', force: true, lines: [{ book: 'CBS', value: 3.5, open: 3.5 }] },
+  { matchup: 'NE @ SEA', force: true, lines: [{ book: 'CBS', value: 3.5, open: 3.5 }] },
+];
+
 function impliedProb(odds) {
   const n = Number(odds);
   if (Number.isNaN(n) || n === 0) return 0.5;
@@ -214,6 +240,13 @@ function compactPastDays(snapshots, groupBy) {
   return [...latestPerPastGroup.values(), ...today].sort((a, b) => a.timestamp - b.timestamp);
 }
 
+function getHistoryItems(game) {
+  return [
+    ...game.lineSnapshots.map((s) => ({ ...s, kind: 'line' })),
+    ...game.publicSnapshots.map((s) => ({ ...s, kind: 'public' })),
+  ].sort((a, b) => a.timestamp - b.timestamp);
+}
+
 function migrateGame(g) {
   if (Array.isArray(g.lineSnapshots) && Array.isArray(g.publicSnapshots)) return g;
   const old = g.snapshots || [];
@@ -244,6 +277,8 @@ export default function LineMovementTracker() {
     } catch (e) {
       // seed file unreachable (e.g. offline) -- fall back to whatever's already stored
     }
+    const liveKeys = new Set(SEED_GAMES.map((s) => s.matchup.toLowerCase()));
+    SEED_GAMES = [...SEED_GAMES, ...HISTORICAL_LINE_CORRECTIONS.filter((c) => !liveKeys.has(c.matchup.toLowerCase()))];
 
     let current = [];
     let migrated = false;
@@ -262,7 +297,11 @@ export default function LineMovementTracker() {
     }
 
     const existingKeys = new Set(current.map((g) => g.matchup.toLowerCase()));
-    const toAdd = SEED_GAMES.filter((s) => !existingKeys.has(s.matchup.toLowerCase()));
+    // Corrections only carry a matchup + lines (no sideA/sideB/sport/etc), so
+    // they must never be used to create a brand-new game -- only to patch
+    // one that's already being tracked.
+    const correctionKeys = new Set(HISTORICAL_LINE_CORRECTIONS.map((c) => c.matchup.toLowerCase()));
+    const toAdd = SEED_GAMES.filter((s) => !existingKeys.has(s.matchup.toLowerCase()) && !correctionKeys.has(s.matchup.toLowerCase()));
     const now = Date.now();
     let changed = false;
 
@@ -310,10 +349,19 @@ export default function LineMovementTracker() {
 
       seed.lines.forEach((line, li) => {
         const bookSnaps = next.lineSnapshots.filter((s) => s.book === line.book).sort((a, b) => a.timestamp - b.timestamp);
+        const otherSnaps = next.lineSnapshots.filter((s) => s.book !== line.book);
 
         if (bookSnaps.length === 0) {
           changed = true;
           next = { ...next, lineSnapshots: [...next.lineSnapshots, ...buildBookSnapshots(line, `${next.id}_${li}`)] };
+          return;
+        }
+
+        if (seed.force && (bookSnaps[0].valueA !== (line.open ?? line.value) || bookSnaps[bookSnaps.length - 1].valueA !== line.value)) {
+          // Explicit one-time correction (see HISTORICAL_LINE_CORRECTIONS) --
+          // overwrites even a previously "permanent" open.
+          changed = true;
+          next = { ...next, lineSnapshots: [...otherSnaps, ...buildBookSnapshots(line, `${next.id}_fix_${li}`)] };
           return;
         }
 
@@ -526,6 +574,7 @@ export default function LineMovementTracker() {
         .rlmw-side-label { color:#8993A4; }
         .rlmw-history-toggle { background:none; border:none; color:#8993A4; font-size:12.5px; cursor:pointer; display:flex; align-items:center; gap:4px; padding:2px 0; align-self:flex-start; font-family:inherit; }
         .rlmw-history { border-top:1px solid #2B3340; padding-top:10px; display:flex; flex-direction:column; gap:6px; }
+        .rlmw-final-history { border-top:none; padding:10px 12px; background:#12161C; }
         .rlmw-history-row { display:flex; justify-content:space-between; align-items:center; font-size:12px; color:#8993A4; font-family:'IBM Plex Mono', monospace; gap:8px; }
         .rlmw-history-row .rlmw-icon-btn { padding:2px; }
         .rlmw-empty { border:1px dashed #2B3340; border-radius:8px; padding:48px 24px; text-align:center; color:#8993A4; margin-top:24px; max-width:480px; }
@@ -634,10 +683,7 @@ export default function LineMovementTracker() {
             timestamp: s.timestamp,
           }));
 
-          const historyItems = [
-            ...game.lineSnapshots.map((s) => ({ ...s, kind: 'line' })),
-            ...game.publicSnapshots.map((s) => ({ ...s, kind: 'public' })),
-          ].sort((a, b) => a.timestamp - b.timestamp);
+          const historyItems = getHistoryItems(game);
 
           return (
             <div key={game.id} className={`rlmw-card ${flagged ? 'flagged' : ''}`}>
@@ -872,8 +918,11 @@ export default function LineMovementTracker() {
                   const sharpSide = combined && combined.movementSide
                     ? (combined.movementSide === 'A' ? game.sideA : game.sideB)
                     : null;
+                  const historyItems = getHistoryItems(game);
+                  const isExpanded = !!expanded[game.id];
                   return (
-                    <tr key={game.id}>
+                    <React.Fragment key={game.id}>
+                    <tr>
                       <td>
                         <div className="rlmw-final-game-name">{game.matchup}</div>
                         {game.kickoff && <div className="rlmw-final-side">{game.kickoff}</div>}
@@ -899,6 +948,15 @@ export default function LineMovementTracker() {
                       </td>
                       <td>
                         <div style={{ display: 'flex', gap: 4 }}>
+                          {historyItems.length > 0 && (
+                            <button
+                              className="rlmw-icon-btn"
+                              onClick={() => setExpanded((p) => ({ ...p, [game.id]: !p[game.id] }))}
+                              aria-label="Toggle history"
+                            >
+                              <ChevronDown size={14} style={{ transform: isExpanded ? 'rotate(180deg)' : 'none' }} />
+                            </button>
+                          )}
                           <button className="rlmw-icon-btn" onClick={() => reopenGame(game.id)} aria-label="Reopen game">
                             <Undo2 size={14} />
                           </button>
@@ -908,6 +966,32 @@ export default function LineMovementTracker() {
                         </div>
                       </td>
                     </tr>
+                    {isExpanded && (
+                      <tr>
+                        <td colSpan={7} style={{ padding: 0 }}>
+                          <div className="rlmw-history rlmw-final-history">
+                            {historyItems.map((item) => (
+                              <div key={item.id} className="rlmw-history-row">
+                                <span>{formatDate(item.timestamp)}</span>
+                                <span>
+                                  {item.kind === 'line'
+                                    ? `${item.book}: ${formatValue(game.market, item.valueA)}`
+                                    : `Public: ${item.publicPctA}% / ${100 - item.publicPctA}%`}
+                                </span>
+                                <button
+                                  className="rlmw-icon-btn"
+                                  onClick={() => (item.kind === 'line' ? deleteLineSnapshot(game.id, item.id) : deletePublicSnapshot(game.id, item.id))}
+                                  aria-label="Delete entry"
+                                >
+                                  <X size={13} />
+                                </button>
+                              </div>
+                            ))}
+                          </div>
+                        </td>
+                      </tr>
+                    )}
+                    </React.Fragment>
                   );
                 })}
               </tbody>
