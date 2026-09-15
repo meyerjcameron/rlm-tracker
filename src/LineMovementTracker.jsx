@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { LineChart, Line, ResponsiveContainer, XAxis, YAxis, Tooltip } from 'recharts';
-import { Trash2, Flame, ChevronDown, ChevronRight, X, Flag, Undo2 } from 'lucide-react';
+import { Trash2, Flame, TrendingUp, ChevronDown, ChevronRight, X, Flag, Undo2 } from 'lucide-react';
 
 const MARKETS = [
   { id: 'spread', label: 'Spread' },
@@ -473,6 +473,8 @@ export default function LineMovementTracker() {
         .rlmw-btn-secondary:hover { border-color:#586173; }
         .rlmw-pill-toggle { display:inline-flex; align-items:center; gap:8px; font-size:13px; color:#34C77B; cursor:pointer; user-select:none; padding:8px 14px; border:1px solid #1F3B2C; border-radius:999px; }
         .rlmw-pill-toggle.active { border-color:#34C77B; background:#12241C; }
+        .rlmw-pill-toggle--blue { color:#6FA3C7; border-color:#1E3A4D; }
+        .rlmw-pill-toggle--blue.active { border-color:#6FA3C7; background:#122430; }
         .rlmw-panel { background:#161B22; border:1px solid #2B3340; border-radius:8px; padding:20px; margin-top:20px; max-width:640px; }
         .rlmw-field-row { display:flex; gap:12px; margin-bottom:14px; flex-wrap:wrap; }
         .rlmw-field { flex:1; min-width:140px; display:flex; flex-direction:column; gap:6px; }
@@ -584,10 +586,10 @@ export default function LineMovementTracker() {
         {liveGames.length > 0 && (
           <>
             <div
-              className={`rlmw-pill-toggle ${onlyChanged ? 'active' : ''}`}
+              className={`rlmw-pill-toggle rlmw-pill-toggle--blue ${onlyChanged ? 'active' : ''}`}
               onClick={() => setOnlyChanged((v) => !v)}
             >
-              <Flame size={14} /> {lineChangeCount} of {liveGames.length} showing a line change
+              <TrendingUp size={14} /> {lineChangeCount} of {liveGames.length} showing a line change
             </div>
             <div
               className={`rlmw-pill-toggle ${onlyRLM ? 'active' : ''}`}
