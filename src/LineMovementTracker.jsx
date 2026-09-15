@@ -575,6 +575,7 @@ export default function LineMovementTracker() {
         .rlmw-book-row-delta { font-size:10.5px; color:#586173; }
         .rlmw-range-note { font-size:11.5px; color:#8993A4; }
         .rlmw-favorite { font-size:11.5px; color:#D4A72C; font-weight:600; letter-spacing:0.2px; }
+        .rlmw-public-source { font-size:10.5px; color:#586173; margin-bottom:6px; }
         .rlmw-splitbar-labels { display:flex; justify-content:space-between; font-size:12px; margin-bottom:5px; }
         .rlmw-splitbar { height:8px; border-radius:4px; overflow:hidden; display:flex; background:#1D232C; }
         .rlmw-splitbar-a { background:#4C7A9A; height:100%; }
@@ -859,6 +860,7 @@ export default function LineMovementTracker() {
 
               {publicLatest && (
                 <div>
+                  <div className="rlmw-public-source">Public bet % — real sportsbook split (matches CBS)</div>
                   <div className="rlmw-splitbar-labels">
                     <span className={`rlmw-side-label ${majority === 'A' ? 'majority' : ''}`}>
                       {game.sideA} {publicLatest.publicPctA}%

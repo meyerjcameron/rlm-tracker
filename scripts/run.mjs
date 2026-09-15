@@ -2,7 +2,7 @@ import { writeFile, mkdir } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { fetchCbsOdds } from './lib/cbsOdds.mjs';
-import { fetchCoversConsensus, findConsensusForGame } from './lib/covers.mjs';
+import { fetchBettingSplits, findSplitForGame } from './lib/sportsBettingDime.mjs';
 import { formatKickoffCentral } from './lib/format.mjs';
 import { conferenceForSchool } from './lib/conferences.mjs';
 import { fetchTop25 } from './lib/rankings.mjs';
@@ -12,11 +12,11 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const OUT_PATH = path.join(__dirname, '..', 'public', 'seed-games.json');
 
 const SOURCES = [
-  { sport: 'NFL', oddsUrl: 'https://www.cbssports.com/nfl/odds/', coversUrl: 'https://contests.covers.com/consensus/topconsensus/nfl/overall' },
-  { sport: 'CFB', oddsUrl: 'https://www.cbssports.com/college-football/odds/', coversUrl: 'https://contests.covers.com/consensus/topconsensus/ncaaf/overall' },
+  { sport: 'NFL', oddsUrl: 'https://www.cbssports.com/nfl/odds/' },
+  { sport: 'CFB', oddsUrl: 'https://www.cbssports.com/college-football/odds/' },
 ];
 
-function buildSeedGame(cbsGame, consensusRows, top25) {
+function buildSeedGame(cbsGame, splits, top25) {
   const seed = {
     matchup: cbsGame.matchup,
     sport: cbsGame.sport,
@@ -34,9 +34,9 @@ function buildSeedGame(cbsGame, consensusRows, top25) {
     seed.kickoffTs = Date.parse(cbsGame.kickoffISO);
   }
   if (cbsGame.score) seed.score = cbsGame.score;
-  if (consensusRows) {
-    const pct = findConsensusForGame(consensusRows, cbsGame.sideA, cbsGame.sideB);
-    if (pct !== null && pct !== undefined) seed.public = pct;
+  if (splits) {
+    const pct = findSplitForGame(splits, cbsGame.sideA, cbsGame.sideB, cbsGame.nameA, cbsGame.nameB);
+    if (pct !== null && pct !== undefined) seed.public = Math.round(pct * 10) / 10;
   }
 
   if (cbsGame.sport === 'CFB') {
@@ -68,11 +68,11 @@ async function run() {
       continue;
     }
 
-    let consensusRows = null;
+    let splits = null;
     try {
-      consensusRows = await fetchCoversConsensus(source.coversUrl);
+      splits = await fetchBettingSplits(source.sport);
     } catch (e) {
-      console.error(`[${source.sport}] covers fetch failed (continuing without public%):`, e.message);
+      console.error(`[${source.sport}] SportsBettingDime fetch failed (continuing without public%):`, e.message);
     }
 
     let top25 = null;
@@ -89,7 +89,7 @@ async function run() {
         skipped.push(g.matchup);
         continue;
       }
-      allSeeds.push(buildSeedGame(g, consensusRows, top25));
+      allSeeds.push(buildSeedGame(g, splits, top25));
     }
   }
 
