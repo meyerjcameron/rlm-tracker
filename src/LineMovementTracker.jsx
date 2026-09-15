@@ -309,7 +309,6 @@ export default function LineMovementTracker() {
 
       seed.lines.forEach((line, li) => {
         const bookSnaps = next.lineSnapshots.filter((s) => s.book === line.book).sort((a, b) => a.timestamp - b.timestamp);
-        const otherSnaps = next.lineSnapshots.filter((s) => s.book !== line.book);
 
         if (bookSnaps.length === 0) {
           changed = true;
@@ -317,20 +316,14 @@ export default function LineMovementTracker() {
           return;
         }
 
-        const recordedOpen = bookSnaps[0];
+        // The open snapshot, once recorded, is permanent -- CBS's own
+        // computed "opening" figure can drift slightly run to run (it's
+        // re-derived from whichever book happens to be featured in that
+        // column each time, not a fixed stored fact), and treating that as
+        // a real correction was wiping out the true open date on noise.
+        // Only the current value is ever appended going forward.
         const recordedCurrent = bookSnaps[bookSnaps.length - 1];
-        const knownOpenValue = line.open !== undefined ? line.open : line.value;
-
-        if (knownOpenValue !== recordedOpen.valueA) {
-          // The real open value differs from what's on file (a correction,
-          // or this book's true open just became known for the first time)
-          // -- reset with fresh timestamps, since there's no better
-          // historical date available for the corrected open than now.
-          changed = true;
-          next = { ...next, lineSnapshots: [...otherSnaps, ...buildBookSnapshots(line, `${next.id}_fix_${li}`)] };
-        } else if (line.value !== recordedCurrent.valueA) {
-          // Open is unchanged, so its real historical date is preserved --
-          // just log the new current value with today's date.
+        if (line.value !== recordedCurrent.valueA) {
           changed = true;
           next = { ...next, lineSnapshots: [...next.lineSnapshots, { id: `l_upd_${now}_${next.id}_${li}`, book: line.book, timestamp: now, valueA: line.value }] };
         }
