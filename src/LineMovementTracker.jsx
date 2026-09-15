@@ -189,6 +189,27 @@ function gameMovementMagnitude(game) {
   return max;
 }
 
+function centralDateKey(ts) {
+  return new Intl.DateTimeFormat('en-US', { timeZone: 'America/Chicago', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date(ts));
+}
+
+// Once a calendar day (Central time) is over, collapse that day's snapshots
+// down to just the one it closed on -- keeps "History" from piling up dozens
+// of same-day re-checks for a game still days away from kickoff.
+function compactPastDays(snapshots, groupBy) {
+  const todayKey = centralDateKey(Date.now());
+  const latestPerPastGroup = new Map();
+  const today = [];
+  snapshots.forEach((s) => {
+    const dateKey = centralDateKey(s.timestamp);
+    if (dateKey === todayKey) { today.push(s); return; }
+    const key = `${groupBy ? groupBy(s) : ''}|${dateKey}`;
+    const existing = latestPerPastGroup.get(key);
+    if (!existing || s.timestamp > existing.timestamp) latestPerPastGroup.set(key, s);
+  });
+  return [...latestPerPastGroup.values(), ...today].sort((a, b) => a.timestamp - b.timestamp);
+}
+
 function migrateGame(g) {
   if (Array.isArray(g.lineSnapshots) && Array.isArray(g.publicSnapshots)) return g;
   const old = g.snapshots || [];
@@ -343,6 +364,14 @@ export default function LineMovementTracker() {
       if (finalList.length !== beforeCount) changed = true;
     }
 
+    finalList = finalList.map((g) => {
+      const compactedLines = compactPastDays(g.lineSnapshots, (s) => s.book);
+      const compactedPublic = compactPastDays(g.publicSnapshots);
+      if (compactedLines.length === g.lineSnapshots.length && compactedPublic.length === g.publicSnapshots.length) return g;
+      changed = true;
+      return { ...g, lineSnapshots: compactedLines, publicSnapshots: compactedPublic };
+    });
+
     setGames(finalList);
     setLoaded(true);
     if (migrated || toAdd.length || changed) {
@@ -469,6 +498,7 @@ export default function LineMovementTracker() {
         .rlmw-stat-label { font-size:11px; color:#8993A4; margin-bottom:4px; }
         .rlmw-stat-value { font-family:'IBM Plex Mono', monospace; font-size:16px; font-weight:600; }
         .rlmw-stat-date { font-size:10.5px; color:#586173; margin-top:2px; }
+        .rlmw-stat-move { font-size:10.5px; color:#34C77B; margin-top:2px; }
         .rlmw-arrow { color:#586173; flex-shrink:0; }
         .rlmw-chart-wrap { height:70px; margin-top:-4px; }
         .rlmw-chart-empty { height:70px; display:flex; align-items:center; justify-content:center; color:#586173; font-size:12px; border:1px dashed #2B3340; border-radius:6px; text-align:center; padding:0 12px; }
@@ -660,6 +690,9 @@ export default function LineMovementTracker() {
                     <div className="rlmw-stat">
                       <div className="rlmw-stat-label">Current (avg)</div>
                       <div className="rlmw-stat-value">{teamForSide(game, combined.displaySide)} {combined.currentDisplay}</div>
+                      {game.market === 'spread' && combined.magnitude > 0 && (
+                        <div className="rlmw-stat-move">moved {combined.magnitude.toFixed(1)} pts</div>
+                      )}
                     </div>
                   </div>
                   {game.market !== 'moneyline' && books.length > 1 && (
@@ -731,6 +764,9 @@ export default function LineMovementTracker() {
                       <div className="rlmw-stat-label">Current</div>
                       <div className="rlmw-stat-value">{teamForSide(game, bookDisplaySide)} {formatValue(game.market, bookSign * bookOC.current.valueA)}</div>
                       <div className="rlmw-stat-date">{formatDate(bookOC.current.timestamp)}</div>
+                      {game.market === 'spread' && getBookMovementMagnitude(game, view) > 0 && (
+                        <div className="rlmw-stat-move">moved {getBookMovementMagnitude(game, view).toFixed(1)} pts</div>
+                      )}
                     </div>
                   </div>
                 </>
