@@ -112,6 +112,16 @@ function teamForSide(game, side) {
   return side === 'B' ? game.sideB : game.sideA;
 }
 
+// Line-history entries are stored as sideA's own raw number -- display them
+// the same way the rest of the UI does: in terms of whichever team that
+// particular value favors, so the list reads "-3 BUF" instead of "+3".
+function formatFavoriteValue(game, valueA) {
+  if (game.market !== 'spread' || valueA === 0) return formatValue(game.market, valueA);
+  const side = valueA < 0 ? 'A' : 'B';
+  const display = side === 'B' ? -valueA : valueA;
+  return `${formatValue(game.market, display)} ${teamForSide(game, side)}`;
+}
+
 function getBookList(game) {
   const seen = [];
   game.lineSnapshots.forEach((s) => { if (!seen.includes(s.book)) seen.push(s.book); });
@@ -963,7 +973,7 @@ export default function LineMovementTracker() {
                       <span>{formatDate(item.timestamp)}</span>
                       <span>
                         {item.kind === 'line'
-                          ? `${item.book}: ${formatValue(game.market, item.valueA)}`
+                          ? `${item.book}: ${formatFavoriteValue(game, item.valueA)}`
                           : `Public: ${formatPct(item.publicPctA)}% / ${formatPct(100 - item.publicPctA)}%`}
                       </span>
                       <button
@@ -1107,7 +1117,7 @@ export default function LineMovementTracker() {
                                 <span>{formatDate(item.timestamp)}</span>
                                 <span>
                                   {item.kind === 'line'
-                                    ? `${item.book}: ${formatValue(game.market, item.valueA)}`
+                                    ? `${item.book}: ${formatFavoriteValue(game, item.valueA)}`
                                     : `Public: ${formatPct(item.publicPctA)}% / ${formatPct(100 - item.publicPctA)}%`}
                                 </span>
                                 <button
