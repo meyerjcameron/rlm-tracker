@@ -400,7 +400,17 @@ export default function LineMovementTracker() {
         // stuck looking like zero movement.
         let updatedBookSnaps = bookSnaps;
         if (bookSnaps.length === 1 && line.open != null && line.open !== bookSnaps[0].valueA) {
-          const openSnap = { id: `l_backfill_${now}_${next.id}_${li}`, book: line.book, timestamp: bookSnaps[0].timestamp - 1, valueA: line.open };
+          // bookSnaps[0].timestamp is when this single (wrong) snapshot was
+          // recorded, not when we actually started tracking the game -- date
+          // the backfilled open to the earliest timestamp already on record
+          // for this game (e.g. public% history, unaffected by this bug)
+          // instead, so the chart doesn't show a fake "just now" open.
+          const knownTimestamps = [
+            ...next.lineSnapshots.map((s) => s.timestamp),
+            ...next.publicSnapshots.map((s) => s.timestamp),
+          ];
+          const earliestKnown = Math.min(...knownTimestamps);
+          const openSnap = { id: `l_backfill_${now}_${next.id}_${li}`, book: line.book, timestamp: earliestKnown - 1, valueA: line.open };
           updatedBookSnaps = [openSnap, ...bookSnaps];
         }
 
