@@ -18,6 +18,15 @@ const SOURCES = [
   { sport: 'CFB', oddsUrl: 'https://www.cbssports.com/college-football/odds/' },
 ];
 
+// One-time manual overrides for a starter confirmed out by strong reporting
+// before CBS's own injury report has caught up and labeled them "Out" (CBS
+// typically doesn't finalize designations until the Friday injury report).
+// Remove each entry once CBS's site reflects the real status -- the normal
+// automated report+depth-chart cross-reference takes over from there.
+const MANUAL_INJURY_OVERRIDES = [
+  { team: 'SEA', name: 'S. Darnold', position: 'QB', status: 'Out' },
+];
+
 // NFL only for now -- CBS doesn't maintain depth charts for the ~130 CFB
 // teams the way it does for all 32 NFL teams.
 async function fetchStartersOutByTeam(nflGames) {
@@ -50,6 +59,13 @@ async function fetchStartersOutByTeam(nflGames) {
       }
     }));
   }
+
+  MANUAL_INJURY_OVERRIDES.forEach(({ team, name, position, status }) => {
+    const existing = result.get(team) || [];
+    if (existing.some((p) => p.name === name)) return;
+    result.set(team, [...existing, { name, position, status }]);
+  });
+
   return result;
 }
 
