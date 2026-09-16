@@ -2,10 +2,11 @@ name: Fetch odds
 
 on:
   schedule:
-    # 7am, noon, and 7pm Central (CDT = UTC-5). Cron is fixed UTC, so once
-    # DST ends in November these will land an hour later in real Central
-    # time until updated to the UTC-6 offset.
-    - cron: '0 12,17,0 * * *'
+    # Fires at both possible UTC offsets for 7am/noon/7pm Central (CDT is
+    # UTC-5, CST is UTC-6) -- the "Check Central time" step below skips the
+    # run entirely except at the one that's actually correct right now, so
+    # this stays accurate through the DST switch with no manual update.
+    - cron: '0 12,13,17,18,0,1 * * *'
   workflow_dispatch: {}
 
 permissions:
@@ -15,19 +16,35 @@ jobs:
   fetch:
     runs-on: ubuntu-latest
     steps:
+      - name: Check Central time
+        id: gate
+        run: |
+          hour=$(TZ="America/Chicago" date +%H)
+          if [ "$hour" = "07" ] || [ "$hour" = "12" ] || [ "$hour" = "19" ]; then
+            echo "should_run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "should_run=false" >> "$GITHUB_OUTPUT"
+            echo "Skipping -- it's $hour:00 Central, not one of 7am/noon/7pm"
+          fi
+
       - uses: actions/checkout@v4
+        if: steps.gate.outputs.should_run == 'true' || github.event_name == 'workflow_dispatch'
 
       - uses: actions/setup-node@v4
+        if: steps.gate.outputs.should_run == 'true' || github.event_name == 'workflow_dispatch'
         with:
           node-version: 20
 
       - name: Install dependencies
+        if: steps.gate.outputs.should_run == 'true' || github.event_name == 'workflow_dispatch'
         run: npm ci
 
       - name: Fetch odds and scores
+        if: steps.gate.outputs.should_run == 'true' || github.event_name == 'workflow_dispatch'
         run: node scripts/run.mjs
 
       - name: Commit if changed
+        if: steps.gate.outputs.should_run == 'true' || github.event_name == 'workflow_dispatch'
         run: |
           git config user.name "rlm-tracker-bot"
           git config user.email "actions@users.noreply.github.com"
