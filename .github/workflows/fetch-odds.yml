@@ -2,7 +2,10 @@ name: Fetch odds
 
 on:
   schedule:
-    - cron: '*/20 * * * *'
+    # 7am, noon, and 7pm Central (CDT = UTC-5). Cron is fixed UTC, so once
+    # DST ends in November these will land an hour later in real Central
+    # time until updated to the UTC-6 offset.
+    - cron: '0 12,17,0 * * *'
   workflow_dispatch: {}
 
 permissions:
