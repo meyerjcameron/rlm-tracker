@@ -113,11 +113,12 @@ function teamForSide(game, side) {
 }
 
 // Line-history entries are stored as sideA's own raw number -- display them
-// the same way the rest of the UI does: in terms of whichever team that
-// particular value favors, so the list reads "-3 BUF" instead of "+3".
-function formatFavoriteValue(game, valueA) {
+// the same way the rest of the UI does: anchored to a single side for the
+// whole book (whichever team the line is moving toward), so the list reads
+// "-5.5 GB" then "-3.5 NYJ" as it moves toward NYJ, rather than flipping to
+// whoever is numerically favored at each individual snapshot.
+function formatFavoriteValue(game, valueA, side) {
   if (game.market !== 'spread' || valueA === 0) return formatValue(game.market, valueA);
-  const side = valueA < 0 ? 'A' : 'B';
   const display = side === 'B' ? -valueA : valueA;
   return `${formatValue(game.market, display)} ${teamForSide(game, side)}`;
 }
@@ -142,6 +143,17 @@ function getBookMovementSide(game, book) {
   const oc = bookOpenCurrent(game, book);
   if (!oc) return null;
   return movementSide(game.market, oc.open.valueA, oc.current.valueA);
+}
+
+// Which team a book's line entries should be displayed in terms of --
+// the side the line is moving toward, falling back to whoever the flat
+// value favors when there's been no movement to anchor to.
+function historyLineSide(game, book) {
+  const moveSide = getBookMovementSide(game, book);
+  if (moveSide) return moveSide;
+  const oc = bookOpenCurrent(game, book);
+  if (!oc) return 'A';
+  return oc.current.valueA <= 0 ? 'A' : 'B';
 }
 
 function getCombinedStats(game) {
@@ -340,11 +352,32 @@ export default function LineMovementTracker() {
       if (!seed) return g;
       let next = g;
 
+      // Public% drifts a little on almost every run even when the line hasn't
+      // moved at all, which used to flood History with far more "Public"
+      // rows than line-change rows for the same stretch of time. Only grow
+      // history with a new public row when it lands alongside a real line
+      // move (or starts a new day) -- a same-day reading with no line move
+      // just updates today's existing row in place, so the displayed %
+      // stays current without piling up noise entries.
+      const lineWillChange = seed.lines.some((line) => {
+        const bookSnaps = next.lineSnapshots.filter((s) => s.book === line.book).sort((a, b) => a.timestamp - b.timestamp);
+        return !bookSnaps.length || line.value !== bookSnaps[bookSnaps.length - 1].valueA;
+      });
+
       if (seed.public !== undefined) {
-        const latestPublic = next.publicSnapshots[next.publicSnapshots.length - 1];
+        const publicSnaps = next.publicSnapshots;
+        const latestPublic = publicSnaps[publicSnaps.length - 1];
         if (!latestPublic || latestPublic.publicPctA !== seed.public) {
           changed = true;
-          next = { ...next, publicSnapshots: [...next.publicSnapshots, { id: `p_seed_${now}_${next.id}`, timestamp: now, publicPctA: seed.public }] };
+          const sameDayNoLineMove = latestPublic
+            && centralDateKey(latestPublic.timestamp) === centralDateKey(now)
+            && !lineWillChange;
+          next = {
+            ...next,
+            publicSnapshots: sameDayNoLineMove
+              ? [...publicSnaps.slice(0, -1), { ...latestPublic, timestamp: now, publicPctA: seed.public }]
+              : [...publicSnaps, { id: `p_seed_${now}_${next.id}`, timestamp: now, publicPctA: seed.public }],
+          };
         }
       }
 
@@ -973,7 +1006,7 @@ export default function LineMovementTracker() {
                       <span>{formatDate(item.timestamp)}</span>
                       <span>
                         {item.kind === 'line'
-                          ? `${item.book}: ${formatFavoriteValue(game, item.valueA)}`
+                          ? `${item.book}: ${formatFavoriteValue(game, item.valueA, historyLineSide(game, item.book))}`
                           : `Public: ${formatPct(item.publicPctA)}% / ${formatPct(100 - item.publicPctA)}%`}
                       </span>
                       <button
@@ -1117,7 +1150,7 @@ export default function LineMovementTracker() {
                                 <span>{formatDate(item.timestamp)}</span>
                                 <span>
                                   {item.kind === 'line'
-                                    ? `${item.book}: ${formatFavoriteValue(game, item.valueA)}`
+                                    ? `${item.book}: ${formatFavoriteValue(game, item.valueA, historyLineSide(game, item.book))}`
                                     : `Public: ${formatPct(item.publicPctA)}% / ${formatPct(100 - item.publicPctA)}%`}
                                 </span>
                                 <button
