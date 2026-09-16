@@ -386,16 +386,32 @@ export default function LineMovementTracker() {
           return;
         }
 
-        // The open snapshot, once recorded, is permanent -- CBS's own
-        // computed "opening" figure can drift slightly run to run (it's
-        // re-derived from whichever book happens to be featured in that
-        // column each time, not a fixed stored fact), and treating that as
-        // a real correction was wiping out the true open date on noise.
-        // Only the current value is ever appended going forward.
-        const recordedCurrent = bookSnaps[bookSnaps.length - 1];
+        // Once a book has a real, confirmed open (2+ snapshots), it's
+        // permanent -- CBS's own computed "opening" figure can drift
+        // slightly run to run, and treating that drift as a real
+        // correction was wiping out true open dates on noise.
+        //
+        // But if this book still only has ONE snapshot, that single value
+        // was never a confirmed open -- it's whatever "current" happened to
+        // be the first time we saw this book (CBS's opening column can come
+        // back empty/unparseable, in which case no "open" is sent at all --
+        // see run.mjs). If the seed now offers a genuine, different open,
+        // backfill it as the true one instead of leaving it permanently
+        // stuck looking like zero movement.
+        let updatedBookSnaps = bookSnaps;
+        if (bookSnaps.length === 1 && line.open != null && line.open !== bookSnaps[0].valueA) {
+          const openSnap = { id: `l_backfill_${now}_${next.id}_${li}`, book: line.book, timestamp: bookSnaps[0].timestamp - 1, valueA: line.open };
+          updatedBookSnaps = [openSnap, ...bookSnaps];
+        }
+
+        const recordedCurrent = updatedBookSnaps[updatedBookSnaps.length - 1];
         if (line.value !== recordedCurrent.valueA) {
+          updatedBookSnaps = [...updatedBookSnaps, { id: `l_upd_${now}_${next.id}_${li}`, book: line.book, timestamp: now, valueA: line.value }];
+        }
+
+        if (updatedBookSnaps !== bookSnaps) {
           changed = true;
-          next = { ...next, lineSnapshots: [...next.lineSnapshots, { id: `l_upd_${now}_${next.id}_${li}`, book: line.book, timestamp: now, valueA: line.value }] };
+          next = { ...next, lineSnapshots: [...otherSnaps, ...updatedBookSnaps] };
         }
       });
 

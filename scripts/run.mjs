@@ -62,7 +62,11 @@ function buildSeedGame(cbsGame, splits, top25, startersOutByTeam) {
     lines: [{
       book: 'CBS',
       value: cbsGame.spreadCurrent,
-      open: cbsGame.spreadOpen !== null ? cbsGame.spreadOpen : cbsGame.spreadCurrent,
+      // Left undefined (not silently set to spreadCurrent) when CBS's
+      // openingLines column didn't parse -- the app treats a confirmed
+      // open differently from an unknown one, so this must never look
+      // like "open equals current" when we simply don't know the open.
+      ...(cbsGame.spreadOpen !== null ? { open: cbsGame.spreadOpen } : {}),
     }],
   };
   const kickoff = formatKickoffCentral(cbsGame.kickoffISO);
