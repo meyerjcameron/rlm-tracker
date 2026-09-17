@@ -294,6 +294,21 @@ function lineTextAsOf(game, ts) {
   return parts.length ? parts.join(', ') : null;
 }
 
+// Same idea in the other direction -- a line-only row otherwise showed no
+// public% at all. Carry forward the most recent public reading as of that
+// row's timestamp so every row (line or public triggered) shows both.
+function publicTextAsOf(game, ts) {
+  const snap = game.publicSnapshots.filter((s) => s.timestamp <= ts).sort((a, b) => a.timestamp - b.timestamp).pop();
+  if (!snap) return null;
+  return `Public: ${formatPct(snap.publicPctA)}% / ${formatPct(100 - snap.publicPctA)}%`;
+}
+
+function historyRowText(game, item) {
+  const line = lineTextAsOf(game, item.timestamp);
+  const pub = publicTextAsOf(game, item.timestamp);
+  return [line, pub].filter(Boolean).join(' · ');
+}
+
 function migrateGame(g) {
   if (Array.isArray(g.lineSnapshots) && Array.isArray(g.publicSnapshots)) return g;
   const old = g.snapshots || [];
@@ -1074,9 +1089,7 @@ export default function LineMovementTracker() {
                     <div key={item.id} className="rlmw-history-row">
                       <span>{formatDate(item.timestamp)}</span>
                       <span>
-                        {item.kind === 'line'
-                          ? `${item.book}: ${formatFavoriteValue(game, item.valueA, historyLineSide(game, item.book))}`
-                          : `${lineTextAsOf(game, item.timestamp) ? `${lineTextAsOf(game, item.timestamp)} · ` : ''}Public: ${formatPct(item.publicPctA)}% / ${formatPct(100 - item.publicPctA)}%`}
+                        {historyRowText(game, item)}
                       </span>
                       <button
                         className="rlmw-icon-btn"
@@ -1218,9 +1231,7 @@ export default function LineMovementTracker() {
                               <div key={item.id} className="rlmw-history-row">
                                 <span>{formatDate(item.timestamp)}</span>
                                 <span>
-                                  {item.kind === 'line'
-                                    ? `${item.book}: ${formatFavoriteValue(game, item.valueA, historyLineSide(game, item.book))}`
-                                    : `${lineTextAsOf(game, item.timestamp) ? `${lineTextAsOf(game, item.timestamp)} · ` : ''}Public: ${formatPct(item.publicPctA)}% / ${formatPct(100 - item.publicPctA)}%`}
+                                  {historyRowText(game, item)}
                                 </span>
                                 <button
                                   className="rlmw-icon-btn"
