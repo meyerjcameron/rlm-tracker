@@ -68,7 +68,14 @@ function roundToHalfPoint(n) {
 function formatValue(market, v) {
   const n = Number(v);
   if (Number.isNaN(n)) return '—';
-  if (market === 'moneyline' || market === 'spread') return n > 0 ? `+${n}` : `${n}`;
+  if (market === 'spread' || market === 'total') {
+    // A book's own line can be a non-half-point number (e.g. an average of
+    // several sportsbooks captured before rounding was added server-side)
+    // -- always round to the nearest real, bettable half point for display.
+    const rounded = roundToHalfPoint(n);
+    return rounded > 0 ? `+${rounded}` : `${rounded}`;
+  }
+  if (market === 'moneyline') return n > 0 ? `+${n}` : `${n}`;
   return `${n}`;
 }
 
@@ -960,7 +967,7 @@ export default function LineMovementTracker() {
             ? (bookOC.current.valueA < -0.001 ? 'A' : bookOC.current.valueA > 0.001 ? 'B' : null)
             : null;
           const chartData = bookSnaps.map((s) => ({
-            v: game.market === 'moneyline' ? Number((impliedProb(s.valueA) * 100).toFixed(1)) : bookSign * s.valueA,
+            v: game.market === 'moneyline' ? Number((impliedProb(s.valueA) * 100).toFixed(1)) : roundToHalfPoint(bookSign * s.valueA),
             timestamp: s.timestamp,
           }));
 
