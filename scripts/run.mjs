@@ -3,6 +3,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { fetchCbsOdds } from './lib/cbsOdds.mjs';
 import { fetchSbdData, findSbdEntry } from './lib/sportsBettingDime.mjs';
+import { fetchHandlePercents, findHandleForGame } from './lib/cleatz.mjs';
 import { formatKickoffCentral } from './lib/format.mjs';
 import { conferenceForSchool } from './lib/conferences.mjs';
 import { fetchTop25 } from './lib/rankings.mjs';
@@ -70,10 +71,11 @@ async function fetchStartersOutByTeam(nflGames) {
   return result;
 }
 
-function buildSeedGame(cbsGame, sbdData, top25, startersOutByTeam, firstSeenMap) {
+function buildSeedGame(cbsGame, sbdData, cleatzData, top25, startersOutByTeam, firstSeenMap) {
   const firstSeenTs = firstSeenMap?.get(cbsGame.matchup.toLowerCase());
   const openMeta = firstSeenTs !== undefined ? { openTimestamp: firstSeenTs } : {};
   const sbd = sbdData ? findSbdEntry(sbdData, cbsGame.sideA, cbsGame.sideB, cbsGame.nameA, cbsGame.nameB) : null;
+  const handle = cleatzData ? findHandleForGame(cleatzData, cbsGame.sideA, cbsGame.sideB, cbsGame.nameA, cbsGame.nameB) : null;
 
   const seed = {
     matchup: cbsGame.matchup,
@@ -115,6 +117,13 @@ function buildSeedGame(cbsGame, sbdData, top25, startersOutByTeam, firstSeenMap)
   if (cbsGame.score) seed.score = cbsGame.score;
   if (sbd && sbd.pctAway !== undefined) {
     seed.public = Math.round(sbd.pctAway * 10) / 10;
+  }
+  // Handle % (share of money wagered) from Cleatz -- a different, arguably
+  // sharper signal than ticket-count public% above: a few large bets can
+  // swing it far from the ticket split, which is the classic "smart money"
+  // tell a plain bet-count % can't show on its own.
+  if (handle) {
+    seed.handlePublic = handle.handleAway;
   }
 
   if (startersOutByTeam) {
@@ -161,6 +170,13 @@ async function run() {
       console.error(`[${source.sport}] SportsBettingDime fetch failed (continuing without public% or its line):`, e.message);
     }
 
+    let cleatzData = null;
+    try {
+      cleatzData = await fetchHandlePercents(source.sport);
+    } catch (e) {
+      console.error(`[${source.sport}] Cleatz fetch failed (continuing without handle%):`, e.message);
+    }
+
     let top25 = null;
     let startersOutByTeam = null;
     if (source.sport === 'CFB') {
@@ -178,7 +194,7 @@ async function run() {
         skipped.push(g.matchup);
         continue;
       }
-      allSeeds.push(buildSeedGame(g, sbdData, top25, startersOutByTeam, firstSeenMap));
+      allSeeds.push(buildSeedGame(g, sbdData, cleatzData, top25, startersOutByTeam, firstSeenMap));
     }
   }
 

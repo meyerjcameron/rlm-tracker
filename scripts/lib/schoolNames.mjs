@@ -6,8 +6,21 @@ export function normalizeSchool(name) {
     .toLowerCase()
     .replace(/\./g, '')
     .replace(/\(fla\)/g, '(fl)')
+    .replace(/\(ohio\)/g, '(oh)')
+    // Sites disagree on whether the state qualifier gets parens at all --
+    // CBS says "Miami (Fla.)"/"Miami (Ohio)", Cleatz says "Miami FL"/"Miami
+    // OH" -- strip the parens themselves (keeping their contents) so both
+    // converge to the same string. Only applied to the two qualifiers
+    // above, so this can't clip an unrelated "(Ohio)"-free "Ohio State".
+    .replace(/[()]/g, '')
+    .replace(/-/g, ' ')
     .replace(/\s+/g, ' ')
-    .trim();
+    .trim()
+    // CBS abbreviates "State" as "St." (already stripped to a trailing
+    // "st" above) for many schools -- "Kent St.", "Arizona St.", "Ball
+    // St." -- while other sources spell it out ("Kent State"). Normalize
+    // the trailing form so both converge.
+    .replace(/\bst$/, 'state');
 }
 
 const ALIASES = {
@@ -15,6 +28,15 @@ const ALIASES = {
   'ole miss': 'ole miss',
   'nc state': 'nc state',
   'n c state': 'nc state',
+  // CBS shortens regional qualifiers to a single letter that other sites
+  // spell out -- "C." is ambiguous on its own (Coastal vs Central), so
+  // these need to be listed explicitly rather than pattern-matched.
+  'c carolina': 'coastal carolina',
+  'e michigan': 'eastern michigan',
+  'c michigan': 'central michigan',
+  'w michigan': 'western michigan',
+  'w kentucky': 'western kentucky',
+  'miss state': 'mississippi state',
 };
 
 export function canonicalSchool(name) {

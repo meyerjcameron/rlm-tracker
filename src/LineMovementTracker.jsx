@@ -337,7 +337,10 @@ function lineTextAsOf(game, ts) {
 function publicTextAsOf(game, ts) {
   const snap = game.publicSnapshots.filter((s) => s.timestamp <= ts).sort((a, b) => a.timestamp - b.timestamp).pop();
   if (!snap) return null;
-  return `Public: ${formatPct(snap.publicPctA)}% / ${formatPct(100 - snap.publicPctA)}%`;
+  const parts = [];
+  if (snap.publicPctA !== undefined) parts.push(`Public: ${formatPct(snap.publicPctA)}% / ${formatPct(100 - snap.publicPctA)}%`);
+  if (snap.handlePctA !== undefined) parts.push(`Handle: ${formatPct(snap.handlePctA)}% / ${formatPct(100 - snap.handlePctA)}%`);
+  return parts.length ? parts.join(', ') : null;
 }
 
 function historyRowText(game, item) {
@@ -465,19 +468,31 @@ export default function LineMovementTracker() {
         return !bookSnaps.length || line.value !== bookSnaps[bookSnaps.length - 1].valueA;
       });
 
-      if (seed.public !== undefined) {
+      if (seed.public !== undefined || seed.handlePublic !== undefined) {
         const publicSnaps = next.publicSnapshots;
         const latestPublic = publicSnaps[publicSnaps.length - 1];
-        if (!latestPublic || latestPublic.publicPctA !== seed.public) {
+        const publicChanged = seed.public !== undefined && (!latestPublic || latestPublic.publicPctA !== seed.public);
+        const handleChanged = seed.handlePublic !== undefined && (!latestPublic || latestPublic.handlePctA !== seed.handlePublic);
+        if (publicChanged || handleChanged) {
           changed = true;
           const sameDayNoLineMove = latestPublic
             && centralDateKey(latestPublic.timestamp) === centralDateKey(now)
             && !lineWillChange;
+          // Ticket% (publicPctA) and handle% (handlePctA, share of money
+          // wagered) are fetched together each run and share one snapshot
+          // -- handle% can swing far from the ticket split on a few large
+          // bets, which is the "smart money" signal ticket% alone can't show.
+          const merged = {
+            ...(latestPublic || {}),
+            timestamp: now,
+            ...(seed.public !== undefined ? { publicPctA: seed.public } : {}),
+            ...(seed.handlePublic !== undefined ? { handlePctA: seed.handlePublic } : {}),
+          };
           next = {
             ...next,
             publicSnapshots: sameDayNoLineMove
-              ? [...publicSnaps.slice(0, -1), { ...latestPublic, timestamp: now, publicPctA: seed.public }]
-              : [...publicSnaps, { id: `p_seed_${now}_${next.id}`, timestamp: now, publicPctA: seed.public }],
+              ? [...publicSnaps.slice(0, -1), merged]
+              : [...publicSnaps, { ...merged, id: `p_seed_${now}_${next.id}` }],
           };
         }
       }
@@ -596,7 +611,12 @@ export default function LineMovementTracker() {
         finished: s.score !== undefined,
         finishedAt: s.score !== undefined ? now : undefined,
         lineSnapshots: s.lines.flatMap((line, li) => buildBookSnapshots(line, `${i}_${li}`)),
-        publicSnapshots: s.public !== undefined ? [{ id: `p_seed_${now}_${i}`, timestamp: now, publicPctA: s.public }] : [],
+        publicSnapshots: (s.public !== undefined || s.handlePublic !== undefined) ? [{
+          id: `p_seed_${now}_${i}`,
+          timestamp: now,
+          ...(s.public !== undefined ? { publicPctA: s.public } : {}),
+          ...(s.handlePublic !== undefined ? { handlePctA: s.handlePublic } : {}),
+        }] : [],
       }));
       finalList = [...seeded, ...withUpdates];
     }
@@ -809,10 +829,13 @@ export default function LineMovementTracker() {
         .rlmw-range-note { font-size:11.5px; color:var(--muted); }
         .rlmw-favorite { font-size:11.5px; color:var(--accent); font-weight:600; letter-spacing:0.2px; }
         .rlmw-public-source { font-size:10.5px; color:var(--faint); margin-bottom:6px; }
+        .rlmw-handle-source { margin-top:10px; }
         .rlmw-splitbar-labels { display:flex; justify-content:space-between; font-size:12px; margin-bottom:5px; }
         .rlmw-splitbar { height:8px; border-radius:4px; overflow:hidden; display:flex; background:var(--input-bg); }
         .rlmw-splitbar-a { background:var(--blue-strong); height:100%; }
+        .rlmw-splitbar-handle { background:var(--accent); height:100%; }
         .rlmw-splitbar-b { background:var(--faint); height:100%; }
+        .rlmw-money-gap { font-size:11px; color:var(--accent); font-weight:600; margin-top:6px; }
         .rlmw-side-label.majority { color:var(--text); font-weight:600; }
         .rlmw-side-label { color:var(--muted); }
         .rlmw-history-toggle { background:none; border:none; color:var(--muted); font-size:12.5px; cursor:pointer; display:flex; align-items:center; gap:4px; padding:2px 0; align-self:flex-start; font-family:inherit; }
@@ -1122,6 +1145,29 @@ export default function LineMovementTracker() {
                     <div className="rlmw-splitbar-a" style={{ width: `${publicLatest.publicPctA}%` }} />
                     <div className="rlmw-splitbar-b" style={{ width: `${100 - publicLatest.publicPctA}%` }} />
                   </div>
+                  {publicLatest.handlePctA !== undefined && (
+                    <>
+                      <div className="rlmw-public-source rlmw-handle-source">Handle % — share of money wagered (Cleatz)</div>
+                      <div className="rlmw-splitbar-labels">
+                        <span className={`rlmw-side-label ${publicLatest.handlePctA > 50 ? 'majority' : ''}`}>
+                          {game.sideA} {formatPct(publicLatest.handlePctA)}%
+                        </span>
+                        <span className={`rlmw-side-label ${publicLatest.handlePctA < 50 ? 'majority' : ''}`}>
+                          {formatPct(100 - publicLatest.handlePctA)}% {game.sideB}
+                        </span>
+                      </div>
+                      <div className="rlmw-splitbar">
+                        <div className="rlmw-splitbar-handle" style={{ width: `${publicLatest.handlePctA}%` }} />
+                        <div className="rlmw-splitbar-b" style={{ width: `${100 - publicLatest.handlePctA}%` }} />
+                      </div>
+                      {Math.abs(publicLatest.handlePctA - publicLatest.publicPctA) >= 15 && (
+                        <div className="rlmw-money-gap">
+                          Money leans harder toward {publicLatest.handlePctA > publicLatest.publicPctA ? game.sideA : game.sideB} than tickets do
+                          ({Math.round(Math.abs(publicLatest.handlePctA - publicLatest.publicPctA))} pt gap)
+                        </div>
+                      )}
+                    </>
+                  )}
                 </div>
               )}
 
