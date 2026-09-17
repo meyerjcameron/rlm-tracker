@@ -354,6 +354,16 @@ export default function LineMovementTracker() {
     const now = Date.now();
     let changed = false;
 
+    // When a game's own history has nothing older to anchor a backfilled
+    // open to (its earlier snapshots were themselves lost to the same
+    // corruption), fall back to the earliest timestamp seen anywhere in the
+    // browser's data -- everything started being tracked around the same
+    // time, so that's a far better guess than "just now".
+    const globalEarliestTs = current.reduce((min, g) => {
+      const ts = [...g.lineSnapshots, ...g.publicSnapshots].map((s) => s.timestamp);
+      return ts.length ? Math.min(min, ...ts) : min;
+    }, now);
+
     const buildBookSnapshots = (line, uid) => {
       const snaps = [];
       if (line.open !== undefined && line.open !== line.value) {
@@ -467,6 +477,7 @@ export default function LineMovementTracker() {
           const knownTimestamps = [
             ...next.lineSnapshots.map((s) => s.timestamp),
             ...next.publicSnapshots.map((s) => s.timestamp),
+            globalEarliestTs,
           ];
           const earliestKnown = Math.min(...knownTimestamps);
           const openSnap = { id: `l_backfill_${now}_${next.id}_${li}`, book: line.book, timestamp: earliestKnown - 1, valueA: line.open };
