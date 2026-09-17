@@ -43,6 +43,13 @@ const HISTORICAL_LINE_CORRECTIONS = [
   { matchup: 'NE @ SEA', force: true, lines: [{ book: 'CBS', value: 3.5, open: 3.5 }] },
 ];
 
+// These Week 1 games were already underway (or finished) before the
+// automated pipeline existed -- their line movement was reconstructed after
+// the fact from a git history snapshot, not captured live the way every
+// game since has been. Excluded from the Season Journal so the record only
+// reflects genuinely tracked-from-open games.
+const WEEK1_BACKFILLED_MATCHUPS = new Set(HISTORICAL_LINE_CORRECTIONS.map((c) => c.matchup.toLowerCase()));
+
 function impliedProb(odds) {
   const n = Number(odds);
   if (Number.isNaN(n) || n === 0) return 0.5;
@@ -689,6 +696,7 @@ export default function LineMovementTracker() {
   const rlmRecord = { win: 0, loss: 0, push: 0 };
   const chalkRecord = { win: 0, loss: 0, push: 0 };
   finishedGames.forEach((g) => {
+    if (WEEK1_BACKFILLED_MATCHUPS.has(g.matchup.toLowerCase())) return;
     const result = g.result ?? computeAtsResult(g);
     if (!result) return;
     const combined = getCombinedStats(g);
