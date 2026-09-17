@@ -679,6 +679,8 @@ export default function LineMovementTracker() {
         .rlmw-pill-toggle.active { border-color:var(--green); background:var(--green-bg); }
         .rlmw-pill-toggle--blue { color:var(--blue); border-color:var(--blue-border); }
         .rlmw-pill-toggle--blue.active { border-color:var(--blue); background:var(--blue-bg); }
+        .rlmw-light .rlmw-pill-toggle { background:var(--green-bg); }
+        .rlmw-light .rlmw-pill-toggle--blue { background:var(--blue-bg); }
         .rlmw-panel { background:var(--card-bg); border:1px solid var(--border); border-radius:8px; padding:20px; margin-top:20px; max-width:640px; }
         .rlmw-field-row { display:flex; gap:12px; margin-bottom:14px; flex-wrap:wrap; }
         .rlmw-field { flex:1; min-width:140px; display:flex; flex-direction:column; gap:6px; }
