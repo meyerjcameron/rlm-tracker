@@ -394,12 +394,21 @@ export default function LineMovementTracker() {
     }, now);
 
     const buildBookSnapshots = (line, uid) => {
-      const snaps = [];
+      // line.openTimestamp (when the seed provides it) is the real date this
+      // game first got a spread, per the repo's own git history -- use it
+      // instead of "now" so a brand-new local record (e.g. this browser
+      // never saw this game before) still shows the true start date rather
+      // than looking like it just appeared this instant.
       if (line.open !== undefined && line.open !== line.value) {
-        snaps.push({ id: `l_seed_${now}_${uid}_o`, book: line.book, timestamp: now - 1, valueA: line.open });
+        return [
+          { id: `l_seed_${now}_${uid}_o`, book: line.book, timestamp: line.openTimestamp ?? (now - 1), valueA: line.open },
+          { id: `l_seed_${now}_${uid}_c`, book: line.book, timestamp: now, valueA: line.value },
+        ];
       }
-      snaps.push({ id: `l_seed_${now}_${uid}_c`, book: line.book, timestamp: now, valueA: line.value });
-      return snaps;
+      // No separate open to show (never moved, or CBS didn't report one) --
+      // anchor the single snapshot to the real first-seen date so a flat
+      // line doesn't look like it opened today either.
+      return [{ id: `l_seed_${now}_${uid}_c`, book: line.book, timestamp: line.openTimestamp ?? now, valueA: line.value }];
     };
 
     const withUpdates = current.map((g) => {
@@ -499,16 +508,18 @@ export default function LineMovementTracker() {
         let updatedBookSnaps = bookSnaps;
         if (bookSnaps.length === 1 && line.open != null && line.open !== bookSnaps[0].valueA) {
           // bookSnaps[0].timestamp is when this single (wrong) snapshot was
-          // recorded, not when we actually started tracking the game -- date
-          // the backfilled open to the earliest timestamp already on record
-          // for this game (e.g. public% history, unaffected by this bug)
-          // instead, so the chart doesn't show a fake "just now" open.
+          // recorded, not when we actually started tracking the game.
+          // line.openTimestamp (from run.mjs's own git-history lookup) is
+          // the real date -- durable even if this browser's localStorage
+          // has nothing left to anchor to. Fall back to the earliest
+          // timestamp already on record locally (or across the whole
+          // dataset) only for older seeds that predate that field.
           const knownTimestamps = [
             ...next.lineSnapshots.map((s) => s.timestamp),
             ...next.publicSnapshots.map((s) => s.timestamp),
             globalEarliestTs,
           ];
-          const earliestKnown = Math.min(...knownTimestamps);
+          const earliestKnown = line.openTimestamp ?? Math.min(...knownTimestamps);
           const openSnap = { id: `l_backfill_${now}_${next.id}_${li}`, book: line.book, timestamp: earliestKnown - 1, valueA: line.open };
           updatedBookSnaps = [openSnap, ...bookSnaps];
         }

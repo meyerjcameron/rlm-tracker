@@ -29,6 +29,11 @@ jobs:
 
       - uses: actions/checkout@v4
         if: steps.gate.outputs.should_run == 'true' || github.event_name == 'workflow_dispatch'
+        with:
+          # Full history, not the default shallow clone -- run.mjs walks
+          # past commits of seed-games.json to recover each game's true
+          # first-seen date for the client's open-date backfill.
+          fetch-depth: 0
 
       - uses: actions/setup-node@v4
         if: steps.gate.outputs.should_run == 'true' || github.event_name == 'workflow_dispatch'

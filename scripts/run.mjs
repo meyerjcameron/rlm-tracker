@@ -9,6 +9,7 @@ import { fetchTop25 } from './lib/rankings.mjs';
 import { canonicalSchool } from './lib/schoolNames.mjs';
 import { fetchInjuryReport } from './lib/injuries.mjs';
 import { fetchStarters } from './lib/depthChart.mjs';
+import { getFirstSeenMap } from './lib/history.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const OUT_PATH = path.join(__dirname, '..', 'public', 'seed-games.json');
@@ -69,7 +70,8 @@ async function fetchStartersOutByTeam(nflGames) {
   return result;
 }
 
-function buildSeedGame(cbsGame, splits, top25, startersOutByTeam) {
+function buildSeedGame(cbsGame, splits, top25, startersOutByTeam, firstSeenMap) {
+  const firstSeenTs = firstSeenMap?.get(cbsGame.matchup.toLowerCase());
   const seed = {
     matchup: cbsGame.matchup,
     sport: cbsGame.sport,
@@ -83,6 +85,11 @@ function buildSeedGame(cbsGame, splits, top25, startersOutByTeam) {
       // open differently from an unknown one, so this must never look
       // like "open equals current" when we simply don't know the open.
       ...(cbsGame.spreadOpen !== null ? { open: cbsGame.spreadOpen } : {}),
+      // The real date this game first got a spread, per this repo's own git
+      // history -- lets the client backfill a lost/never-confirmed open to
+      // its true date instead of guessing from whatever's left in
+      // localStorage (which can be completely wiped for a given browser).
+      ...(firstSeenTs !== undefined ? { openTimestamp: firstSeenTs } : {}),
     }],
   };
   const kickoff = formatKickoffCentral(cbsGame.kickoffISO);
@@ -122,6 +129,7 @@ function buildSeedGame(cbsGame, splits, top25, startersOutByTeam) {
 async function run() {
   const allSeeds = [];
   const skipped = [];
+  const firstSeenMap = getFirstSeenMap();
 
   for (const source of SOURCES) {
     let cbsGames = [];
@@ -156,7 +164,7 @@ async function run() {
         skipped.push(g.matchup);
         continue;
       }
-      allSeeds.push(buildSeedGame(g, splits, top25, startersOutByTeam));
+      allSeeds.push(buildSeedGame(g, splits, top25, startersOutByTeam, firstSeenMap));
     }
   }
 
