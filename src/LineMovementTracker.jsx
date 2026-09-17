@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { LineChart, Line, ResponsiveContainer, XAxis, YAxis, Tooltip } from 'recharts';
-import { Trash2, Flame, TrendingUp, ChevronDown, ChevronRight, X, Flag, Undo2 } from 'lucide-react';
+import { Trash2, Flame, TrendingUp, ChevronDown, ChevronRight, X, Flag, Undo2, Sun, Moon } from 'lucide-react';
 
 const MARKETS = [
   { id: 'spread', label: 'Spread' },
@@ -8,6 +8,7 @@ const MARKETS = [
   { id: 'total', label: 'Total' },
 ];
 const STORAGE_KEY = 'line-tracker:games';
+const THEME_KEY = 'line-tracker:theme';
 
 // Seeded from /seed-games.json, which scripts/run.mjs regenerates on a
 // schedule by scraping CBS Sports (lines, scores, kickoff times) and
@@ -300,6 +301,21 @@ export default function LineMovementTracker() {
   const [expanded, setExpanded] = useState({});
   const [injuryExpanded, setInjuryExpanded] = useState({});
   const [selectedView, setSelectedView] = useState({});
+  const [theme, setTheme] = useState(() => {
+    try {
+      return localStorage.getItem(THEME_KEY) === 'light' ? 'light' : 'dark';
+    } catch (e) {
+      return 'dark';
+    }
+  });
+
+  function toggleTheme() {
+    setTheme((t) => {
+      const next = t === 'dark' ? 'light' : 'dark';
+      try { localStorage.setItem(THEME_KEY, next); } catch (e) { /* noop */ }
+      return next;
+    });
+  }
 
   useEffect(() => {
     (async () => {
@@ -611,120 +627,146 @@ export default function LineMovementTracker() {
   const rlmCount = liveGames.filter((g) => isFlagged(g, 'ALL')).length;
 
   return (
-    <div className="rlmw-root">
+    <div className={`rlmw-root ${theme === 'light' ? 'rlmw-light' : ''}`}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
-        .rlmw-root { background:#0D1117; color:#ECEFF4; min-height:100vh; font-family:'IBM Plex Sans', sans-serif; padding: 32px 24px 64px; box-sizing:border-box; }
+        .rlmw-root {
+          --bg:#0D1117; --text:#ECEFF4; --muted:#8993A4; --faint:#586173; --border:#2B3340;
+          --card-bg:#161B22; --input-bg:#1D232C; --final-bg:#12161C;
+          --accent:#D4A72C; --accent-hover:#e0b53d; --accent-bg:#241F14; --accent-contrast:#0D1117;
+          --green:#34C77B; --green-bg:#12241C; --green-border:#1F3B2C;
+          --blue:#6FA3C7; --blue-bg:#122430; --blue-border:#1E3A4D; --blue-strong:#4C7A9A;
+          --red:#C65B4E; --red-bg:#241414; --injury-text:#e08a8a;
+          background:var(--bg); color:var(--text); min-height:100vh; font-family:'IBM Plex Sans', sans-serif; padding: 32px 24px 64px; box-sizing:border-box;
+        }
+        .rlmw-root.rlmw-light {
+          --bg:#F3F5F8; --text:#151A21; --muted:#5B6472; --faint:#939AA8; --border:#DCE2E9;
+          --card-bg:#FFFFFF; --input-bg:#EEF1F5; --final-bg:#F7F9FB;
+          --accent:#A6790A; --accent-hover:#8f6708; --accent-bg:#FBF1D8; --accent-contrast:#0D1117;
+          --green:#1B8F55; --green-bg:#E4F6EC; --green-border:#BEE7D3;
+          --blue:#3D74A0; --blue-bg:#E7F1F8; --blue-border:#C7DEEC; --blue-strong:#3D74A0;
+          --red:#B23A2C; --red-bg:#FBEAE7; --injury-text:#B23B3B;
+        }
         .rlmw-root * { box-sizing:border-box; }
+        .rlmw-header-row { display:flex; justify-content:space-between; align-items:flex-start; gap:16px; }
+        .rlmw-theme-toggle { background:var(--card-bg); border:1px solid var(--border); color:var(--text); width:38px; height:38px; border-radius:999px; display:flex; align-items:center; justify-content:center; cursor:pointer; flex-shrink:0; }
+        .rlmw-theme-toggle:hover { border-color:var(--accent); color:var(--accent); }
         .rlmw-title { font-family:'Bebas Neue', sans-serif; font-size:42px; letter-spacing:0.5px; line-height:1; margin:0; font-weight:400; }
-        .rlmw-sub { color:#8993A4; font-size:14px; margin-top:8px; max-width:560px; line-height:1.5; }
-        .rlmw-sport-tabs { display:flex; gap:4px; margin-top:24px; border-bottom:1px solid #2B3340; }
-        .rlmw-sport-tab { padding:8px 16px; font-size:13px; font-weight:600; color:#8993A4; cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-1px; }
-        .rlmw-sport-tab.active { color:#ECEFF4; border-bottom-color:#D4A72C; }
+        .rlmw-sub { color:var(--muted); font-size:14px; margin-top:8px; max-width:560px; line-height:1.5; }
+        .rlmw-sport-tabs { display:flex; gap:4px; margin-top:24px; border-bottom:1px solid var(--border); }
+        .rlmw-sport-tab { padding:8px 16px; font-size:13px; font-weight:600; color:var(--muted); cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-1px; }
+        .rlmw-sport-tab.active { color:var(--text); border-bottom-color:var(--accent); }
         .rlmw-cfb-tabs { display:flex; gap:6px; margin-top:12px; flex-wrap:wrap; }
-        .rlmw-cfb-tab { padding:5px 12px; font-size:12px; font-weight:600; color:#8993A4; cursor:pointer; border:1px solid #2B3340; border-radius:999px; background:#161B22; }
-        .rlmw-cfb-tab.active { color:#0D1117; background:#D4A72C; border-color:#D4A72C; }
+        .rlmw-cfb-tab { padding:5px 12px; font-size:12px; font-weight:600; color:var(--muted); cursor:pointer; border:1px solid var(--border); border-radius:999px; background:var(--card-bg); }
+        .rlmw-cfb-tab.active { color:var(--accent-contrast); background:var(--accent); border-color:var(--accent); }
         .rlmw-toolbar { display:flex; align-items:center; gap:12px; margin-top:16px; flex-wrap:wrap; }
-        .rlmw-btn-primary { background:#D4A72C; color:#0D1117; border:none; padding:10px 16px; border-radius:6px; font-weight:600; font-size:14px; cursor:pointer; display:inline-flex; align-items:center; gap:6px; font-family:inherit; }
-        .rlmw-btn-primary:hover { background:#e0b53d; }
-        .rlmw-btn-secondary { background:transparent; border:1px solid #2B3340; color:#ECEFF4; padding:9px 14px; border-radius:6px; font-size:14px; cursor:pointer; font-family:inherit; }
-        .rlmw-btn-secondary:hover { border-color:#586173; }
-        .rlmw-pill-toggle { display:inline-flex; align-items:center; gap:8px; font-size:13px; color:#34C77B; cursor:pointer; user-select:none; padding:8px 14px; border:1px solid #1F3B2C; border-radius:999px; }
-        .rlmw-pill-toggle.active { border-color:#34C77B; background:#12241C; }
-        .rlmw-pill-toggle--blue { color:#6FA3C7; border-color:#1E3A4D; }
-        .rlmw-pill-toggle--blue.active { border-color:#6FA3C7; background:#122430; }
-        .rlmw-panel { background:#161B22; border:1px solid #2B3340; border-radius:8px; padding:20px; margin-top:20px; max-width:640px; }
+        .rlmw-btn-primary { background:var(--accent); color:var(--accent-contrast); border:none; padding:10px 16px; border-radius:6px; font-weight:600; font-size:14px; cursor:pointer; display:inline-flex; align-items:center; gap:6px; font-family:inherit; }
+        .rlmw-btn-primary:hover { background:var(--accent-hover); }
+        .rlmw-btn-secondary { background:transparent; border:1px solid var(--border); color:var(--text); padding:9px 14px; border-radius:6px; font-size:14px; cursor:pointer; font-family:inherit; }
+        .rlmw-btn-secondary:hover { border-color:var(--faint); }
+        .rlmw-pill-toggle { display:inline-flex; align-items:center; gap:8px; font-size:13px; color:var(--green); cursor:pointer; user-select:none; padding:8px 14px; border:1px solid var(--green-border); border-radius:999px; }
+        .rlmw-pill-toggle.active { border-color:var(--green); background:var(--green-bg); }
+        .rlmw-pill-toggle--blue { color:var(--blue); border-color:var(--blue-border); }
+        .rlmw-pill-toggle--blue.active { border-color:var(--blue); background:var(--blue-bg); }
+        .rlmw-panel { background:var(--card-bg); border:1px solid var(--border); border-radius:8px; padding:20px; margin-top:20px; max-width:640px; }
         .rlmw-field-row { display:flex; gap:12px; margin-bottom:14px; flex-wrap:wrap; }
         .rlmw-field { flex:1; min-width:140px; display:flex; flex-direction:column; gap:6px; }
-        .rlmw-field label { font-size:12px; color:#8993A4; }
-        .rlmw-input, .rlmw-select { background:#1D232C; border:1px solid #2B3340; color:#ECEFF4; padding:9px 10px; border-radius:6px; font-size:14px; font-family:inherit; width:100%; }
-        .rlmw-input:focus, .rlmw-select:focus { outline:2px solid #D4A72C; outline-offset:1px; border-color:#D4A72C; }
+        .rlmw-field label { font-size:12px; color:var(--muted); }
+        .rlmw-input, .rlmw-select { background:var(--input-bg); border:1px solid var(--border); color:var(--text); padding:9px 10px; border-radius:6px; font-size:14px; font-family:inherit; width:100%; }
+        .rlmw-input:focus, .rlmw-select:focus { outline:2px solid var(--accent); outline-offset:1px; border-color:var(--accent); }
         .rlmw-input-mono { font-family:'IBM Plex Mono', monospace; }
         .rlmw-market-toggle { display:flex; gap:8px; }
-        .rlmw-market-btn { flex:1; padding:9px; text-align:center; border:1px solid #2B3340; background:#1D232C; color:#8993A4; border-radius:6px; cursor:pointer; font-size:13px; font-family:inherit; }
-        .rlmw-market-btn.active { border-color:#D4A72C; color:#D4A72C; background:#241F14; }
+        .rlmw-market-btn { flex:1; padding:9px; text-align:center; border:1px solid var(--border); background:var(--input-bg); color:var(--muted); border-radius:6px; cursor:pointer; font-size:13px; font-family:inherit; }
+        .rlmw-market-btn.active { border-color:var(--accent); color:var(--accent); background:var(--accent-bg); }
         .rlmw-panel-actions { display:flex; gap:10px; margin-top:6px; }
         .rlmw-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(340px, 1fr)); gap:16px; margin-top:24px; }
-        .rlmw-card { background:#161B22; border:1px solid #2B3340; border-radius:8px; padding:18px; display:flex; flex-direction:column; gap:12px; }
-        .rlmw-card.flagged { border-color:#34C77B; }
+        .rlmw-card { background:var(--card-bg); border:1px solid var(--border); border-radius:8px; padding:18px; display:flex; flex-direction:column; gap:12px; }
+        .rlmw-card.flagged { border-color:var(--green); }
         .rlmw-card-top { display:flex; justify-content:space-between; align-items:flex-start; gap:8px; }
         .rlmw-matchup { font-family:'Bebas Neue', sans-serif; font-size:22px; letter-spacing:0.3px; line-height:1.1; display:flex; align-items:baseline; gap:6px; flex-wrap:wrap; }
-        .rlmw-matchup-at { font-family:'IBM Plex Sans', sans-serif; font-size:14px; color:#586173; font-weight:400; }
-        .rlmw-rank { font-family:'IBM Plex Mono', monospace; font-size:11px; font-weight:700; color:#0D1117; background:#D4A72C; padding:1px 5px; border-radius:4px; letter-spacing:0; }
-        .rlmw-meta { color:#8993A4; font-size:12.5px; margin-top:3px; }
-        .rlmw-kickoff { color:#D4A72C; font-size:11.5px; margin-top:4px; font-family:'IBM Plex Mono', monospace; }
-        .rlmw-icon-btn { background:transparent; border:none; color:#586173; cursor:pointer; padding:4px; border-radius:4px; flex-shrink:0; }
-        .rlmw-icon-btn:hover { color:#C65B4E; background:#1D232C; }
-        .rlmw-flag { display:flex; align-items:flex-start; gap:8px; background:#12241C; border:1px solid #1F3B2C; color:#34C77B; padding:10px 12px; border-radius:6px; font-size:13px; line-height:1.45; }
+        .rlmw-matchup-at { font-family:'IBM Plex Sans', sans-serif; font-size:14px; color:var(--faint); font-weight:400; }
+        .rlmw-rank { font-family:'IBM Plex Mono', monospace; font-size:11px; font-weight:700; color:var(--accent-contrast); background:var(--accent); padding:1px 5px; border-radius:4px; letter-spacing:0; }
+        .rlmw-meta { color:var(--muted); font-size:12.5px; margin-top:3px; }
+        .rlmw-kickoff { color:var(--accent); font-size:11.5px; margin-top:4px; font-family:'IBM Plex Mono', monospace; }
+        .rlmw-icon-btn { background:transparent; border:none; color:var(--faint); cursor:pointer; padding:4px; border-radius:4px; flex-shrink:0; }
+        .rlmw-icon-btn:hover { color:var(--red); background:var(--input-bg); }
+        .rlmw-flag { display:flex; align-items:flex-start; gap:8px; background:var(--green-bg); border:1px solid var(--green-border); color:var(--green); padding:10px 12px; border-radius:6px; font-size:13px; line-height:1.45; }
         .rlmw-flag svg { flex-shrink:0; margin-top:1px; }
-        .rlmw-injury-report .rlmw-history-row { color:#e08a8a; }
+        .rlmw-injury-report .rlmw-history-row { color:var(--injury-text); }
         .rlmw-book-pills { display:flex; gap:6px; flex-wrap:wrap; }
-        .rlmw-book-pill { font-size:12px; padding:5px 10px; border-radius:999px; border:1px solid #2B3340; background:#1D232C; color:#8993A4; cursor:pointer; white-space:nowrap; display:inline-flex; align-items:center; gap:4px; font-family:inherit; }
-        .rlmw-book-pill.active { border-color:#D4A72C; color:#D4A72C; background:#241F14; }
+        .rlmw-book-pill { font-size:12px; padding:5px 10px; border-radius:999px; border:1px solid var(--border); background:var(--input-bg); color:var(--muted); cursor:pointer; white-space:nowrap; display:inline-flex; align-items:center; gap:4px; font-family:inherit; }
+        .rlmw-book-pill.active { border-color:var(--accent); color:var(--accent); background:var(--accent-bg); }
         .rlmw-stats { display:flex; gap:8px; align-items:center; }
-        .rlmw-stat { flex:1; background:#1D232C; border-radius:6px; padding:10px 12px; }
-        .rlmw-stat-label { font-size:11px; color:#8993A4; margin-bottom:4px; }
+        .rlmw-stat { flex:1; background:var(--input-bg); border-radius:6px; padding:10px 12px; }
+        .rlmw-stat-label { font-size:11px; color:var(--muted); margin-bottom:4px; }
         .rlmw-stat-value { font-family:'IBM Plex Mono', monospace; font-size:16px; font-weight:600; }
-        .rlmw-stat-date { font-size:10.5px; color:#586173; margin-top:2px; }
-        .rlmw-stat-move { font-size:10.5px; color:#34C77B; margin-top:2px; }
-        .rlmw-arrow { color:#586173; flex-shrink:0; }
+        .rlmw-stat-date { font-size:10.5px; color:var(--faint); margin-top:2px; }
+        .rlmw-stat-move { font-size:10.5px; color:var(--green); margin-top:2px; }
+        .rlmw-arrow { color:var(--faint); flex-shrink:0; }
         .rlmw-chart-wrap { height:90px; margin-top:-4px; }
-        .rlmw-chart-empty { height:70px; display:flex; align-items:center; justify-content:center; color:#586173; font-size:12px; border:1px dashed #2B3340; border-radius:6px; text-align:center; padding:0 12px; }
+        .rlmw-chart-empty { height:70px; display:flex; align-items:center; justify-content:center; color:var(--faint); font-size:12px; border:1px dashed var(--border); border-radius:6px; text-align:center; padding:0 12px; }
         .rlmw-book-rows { display:flex; flex-direction:column; gap:6px; }
-        .rlmw-book-row { display:flex; justify-content:space-between; align-items:center; background:#1D232C; border-radius:6px; padding:8px 10px; font-size:13px; gap:8px; }
+        .rlmw-book-row { display:flex; justify-content:space-between; align-items:center; background:var(--input-bg); border-radius:6px; padding:8px 10px; font-size:13px; gap:8px; }
         .rlmw-book-row-name { display:flex; align-items:center; gap:6px; font-weight:500; min-width:0; }
         .rlmw-book-row-name span { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
         .rlmw-book-row-right { display:flex; align-items:center; gap:8px; flex-shrink:0; }
         .rlmw-book-row-value { font-family:'IBM Plex Mono', monospace; }
-        .rlmw-book-row-delta { font-size:10.5px; color:#586173; }
-        .rlmw-range-note { font-size:11.5px; color:#8993A4; }
-        .rlmw-favorite { font-size:11.5px; color:#D4A72C; font-weight:600; letter-spacing:0.2px; }
-        .rlmw-public-source { font-size:10.5px; color:#586173; margin-bottom:6px; }
+        .rlmw-book-row-delta { font-size:10.5px; color:var(--faint); }
+        .rlmw-range-note { font-size:11.5px; color:var(--muted); }
+        .rlmw-favorite { font-size:11.5px; color:var(--accent); font-weight:600; letter-spacing:0.2px; }
+        .rlmw-public-source { font-size:10.5px; color:var(--faint); margin-bottom:6px; }
         .rlmw-splitbar-labels { display:flex; justify-content:space-between; font-size:12px; margin-bottom:5px; }
-        .rlmw-splitbar { height:8px; border-radius:4px; overflow:hidden; display:flex; background:#1D232C; }
-        .rlmw-splitbar-a { background:#4C7A9A; height:100%; }
-        .rlmw-splitbar-b { background:#586173; height:100%; }
-        .rlmw-side-label.majority { color:#ECEFF4; font-weight:600; }
-        .rlmw-side-label { color:#8993A4; }
-        .rlmw-history-toggle { background:none; border:none; color:#8993A4; font-size:12.5px; cursor:pointer; display:flex; align-items:center; gap:4px; padding:2px 0; align-self:flex-start; font-family:inherit; }
-        .rlmw-history { border-top:1px solid #2B3340; padding-top:10px; display:flex; flex-direction:column; gap:6px; }
-        .rlmw-final-history { border-top:none; padding:10px 12px; background:#12161C; }
-        .rlmw-history-row { display:flex; justify-content:space-between; align-items:center; font-size:12px; color:#8993A4; font-family:'IBM Plex Mono', monospace; gap:8px; }
+        .rlmw-splitbar { height:8px; border-radius:4px; overflow:hidden; display:flex; background:var(--input-bg); }
+        .rlmw-splitbar-a { background:var(--blue-strong); height:100%; }
+        .rlmw-splitbar-b { background:var(--faint); height:100%; }
+        .rlmw-side-label.majority { color:var(--text); font-weight:600; }
+        .rlmw-side-label { color:var(--muted); }
+        .rlmw-history-toggle { background:none; border:none; color:var(--muted); font-size:12.5px; cursor:pointer; display:flex; align-items:center; gap:4px; padding:2px 0; align-self:flex-start; font-family:inherit; }
+        .rlmw-history { border-top:1px solid var(--border); padding-top:10px; display:flex; flex-direction:column; gap:6px; }
+        .rlmw-final-history { border-top:none; padding:10px 12px; background:var(--final-bg); }
+        .rlmw-history-row { display:flex; justify-content:space-between; align-items:center; font-size:12px; color:var(--muted); font-family:'IBM Plex Mono', monospace; gap:8px; }
         .rlmw-history-row .rlmw-icon-btn { padding:2px; }
-        .rlmw-empty { border:1px dashed #2B3340; border-radius:8px; padding:48px 24px; text-align:center; color:#8993A4; margin-top:24px; max-width:480px; }
-        .rlmw-empty h3 { color:#ECEFF4; font-family:'Bebas Neue', sans-serif; font-size:24px; margin:0 0 8px; letter-spacing:0.3px; font-weight:400; }
-        .rlmw-save-error { color:#C65B4E; font-size:12px; margin-top:10px; }
-        .rlmw-sport-tag { font-size:11px; color:#8993A4; border:1px solid #2B3340; padding:2px 7px; border-radius:4px; white-space:nowrap; }
+        .rlmw-empty { border:1px dashed var(--border); border-radius:8px; padding:48px 24px; text-align:center; color:var(--muted); margin-top:24px; max-width:480px; }
+        .rlmw-empty h3 { color:var(--text); font-family:'Bebas Neue', sans-serif; font-size:24px; margin:0 0 8px; letter-spacing:0.3px; font-weight:400; }
+        .rlmw-save-error { color:var(--red); font-size:12px; margin-top:10px; }
+        .rlmw-sport-tag { font-size:11px; color:var(--muted); border:1px solid var(--border); padding:2px 7px; border-radius:4px; white-space:nowrap; }
         .rlmw-journal { margin-top:36px; max-width:520px; }
         .rlmw-journal-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
-        .rlmw-journal-card { background:#161B22; border:1px solid #2B3340; border-radius:8px; padding:16px; border-top-width:3px; border-top-style:solid; }
-        .rlmw-journal-card--rlm { border-top-color:#34C77B; }
-        .rlmw-journal-card--chalk { border-top-color:#4C7A9A; }
-        .rlmw-journal-label { font-size:11px; color:#8993A4; text-transform:uppercase; letter-spacing:.04em; margin-bottom:6px; }
-        .rlmw-journal-record { font-family:'IBM Plex Mono', monospace; font-size:24px; font-weight:700; color:#ECEFF4; }
-        .rlmw-journal-pct { font-size:12px; color:#8993A4; margin-top:4px; }
+        .rlmw-journal-card { background:var(--card-bg); border:1px solid var(--border); border-radius:8px; padding:16px; border-top-width:3px; border-top-style:solid; }
+        .rlmw-journal-card--rlm { border-top-color:var(--green); }
+        .rlmw-journal-card--chalk { border-top-color:var(--blue-strong); }
+        .rlmw-journal-label { font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; margin-bottom:6px; }
+        .rlmw-journal-record { font-family:'IBM Plex Mono', monospace; font-size:24px; font-weight:700; color:var(--text); }
+        .rlmw-journal-pct { font-size:12px; color:var(--muted); margin-top:4px; }
         .rlmw-final-section { margin-top:36px; max-width:760px; }
-        .rlmw-final-heading { font-family:'Bebas Neue', sans-serif; font-size:20px; letter-spacing:0.3px; color:#8993A4; margin-bottom:10px; }
-        .rlmw-final-table-wrap { overflow-x:auto; border:1px solid #2B3340; border-radius:8px; }
+        .rlmw-final-heading { font-family:'Bebas Neue', sans-serif; font-size:20px; letter-spacing:0.3px; color:var(--muted); margin-bottom:10px; }
+        .rlmw-final-table-wrap { overflow-x:auto; border:1px solid var(--border); border-radius:8px; }
         .rlmw-final-table { width:100%; border-collapse:collapse; font-size:13px; }
-        .rlmw-final-table th { text-align:left; color:#8993A4; font-weight:600; font-size:10.5px; text-transform:uppercase; letter-spacing:0.4px; padding:10px 12px; border-bottom:1px solid #2B3340; background:#161B22; white-space:nowrap; }
-        .rlmw-final-table td { padding:10px 12px; border-bottom:1px solid #1D232C; vertical-align:middle; white-space:nowrap; }
+        .rlmw-final-table th { text-align:left; color:var(--muted); font-weight:600; font-size:10.5px; text-transform:uppercase; letter-spacing:0.4px; padding:10px 12px; border-bottom:1px solid var(--border); background:var(--card-bg); white-space:nowrap; }
+        .rlmw-final-table td { padding:10px 12px; border-bottom:1px solid var(--input-bg); vertical-align:middle; white-space:nowrap; }
         .rlmw-final-table tr:last-child td { border-bottom:none; }
         .rlmw-final-game-name { font-weight:600; }
-        .rlmw-final-side { font-size:11px; color:#586173; margin-top:2px; }
+        .rlmw-final-side { font-size:11px; color:var(--faint); margin-top:2px; }
         .rlmw-mono { font-family:'IBM Plex Mono', monospace; }
         .rlmw-result-pills { display:flex; gap:4px; }
-        .rlmw-result-pill { width:26px; height:26px; border-radius:4px; border:1px solid #2B3340; background:#1D232C; color:#8993A4; font-size:11px; font-weight:700; cursor:pointer; font-family:inherit; }
-        .rlmw-result-pill.active-win { background:#12241C; border-color:#34C77B; color:#34C77B; }
-        .rlmw-result-pill.active-loss { background:#241414; border-color:#C65B4E; color:#C65B4E; }
-        .rlmw-result-pill.active-push { background:#1D232C; border-color:#8993A4; color:#ECEFF4; }
+        .rlmw-result-pill { width:26px; height:26px; border-radius:4px; border:1px solid var(--border); background:var(--input-bg); color:var(--muted); font-size:11px; font-weight:700; cursor:pointer; font-family:inherit; }
+        .rlmw-result-pill.active-win { background:var(--green-bg); border-color:var(--green); color:var(--green); }
+        .rlmw-result-pill.active-loss { background:var(--red-bg); border-color:var(--red); color:var(--red); }
+        .rlmw-result-pill.active-push { background:var(--input-bg); border-color:var(--muted); color:var(--text); }
       `}</style>
 
-      <div className="rlmw-title">RLM Tracker</div>
-      <div className="rlmw-sub">
-        Log lines from multiple sportsbooks per game alongside the public bet split. View them combined,
-        or switch to a single book to see its own movement. Flags a game when the line moves against
-        the side the public is backing.
+      <div className="rlmw-header-row">
+        <div>
+          <div className="rlmw-title">RLM Tracker</div>
+          <div className="rlmw-sub">
+            Log lines from multiple sportsbooks per game alongside the public bet split. View them combined,
+            or switch to a single book to see its own movement. Flags a game when the line moves against
+            the side the public is backing.
+          </div>
+        </div>
+        <button className="rlmw-theme-toggle" onClick={toggleTheme} aria-label="Toggle light/dark theme">
+          {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+        </button>
       </div>
 
       <div className="rlmw-sport-tabs">
@@ -847,7 +889,7 @@ export default function LineMovementTracker() {
                     className={`rlmw-book-pill ${view === b ? 'active' : ''}`}
                     onClick={() => setSelectedView((p) => ({ ...p, [game.id]: b }))}
                   >
-                    {isFlagged(game, b) && <Flame size={11} color="#34C77B" />}
+                    {isFlagged(game, b) && <Flame size={11} color="var(--green)" />}
                     {b}
                   </div>
                 ))}
@@ -900,7 +942,7 @@ export default function LineMovementTracker() {
                       return (
                         <div key={b} className="rlmw-book-row">
                           <div className="rlmw-book-row-name">
-                            {bFlagged && <Flame size={13} color="#34C77B" />}
+                            {bFlagged && <Flame size={13} color="var(--green)" />}
                             <span>{b}</span>
                           </div>
                           <div className="rlmw-book-row-right">
@@ -922,20 +964,20 @@ export default function LineMovementTracker() {
                           <XAxis
                             dataKey="timestamp"
                             tickFormatter={formatShortDate}
-                            tick={{ fill: '#586173', fontSize: 10 }}
-                            axisLine={{ stroke: '#2B3340' }}
+                            tick={{ fill: 'var(--faint)', fontSize: 10 }}
+                            axisLine={{ stroke: 'var(--border)' }}
                             tickLine={false}
                             interval="preserveStartEnd"
                           />
                           <Tooltip
-                            contentStyle={{ background: '#1D232C', border: '1px solid #2B3340', borderRadius: 6, fontSize: 12 }}
+                            contentStyle={{ background: 'var(--input-bg)', border: '1px solid var(--border)', borderRadius: 6, fontSize: 12 }}
                             labelFormatter={(ts) => formatDate(ts)}
                             formatter={(v) => [game.market === 'moneyline' ? `${v}% implied` : v, valueLabel(game.market)]}
                           />
                           <Line
                             type="monotone"
                             dataKey="v"
-                            stroke={flagged ? '#34C77B' : '#4C7A9A'}
+                            stroke={flagged ? 'var(--green)' : 'var(--blue-strong)'}
                             strokeWidth={2}
                             dot={{ r: 3 }}
                             activeDot={{ r: 4 }}
