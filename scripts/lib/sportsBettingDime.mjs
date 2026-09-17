@@ -23,6 +23,13 @@ function average(arr) {
   return arr.reduce((a, b) => a + b, 0) / arr.length;
 }
 
+// Averaging real books' spreads can land on a number nobody actually
+// offers (e.g. four books at -5.5 and one at -4.5 averages to -5.3) --
+// snap it to the nearest half point so it reads as a real, bettable line.
+function roundToHalfPoint(n) {
+  return Math.round(n * 2) / 2;
+}
+
 // Returns { byAbbrev, bySchool }, each a Map of "AWAY@HOME" -> an entry with
 // whichever of these SBD actually had for that game:
 //   pctAway         -- bet-count % on the away side (i.e. "Public Bet", not
@@ -62,8 +69,8 @@ export async function fetchSbdData(sport) {
     if (spreadBooks && spreadBooks.length) {
       const currents = spreadBooks.map((b) => toNum(b.away.spread)).filter((n) => n !== null);
       const opens = spreadBooks.map((b) => toNum(b.away.opening_spread)).filter((n) => n !== null);
-      if (currents.length) entry.spreadCurrent = average(currents);
-      if (opens.length) entry.spreadOpen = average(opens);
+      if (currents.length) entry.spreadCurrent = roundToHalfPoint(average(currents));
+      if (opens.length) entry.spreadOpen = roundToHalfPoint(average(opens));
     }
     if (!Object.keys(entry).length) return;
 
