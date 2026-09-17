@@ -274,10 +274,22 @@ function compactPastDays(snapshots, groupBy) {
 }
 
 function getHistoryItems(game) {
-  return [
+  const items = [
     ...game.lineSnapshots.map((s) => ({ ...s, kind: 'line' })),
     ...game.publicSnapshots.map((s) => ({ ...s, kind: 'public' })),
   ].sort((a, b) => a.timestamp - b.timestamp);
+
+  // A real line move and its paired public reading (see the merge logic)
+  // land at the exact same timestamp and, since every row now shows both
+  // line and public% together, render identical text -- keep only one row
+  // per timestamp so it doesn't look like a duplicate entry.
+  const seen = new Set();
+  return items.filter((item) => {
+    const key = `${item.timestamp}|${historyRowText(game, item)}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
 }
 
 // A public% row only logs a new line snapshot when the line also moved (see
