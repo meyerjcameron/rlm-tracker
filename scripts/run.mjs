@@ -2,7 +2,7 @@ import { writeFile, mkdir } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { fetchCbsOdds } from './lib/cbsOdds.mjs';
-import { fetchBettingSplits, findSplitForGame } from './lib/sportsBettingDime.mjs';
+import { fetchSbdData, findSbdEntry } from './lib/sportsBettingDime.mjs';
 import { formatKickoffCentral } from './lib/format.mjs';
 import { conferenceForSchool } from './lib/conferences.mjs';
 import { fetchTop25 } from './lib/rankings.mjs';
@@ -70,27 +70,42 @@ async function fetchStartersOutByTeam(nflGames) {
   return result;
 }
 
-function buildSeedGame(cbsGame, splits, top25, startersOutByTeam, firstSeenMap) {
+function buildSeedGame(cbsGame, sbdData, top25, startersOutByTeam, firstSeenMap) {
   const firstSeenTs = firstSeenMap?.get(cbsGame.matchup.toLowerCase());
+  const openMeta = firstSeenTs !== undefined ? { openTimestamp: firstSeenTs } : {};
+  const sbd = sbdData ? findSbdEntry(sbdData, cbsGame.sideA, cbsGame.sideB, cbsGame.nameA, cbsGame.nameB) : null;
+
   const seed = {
     matchup: cbsGame.matchup,
     sport: cbsGame.sport,
     sideA: cbsGame.sideA,
     sideB: cbsGame.sideB,
-    lines: [{
-      book: 'CBS',
-      value: cbsGame.spreadCurrent,
-      // Left undefined (not silently set to spreadCurrent) when CBS's
-      // openingLines column didn't parse -- the app treats a confirmed
-      // open differently from an unknown one, so this must never look
-      // like "open equals current" when we simply don't know the open.
-      ...(cbsGame.spreadOpen !== null ? { open: cbsGame.spreadOpen } : {}),
-      // The real date this game first got a spread, per this repo's own git
-      // history -- lets the client backfill a lost/never-confirmed open to
-      // its true date instead of guessing from whatever's left in
-      // localStorage (which can be completely wiped for a given browser).
-      ...(firstSeenTs !== undefined ? { openTimestamp: firstSeenTs } : {}),
-    }],
+    lines: [
+      {
+        book: 'CBS',
+        value: cbsGame.spreadCurrent,
+        // Left undefined (not silently set to spreadCurrent) when CBS's
+        // openingLines column didn't parse -- the app treats a confirmed
+        // open differently from an unknown one, so this must never look
+        // like "open equals current" when we simply don't know the open.
+        ...(cbsGame.spreadOpen !== null ? { open: cbsGame.spreadOpen } : {}),
+        // The real date this game first got a spread, per this repo's own
+        // git history -- lets the client backfill a lost/never-confirmed
+        // open to its true date instead of guessing from whatever's left in
+        // localStorage (which can be completely wiped for a given browser).
+        ...openMeta,
+      },
+      // A second, independent line straight from real sportsbooks (MGM,
+      // DraftKings, Bet365, WilliamHill, FanDuel, averaged) -- lets CBS's
+      // and SBD's own line movement be cross-checked against each other
+      // instead of trusting a single source.
+      ...(sbd && sbd.spreadCurrent !== undefined ? [{
+        book: 'SBD',
+        value: sbd.spreadCurrent,
+        ...(sbd.spreadOpen !== undefined ? { open: sbd.spreadOpen } : {}),
+        ...openMeta,
+      }] : []),
+    ],
   };
   const kickoff = formatKickoffCentral(cbsGame.kickoffISO);
   if (kickoff) {
@@ -98,9 +113,8 @@ function buildSeedGame(cbsGame, splits, top25, startersOutByTeam, firstSeenMap) 
     seed.kickoffTs = Date.parse(cbsGame.kickoffISO);
   }
   if (cbsGame.score) seed.score = cbsGame.score;
-  if (splits) {
-    const pct = findSplitForGame(splits, cbsGame.sideA, cbsGame.sideB, cbsGame.nameA, cbsGame.nameB);
-    if (pct !== null && pct !== undefined) seed.public = Math.round(pct * 10) / 10;
+  if (sbd && sbd.pctAway !== undefined) {
+    seed.public = Math.round(sbd.pctAway * 10) / 10;
   }
 
   if (startersOutByTeam) {
@@ -140,11 +154,11 @@ async function run() {
       continue;
     }
 
-    let splits = null;
+    let sbdData = null;
     try {
-      splits = await fetchBettingSplits(source.sport);
+      sbdData = await fetchSbdData(source.sport);
     } catch (e) {
-      console.error(`[${source.sport}] SportsBettingDime fetch failed (continuing without public%):`, e.message);
+      console.error(`[${source.sport}] SportsBettingDime fetch failed (continuing without public% or its line):`, e.message);
     }
 
     let top25 = null;
@@ -164,7 +178,7 @@ async function run() {
         skipped.push(g.matchup);
         continue;
       }
-      allSeeds.push(buildSeedGame(g, splits, top25, startersOutByTeam, firstSeenMap));
+      allSeeds.push(buildSeedGame(g, sbdData, top25, startersOutByTeam, firstSeenMap));
     }
   }
 

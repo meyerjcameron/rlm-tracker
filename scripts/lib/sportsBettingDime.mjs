@@ -14,12 +14,33 @@ const ENDPOINTS = {
   CFB: `https://www.sportsbettingdime.com/wp-json/adpt/v1/ncaafb-odds?books=${encodeURIComponent(BOOKS)}&format=us`,
 };
 
-// Returns { byAbbrev, bySchool }, each a Map of "AWAY@HOME" -> { pctAway, pctHome }
-// (bet-count %, i.e. "Public Bet" -- not the money/stake %). Keyed two ways
-// since CBS and SBD don't always spell the same team's code the same way
-// (worse for the ~130 CFB teams than NFL's 32), but "market" (school name,
-// e.g. "Syracuse") matches CBS's own team name far more reliably.
-export async function fetchBettingSplits(sport) {
+function toNum(v) {
+  const n = parseFloat(v);
+  return Number.isNaN(n) ? null : n;
+}
+
+function average(arr) {
+  return arr.reduce((a, b) => a + b, 0) / arr.length;
+}
+
+// Returns { byAbbrev, bySchool }, each a Map of "AWAY@HOME" -> an entry with
+// whichever of these SBD actually had for that game:
+//   pctAway         -- bet-count % on the away side (i.e. "Public Bet", not
+//                       the money/stake %), averaged across MGM/DraftKings/
+//                       Bet365/WilliamHill/FanDuel. Verified against a real
+//                       screenshot of CBS's own (otherwise unscrapable)
+//                       app-only "Public Bet" gauge and matched to the tenth
+//                       of a percent.
+//   spreadCurrent,
+//   spreadOpen      -- the away side's current/opening spread, averaged
+//                       across those same five real sportsbooks -- a second,
+//                       independent line source from CBS's, so the two can
+//                       be cross-checked against each other in the app.
+// Keyed two ways since CBS and SBD don't always spell the same team's code
+// the same way (worse for the ~130 CFB teams than NFL's 32), but "market"
+// (school name, e.g. "Syracuse") matches CBS's own team name far more
+// reliably.
+export async function fetchSbdData(sport) {
   const url = ENDPOINTS[sport];
   if (!url) return { byAbbrev: new Map(), bySchool: new Map() };
   const res = await fetch(url, { headers: { 'User-Agent': UA } });
@@ -29,16 +50,28 @@ export async function fetchBettingSplits(sport) {
   const byAbbrev = new Map();
   const bySchool = new Map();
   (data.data || []).forEach((g) => {
-    const split = g.bettingSplits && g.bettingSplits.spread;
     const away = g.competitors && g.competitors.away;
     const home = g.competitors && g.competitors.home;
-    if (!split || !away || !home) return;
-    const value = { pctAway: split.away.betsPercentage, pctHome: split.home.betsPercentage };
+    if (!away || !home) return;
+
+    const entry = {};
+    const split = g.bettingSplits && g.bettingSplits.spread;
+    if (split) entry.pctAway = split.away.betsPercentage;
+
+    const spreadBooks = g.markets && g.markets.spread && g.markets.spread.books;
+    if (spreadBooks && spreadBooks.length) {
+      const currents = spreadBooks.map((b) => toNum(b.away.spread)).filter((n) => n !== null);
+      const opens = spreadBooks.map((b) => toNum(b.away.opening_spread)).filter((n) => n !== null);
+      if (currents.length) entry.spreadCurrent = average(currents);
+      if (opens.length) entry.spreadOpen = average(opens);
+    }
+    if (!Object.keys(entry).length) return;
+
     if (away.abbreviation && home.abbreviation) {
-      byAbbrev.set(`${away.abbreviation.toUpperCase()}@${home.abbreviation.toUpperCase()}`, value);
+      byAbbrev.set(`${away.abbreviation.toUpperCase()}@${home.abbreviation.toUpperCase()}`, entry);
     }
     if (away.market && home.market) {
-      bySchool.set(`${canonicalSchool(away.market)}@${canonicalSchool(home.market)}`, value);
+      bySchool.set(`${canonicalSchool(away.market)}@${canonicalSchool(home.market)}`, entry);
     }
   });
   return { byAbbrev, bySchool };
@@ -48,12 +81,12 @@ export async function fetchBettingSplits(sport) {
 const ABBREV_ALIASES = { JAC: 'JAX', LAR: 'LA' };
 const alias = (code) => ABBREV_ALIASES[code] || code;
 
-export function findSplitForGame(splits, sideA, sideB, nameA, nameB) {
-  const byAbbrevEntry = splits.byAbbrev.get(`${alias(sideA)}@${alias(sideB)}`);
-  if (byAbbrevEntry) return byAbbrevEntry.pctAway;
+export function findSbdEntry(sbdData, sideA, sideB, nameA, nameB) {
+  const byAbbrevEntry = sbdData.byAbbrev.get(`${alias(sideA)}@${alias(sideB)}`);
+  if (byAbbrevEntry) return byAbbrevEntry;
   if (nameA && nameB) {
-    const bySchoolEntry = splits.bySchool.get(`${canonicalSchool(nameA)}@${canonicalSchool(nameB)}`);
-    if (bySchoolEntry) return bySchoolEntry.pctAway;
+    const bySchoolEntry = sbdData.bySchool.get(`${canonicalSchool(nameA)}@${canonicalSchool(nameB)}`);
+    if (bySchoolEntry) return bySchoolEntry;
   }
   return null;
 }
