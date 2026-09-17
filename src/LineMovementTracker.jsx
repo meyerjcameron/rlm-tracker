@@ -65,6 +65,12 @@ function roundToHalfPoint(n) {
   return Math.round(n * 2) / 2;
 }
 
+// "Moved 2 pts" reads better than "moved 2.0 pts" -- only show a decimal
+// when the movement is actually a half point.
+function formatMagnitude(n) {
+  return Number.isInteger(n) ? `${n}` : n.toFixed(1);
+}
+
 function formatValue(market, v) {
   const n = Number(v);
   if (Number.isNaN(n)) return '—';
@@ -214,7 +220,7 @@ function getCombinedStats(game) {
     displaySide,
     favoriteSide,
     movementSide: side,
-    magnitude: Math.abs(d),
+    magnitude: Math.abs(roundToHalfPoint(avgCur) - roundToHalfPoint(avgOpen)),
     rangeMin: Math.min(...curs),
     rangeMax: Math.max(...curs),
   };
@@ -226,7 +232,7 @@ function getBookMovementMagnitude(game, book) {
   if (game.market === 'moneyline') {
     return Math.abs(impliedProb(oc.current.valueA) - impliedProb(oc.open.valueA)) * 100;
   }
-  return Math.abs(oc.current.valueA - oc.open.valueA);
+  return Math.abs(roundToHalfPoint(oc.current.valueA) - roundToHalfPoint(oc.open.valueA));
 }
 
 function getPublicMajority(game) {
@@ -1048,7 +1054,7 @@ export default function LineMovementTracker() {
                       <div className="rlmw-stat-label">Current (avg)</div>
                       <div className="rlmw-stat-value">{teamForSide(game, combined.displaySide)} {combined.currentDisplay}</div>
                       {game.market === 'spread' && combined.magnitude > 0 && (
-                        <div className="rlmw-stat-move">moved {combined.magnitude.toFixed(1)} pts</div>
+                        <div className="rlmw-stat-move">moved {formatMagnitude(combined.magnitude)} pts</div>
                       )}
                     </div>
                   </div>
@@ -1130,7 +1136,7 @@ export default function LineMovementTracker() {
                       <div className="rlmw-stat-value">{teamForSide(game, bookDisplaySide)} {formatValue(game.market, bookSign * bookOC.current.valueA)}</div>
                       <div className="rlmw-stat-date">{formatDate(bookOC.current.timestamp)}</div>
                       {game.market === 'spread' && getBookMovementMagnitude(game, view) > 0 && (
-                        <div className="rlmw-stat-move">moved {getBookMovementMagnitude(game, view).toFixed(1)} pts</div>
+                        <div className="rlmw-stat-move">moved {formatMagnitude(getBookMovementMagnitude(game, view))} pts</div>
                       )}
                     </div>
                   </div>
@@ -1294,7 +1300,7 @@ export default function LineMovementTracker() {
                       <td className="rlmw-mono">{formatScore(game) || '—'}</td>
                       <td className="rlmw-mono">{combined ? `${teamForSide(game, combined.displaySide)} ${combined.openDisplay}` : '—'}</td>
                       <td className="rlmw-mono">{combined ? `${teamForSide(game, combined.displaySide)} ${combined.currentDisplay}` : '—'}</td>
-                      <td className="rlmw-mono">{combined ? combined.magnitude.toFixed(1) : '—'}</td>
+                      <td className="rlmw-mono">{combined ? formatMagnitude(combined.magnitude) : '—'}</td>
                       <td>
                         <div className="rlmw-result-pills">
                           {['win', 'loss', 'push'].map((r) => (
