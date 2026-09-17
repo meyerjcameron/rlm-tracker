@@ -280,6 +280,20 @@ function getHistoryItems(game) {
   ].sort((a, b) => a.timestamp - b.timestamp);
 }
 
+// A public% row only logs a new line snapshot when the line also moved (see
+// the merge logic), so on its own it doesn't say what the line was at that
+// check. Carry forward each book's most recent value as of that timestamp
+// so every public row still shows the line alongside it.
+function lineTextAsOf(game, ts) {
+  const books = getBookList(game);
+  const parts = books.map((b) => {
+    const snap = getBookSnaps(game, b).filter((s) => s.timestamp <= ts).pop();
+    if (!snap) return null;
+    return `${b}: ${formatFavoriteValue(game, snap.valueA, historyLineSide(game, b))}`;
+  }).filter(Boolean);
+  return parts.length ? parts.join(', ') : null;
+}
+
 function migrateGame(g) {
   if (Array.isArray(g.lineSnapshots) && Array.isArray(g.publicSnapshots)) return g;
   const old = g.snapshots || [];
@@ -1062,7 +1076,7 @@ export default function LineMovementTracker() {
                       <span>
                         {item.kind === 'line'
                           ? `${item.book}: ${formatFavoriteValue(game, item.valueA, historyLineSide(game, item.book))}`
-                          : `Public: ${formatPct(item.publicPctA)}% / ${formatPct(100 - item.publicPctA)}%`}
+                          : `${lineTextAsOf(game, item.timestamp) ? `${lineTextAsOf(game, item.timestamp)} · ` : ''}Public: ${formatPct(item.publicPctA)}% / ${formatPct(100 - item.publicPctA)}%`}
                       </span>
                       <button
                         className="rlmw-icon-btn"
@@ -1206,7 +1220,7 @@ export default function LineMovementTracker() {
                                 <span>
                                   {item.kind === 'line'
                                     ? `${item.book}: ${formatFavoriteValue(game, item.valueA, historyLineSide(game, item.book))}`
-                                    : `Public: ${formatPct(item.publicPctA)}% / ${formatPct(100 - item.publicPctA)}%`}
+                                    : `${lineTextAsOf(game, item.timestamp) ? `${lineTextAsOf(game, item.timestamp)} · ` : ''}Public: ${formatPct(item.publicPctA)}% / ${formatPct(100 - item.publicPctA)}%`}
                                 </span>
                                 <button
                                   className="rlmw-icon-btn"
