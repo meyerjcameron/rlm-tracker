@@ -223,6 +223,24 @@ function getPublicMajority(game) {
   return null;
 }
 
+// Grades the "pick" implied by line movement (whichever side the line moved
+// toward) against the spread using the real final score -- no manual W/L/P
+// entry needed. This is what feeds the Season Journal's RLM/Chalk record;
+// game.result still lets you override a specific game if this ever gets a
+// score or line wrong.
+function computeAtsResult(game) {
+  if (!game.score || game.market !== 'spread') return null;
+  const combined = getCombinedStats(game);
+  if (!combined || !combined.movementSide) return null;
+  const books = getBookList(game);
+  if (!books.length) return null;
+  const avgClose = average(books.map((b) => bookOpenCurrent(game, b).current.valueA));
+  const adjustedA = game.score.a + avgClose;
+  if (adjustedA === game.score.b) return 'push';
+  const coverSide = adjustedA > game.score.b ? 'A' : 'B';
+  return coverSide === combined.movementSide ? 'win' : 'loss';
+}
+
 function isFlagged(game, view) {
   const majority = getPublicMajority(game);
   if (!majority) return false;
@@ -661,20 +679,23 @@ export default function LineMovementTracker() {
   const liveGames = bySport.filter((g) => !g.finished);
   const finishedGames = [...bySport.filter((g) => g.finished)].sort((a, b) => (b.finishedAt || 0) - (a.finishedAt || 0));
 
-  // Season journal: every graded finished game (result picked) with a real
-  // line movement and a known public side gets bucketed as RLM (the line
-  // moved against the public) or Chalk (the line moved with the public) --
-  // games with no movement, or no public data, can't be classified either
-  // way and are left out of both records.
+  // Season journal: every finished game with a real line movement and a
+  // known public side gets bucketed as RLM (the line moved against the
+  // public) or Chalk (the line moved with the public) -- games with no
+  // movement, or no public data, can't be classified either way and are
+  // left out of both records. Graded automatically off the final score
+  // (computeAtsResult); g.result only overrides a specific game if that
+  // ever needs a manual correction.
   const rlmRecord = { win: 0, loss: 0, push: 0 };
   const chalkRecord = { win: 0, loss: 0, push: 0 };
   finishedGames.forEach((g) => {
-    if (!g.result) return;
+    const result = g.result ?? computeAtsResult(g);
+    if (!result) return;
     const combined = getCombinedStats(g);
     const majority = getPublicMajority(g);
     if (!combined || !combined.movementSide || !majority) return;
     const bucket = combined.movementSide !== majority ? rlmRecord : chalkRecord;
-    bucket[g.result] += 1;
+    bucket[result] += 1;
   });
   let filteredGames = liveGames;
   if (onlyChanged) filteredGames = filteredGames.filter(gameHasLineChange);
@@ -1200,6 +1221,7 @@ export default function LineMovementTracker() {
                     : null;
                   const historyItems = getHistoryItems(game);
                   const isExpanded = !!expanded[game.id];
+                  const effectiveResult = game.result ?? computeAtsResult(game);
                   return (
                     <React.Fragment key={game.id}>
                     <tr>
@@ -1217,7 +1239,7 @@ export default function LineMovementTracker() {
                           {['win', 'loss', 'push'].map((r) => (
                             <button
                               key={r}
-                              className={`rlmw-result-pill ${game.result === r ? `active-${r}` : ''}`}
+                              className={`rlmw-result-pill ${effectiveResult === r ? `active-${r}` : ''}`}
                               onClick={() => setGameResult(game.id, r)}
                               aria-label={`Mark ${r}`}
                             >
