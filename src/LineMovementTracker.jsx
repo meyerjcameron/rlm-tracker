@@ -901,6 +901,7 @@ export default function LineMovementTracker() {
         .rlmw-save-error { color:var(--red); font-size:12px; margin-top:10px; }
         .rlmw-sport-tag { font-size:11px; color:var(--muted); border:1px solid var(--border); padding:2px 7px; border-radius:4px; white-space:nowrap; }
         .rlmw-journal { margin-top:36px; max-width:520px; }
+        .rlmw-journal-note { font-size:10.5px; color:var(--faint); margin-bottom:10px; }
         .rlmw-journal-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
         .rlmw-journal-card { background:var(--card-bg); border:1px solid var(--border); border-radius:8px; padding:16px; border-top-width:3px; border-top-style:solid; }
         .rlmw-journal-card--rlm { border-top-color:var(--green); }
@@ -1292,6 +1293,7 @@ export default function LineMovementTracker() {
       {(rlmRecord.win + rlmRecord.loss + rlmRecord.push + chalkRecord.win + chalkRecord.loss + chalkRecord.push) > 0 && (
         <div className="rlmw-journal">
           <div className="rlmw-final-heading">Season Journal</div>
+          <div className="rlmw-journal-note">(started tracking Week 2)</div>
           <div className="rlmw-journal-grid">
             <div className="rlmw-journal-card rlmw-journal-card--rlm">
               <div className="rlmw-journal-label">RLM plays</div>
