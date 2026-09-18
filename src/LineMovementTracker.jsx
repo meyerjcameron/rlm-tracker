@@ -110,6 +110,27 @@ function formatScore(game) {
   return `${game.sideA} ${game.score.a} - ${game.score.b} ${game.sideB}${game.score.ot ? ' (OT)' : ''}`;
 }
 
+// Buckets a kickoff into its NFL/CFB "week" -- weeks run Tuesday-to-Monday
+// (the day after Monday Night Football through the following Monday),
+// identified by the Tuesday 00:00 Central that starts it.
+function weekBucketStart(ts) {
+  const central = new Date(new Date(ts).toLocaleString('en-US', { timeZone: 'America/Chicago' }));
+  const daysSinceTuesday = (central.getDay() - 2 + 7) % 7;
+  central.setHours(0, 0, 0, 0);
+  central.setDate(central.getDate() - daysSinceTuesday);
+  return central.getTime();
+}
+
+// Numbers each unique week bucket among the given games sequentially from 1
+// (earliest), so labels read "Week 1", "Week 2" regardless of what the
+// season's actual calendar dates are.
+function weekNumbersFor(games) {
+  const buckets = [...new Set(games.filter((g) => g.kickoffTs != null).map((g) => weekBucketStart(g.kickoffTs)))].sort((a, b) => a - b);
+  const map = new Map();
+  buckets.forEach((b, i) => map.set(b, i + 1));
+  return map;
+}
+
 function valueLabel(market) {
   if (market === 'moneyline') return 'Odds';
   if (market === 'total') return 'Total';
@@ -382,6 +403,7 @@ export default function LineMovementTracker() {
   const [cfbFilter, setCfbFilter] = useState('ALL');
   const [expanded, setExpanded] = useState({});
   const [injuryExpanded, setInjuryExpanded] = useState({});
+  const [expandedWeeks, setExpandedWeeks] = useState({});
   const [selectedView, setSelectedView] = useState({});
   const [theme, setTheme] = useState(() => {
     try {
@@ -719,6 +741,24 @@ export default function LineMovementTracker() {
   const liveGames = bySport.filter((g) => !g.finished);
   const finishedGames = [...bySport.filter((g) => g.finished)].sort((a, b) => (b.finishedAt || 0) - (a.finishedAt || 0));
 
+  // Week numbers come from every tracked game for this sport (live +
+  // finished), not just finished ones, so numbering stays stable as the
+  // season progresses instead of shifting once a week's games all finish.
+  const weekNumberByBucket = weekNumbersFor(bySport);
+  const finishedWeekGroups = [];
+  const finishedWeekGroupByNum = new Map();
+  finishedGames.forEach((g) => {
+    const weekNum = g.kickoffTs != null ? weekNumberByBucket.get(weekBucketStart(g.kickoffTs)) : null;
+    const key = weekNum ?? 'unknown';
+    if (!finishedWeekGroupByNum.has(key)) {
+      const group = { weekNum, games: [] };
+      finishedWeekGroupByNum.set(key, group);
+      finishedWeekGroups.push(group);
+    }
+    finishedWeekGroupByNum.get(key).games.push(g);
+  });
+  finishedWeekGroups.sort((a, b) => (b.weekNum ?? -1) - (a.weekNum ?? -1));
+
   // Season journal: every finished game with a real line movement and a
   // known public side gets bucketed as RLM (the line moved against the
   // public) or Chalk (the line moved with the public) -- games with no
@@ -870,6 +910,9 @@ export default function LineMovementTracker() {
         .rlmw-journal-pct { font-size:12px; color:var(--muted); margin-top:4px; }
         .rlmw-final-section { margin-top:36px; max-width:760px; }
         .rlmw-final-heading { font-family:'Bebas Neue', sans-serif; font-size:20px; letter-spacing:0.3px; color:var(--muted); margin-bottom:10px; }
+        .rlmw-week-group { margin-bottom:14px; }
+        .rlmw-week-toggle { display:flex; align-items:center; gap:6px; width:100%; background:var(--card-bg); border:1px solid var(--border); color:var(--text); font-size:14px; font-weight:600; padding:10px 14px; border-radius:8px; cursor:pointer; font-family:inherit; margin-bottom:8px; }
+        .rlmw-week-toggle:hover { border-color:var(--accent); }
         .rlmw-final-table-wrap { overflow-x:auto; border:1px solid var(--border); border-radius:8px; }
         .rlmw-final-table { width:100%; border-collapse:collapse; font-size:13px; }
         .rlmw-final-table th { text-align:left; color:var(--muted); font-weight:600; font-size:10.5px; text-transform:uppercase; letter-spacing:0.4px; padding:10px 12px; border-bottom:1px solid var(--border); background:var(--card-bg); white-space:nowrap; }
@@ -1267,6 +1310,19 @@ export default function LineMovementTracker() {
       {finishedGames.length > 0 && (
         <div className="rlmw-final-section">
           <div className="rlmw-final-heading">Finished ({finishedGames.length})</div>
+          {finishedWeekGroups.map((group, idx) => {
+            const weekKey = group.weekNum ?? 'unknown';
+            const isWeekOpen = expandedWeeks[weekKey] !== undefined ? expandedWeeks[weekKey] : idx === 0;
+            return (
+              <div key={weekKey} className="rlmw-week-group">
+                <button
+                  className="rlmw-week-toggle"
+                  onClick={() => setExpandedWeeks((p) => ({ ...p, [weekKey]: !isWeekOpen }))}
+                >
+                  <ChevronDown size={14} style={{ transform: isWeekOpen ? 'rotate(180deg)' : 'none' }} />
+                  {group.weekNum ? `Week ${group.weekNum}` : 'Other'} ({group.games.length})
+                </button>
+                {isWeekOpen && (
           <div className="rlmw-final-table-wrap">
             <table className="rlmw-final-table">
               <thead>
@@ -1281,7 +1337,7 @@ export default function LineMovementTracker() {
                 </tr>
               </thead>
               <tbody>
-                {finishedGames.map((game) => {
+                {group.games.map((game) => {
                   const combined = getCombinedStats(game);
                   const sharpSide = combined && combined.movementSide
                     ? (combined.movementSide === 'A' ? game.sideA : game.sideB)
@@ -1364,6 +1420,10 @@ export default function LineMovementTracker() {
               </tbody>
             </table>
           </div>
+                )}
+              </div>
+            );
+          })}
         </div>
       )}
     </div>
