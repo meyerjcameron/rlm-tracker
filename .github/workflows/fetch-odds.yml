@@ -2,11 +2,12 @@ name: Fetch odds
 
 on:
   schedule:
-    # Fires at both possible UTC offsets for 7am/noon/7pm Central (CDT is
-    # UTC-5, CST is UTC-6) -- the "Check Central time" step below skips the
-    # run entirely except at the one that's actually correct right now, so
-    # this stays accurate through the DST switch with no manual update.
-    - cron: '0 12,13,17,18,0,1 * * *'
+    # Two attempts, 15 minutes apart, at each of the two possible UTC
+    # offsets for 7am/noon/7pm Central (CDT is UTC-5, CST is UTC-6).
+    # GitHub's schedule trigger is best-effort and can silently drop an
+    # individual firing under load -- a second attempt close behind
+    # catches that without doing the work twice (see "Check if due" below).
+    - cron: '0,15 12,13,17,18,0,1 * * *'
   workflow_dispatch: {}
 
 permissions:
@@ -16,24 +17,32 @@ jobs:
   fetch:
     runs-on: ubuntu-latest
     steps:
-      - name: Check Central time
-        id: gate
-        run: |
-          hour=$(TZ="America/Chicago" date +%H)
-          if [ "$hour" = "07" ] || [ "$hour" = "12" ] || [ "$hour" = "19" ]; then
-            echo "should_run=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "should_run=false" >> "$GITHUB_OUTPUT"
-            echo "Skipping -- it's $hour:00 Central, not one of 7am/noon/7pm"
-          fi
-
       - uses: actions/checkout@v4
-        if: steps.gate.outputs.should_run == 'true' || github.event_name == 'workflow_dispatch'
         with:
           # Full history, not the default shallow clone -- run.mjs walks
           # past commits of seed-games.json to recover each game's true
-          # first-seen date for the client's open-date backfill.
+          # first-seen date for the client's open-date backfill, and the
+          # gate step below reads the last commit's time.
           fetch-depth: 0
+
+      - name: Check if due
+        id: gate
+        run: |
+          hour=$(TZ="America/Chicago" date +%H)
+          if [ "$hour" != "07" ] && [ "$hour" != "12" ] && [ "$hour" != "19" ]; then
+            echo "should_run=false" >> "$GITHUB_OUTPUT"
+            echo "Skipping -- it's $hour:00 Central, not one of 7am/noon/7pm"
+            exit 0
+          fi
+          last_epoch=$(git log -1 --format=%ct -- public/seed-games.json)
+          now_epoch=$(date +%s)
+          elapsed_min=$(( (now_epoch - last_epoch) / 60 ))
+          if [ "$elapsed_min" -lt 50 ]; then
+            echo "should_run=false" >> "$GITHUB_OUTPUT"
+            echo "Skipping -- already updated $elapsed_min minute(s) ago (this is the redundant backup attempt)"
+          else
+            echo "should_run=true" >> "$GITHUB_OUTPUT"
+          fi
 
       - uses: actions/setup-node@v4
         if: steps.gate.outputs.should_run == 'true' || github.event_name == 'workflow_dispatch'
