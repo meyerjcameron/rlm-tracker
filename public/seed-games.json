@@ -565,6 +565,34 @@
     ]
   },
   {
+    "matchup": "UNC @ CLEM",
+    "sport": "CFB",
+    "sideA": "UNC",
+    "sideB": "CLEM",
+    "lines": [
+      {
+        "book": "CBS",
+        "value": 3.5,
+        "open": 9.5,
+        "openTimestamp": 1789424472000
+      },
+      {
+        "book": "SBD",
+        "value": 3,
+        "open": 6,
+        "openTimestamp": 1789424472000
+      }
+    ],
+    "kickoff": "Sat, Sep 19, 2026 · 11:00 AM CT",
+    "kickoffTs": 1789833600000,
+    "public": 49.1,
+    "handlePublic": 29,
+    "conferences": [
+      "ACC",
+      "ACC"
+    ]
+  },
+  {
     "matchup": "MERCER @ GATECH",
     "sport": "CFB",
     "sideA": "MERCER",
@@ -1139,12 +1167,14 @@
       {
         "book": "CBS",
         "value": 58.5,
-        "open": 58.5
+        "open": 58.5,
+        "openTimestamp": 1789736369000
       },
       {
         "book": "SBD",
         "value": 58.5,
-        "open": 58.5
+        "open": 58.5,
+        "openTimestamp": 1789736369000
       }
     ],
     "kickoff": "Sat, Sep 19, 2026 · 2:30 PM CT",
@@ -2129,12 +2159,14 @@
       {
         "book": "CBS",
         "value": 24,
-        "open": 22.5
+        "open": 22.5,
+        "openTimestamp": 1789736369000
       },
       {
         "book": "SBD",
         "value": 24,
-        "open": 23
+        "open": 23,
+        "openTimestamp": 1789736369000
       }
     ],
     "kickoff": "Sat, Sep 19, 2026 · 9:00 PM CT",
