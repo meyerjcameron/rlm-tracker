@@ -214,8 +214,18 @@ function getCombinedStats(game) {
       magnitude: Math.abs(d) * 100,
     };
   }
-  const opens = books.map((b) => bookOpenCurrent(game, b).open.valueA);
-  const curs = books.map((b) => bookOpenCurrent(game, b).current.valueA);
+  const allCurs = books.map((b) => bookOpenCurrent(game, b).current.valueA);
+
+  // A book with only one snapshot never had a real recorded open -- that
+  // single value gets used as both its "open" and "current", which would
+  // otherwise anchor the combined open average near current price and
+  // dilute (or fully mask) real movement a book with genuine history
+  // shows. Prefer books with real open-to-current history for open/
+  // current/movement; fall back to every book only when none has one yet.
+  const withHistory = books.filter((b) => getBookSnaps(game, b).length >= 2);
+  const movementBooks = withHistory.length ? withHistory : books;
+  const opens = movementBooks.map((b) => bookOpenCurrent(game, b).open.valueA);
+  const curs = movementBooks.map((b) => bookOpenCurrent(game, b).current.valueA);
   const avgOpen = average(opens);
   const avgCur = average(curs);
   const d = avgCur - avgOpen;
@@ -242,8 +252,8 @@ function getCombinedStats(game) {
     favoriteSide,
     movementSide: side,
     magnitude: Math.abs(roundToHalfPoint(avgCur) - roundToHalfPoint(avgOpen)),
-    rangeMin: Math.min(...curs),
-    rangeMax: Math.max(...curs),
+    rangeMin: Math.min(...allCurs),
+    rangeMax: Math.max(...allCurs),
   };
 }
 
