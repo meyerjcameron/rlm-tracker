@@ -37,6 +37,16 @@ const ALIASES = {
   'w michigan': 'western michigan',
   'w kentucky': 'western kentucky',
   'miss state': 'mississippi state',
+  'n illinois': 'northern illinois',
+  'cent ark': 'central arkansas',
+  'uconn': 'connecticut',
+  'nc central': 'north carolina central',
+  'ga southern': 'georgia southern',
+  'so miss': 'southern miss',
+  'app state': 'appalachian state',
+  'ul monroe': 'louisiana monroe',
+  'umass': 'massachusetts',
+  'fau': 'florida atlantic',
 };
 
 export function canonicalSchool(name) {
