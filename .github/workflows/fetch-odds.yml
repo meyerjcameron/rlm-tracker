@@ -2,22 +2,20 @@ name: Fetch odds
 
 on:
   schedule:
-    # Baseline 3x/day (7am/noon/7pm Central), every day. Two attempts, 15
-    # minutes apart, at each of the two possible UTC offsets (CDT is
-    # UTC-5, CST is UTC-6) -- GitHub's schedule trigger is best-effort and
-    # can silently drop an individual firing under load, so a second
-    # attempt close behind catches that without doing the work twice (see
-    # "Check if due" below).
-    - cron: '0,15 12,13,17,18,0,1 * * *'
-    # Extra checks around when games actually finish, so a just-ended game
-    # doesn't sit showing as live for hours until the next baseline check.
-    # Central day-of-week/hour, both DST offsets, same two-attempt pattern:
-    #   Sat/Sun ~3pm (early-window games wrapping up)  -> UTC 20/21, Sat+Sun
-    #   Sat ~10pm (evening-window games wrapping up)    -> UTC 3/4, Sunday
-    #   Thu/Fri/Sun ~11pm (TNF/CFB-Fri/SNF wrapping up) -> UTC 4/5, Fri+Sat+Mon
-    - cron: '0,15 20,21 * * 0,6'
-    - cron: '0,15 3,4 * * 0'
-    - cron: '0,15 4,5 * * 1,5,6'
+    # GitHub's schedule trigger is best-effort and can drift by *hours*
+    # under load -- confirmed directly: a day's worth of runs that were
+    # supposed to land at 7am/noon/3pm/7pm Central instead fired at
+    # 10:45am/2:18pm/4:58pm/etc, 2-4 hours late every single time. Trying
+    # to gate on "is it currently one of these specific hours" was
+    # rejecting almost every real firing, since by the time GitHub actually
+    # ran it the clock had drifted into some other hour entirely.
+    #
+    # So this no longer targets specific times at all: it fires frequently
+    # (nominally every 20 minutes, though GitHub's own throttling means the
+    # real cadence is often much lower) and the gate below just checks how
+    # long it's actually been since the last real update, catching up
+    # immediately whenever GitHub does get around to running it.
+    - cron: '*/20 * * * *'
   workflow_dispatch: {}
 
 permissions:
@@ -38,23 +36,15 @@ jobs:
       - name: Check if due
         id: gate
         run: |
-          hour=$(TZ="America/Chicago" date +%H)
-          case "$hour" in
-            07|12|15|19|22|23) ;;
-            *)
-              echo "should_run=false" >> "$GITHUB_OUTPUT"
-              echo "Skipping -- it's $hour:00 Central, not a scheduled check time"
-              exit 0
-              ;;
-          esac
           last_epoch=$(git log -1 --format=%ct -- public/seed-games.json)
           now_epoch=$(date +%s)
           elapsed_min=$(( (now_epoch - last_epoch) / 60 ))
-          if [ "$elapsed_min" -lt 50 ]; then
+          if [ "$elapsed_min" -lt 90 ]; then
             echo "should_run=false" >> "$GITHUB_OUTPUT"
-            echo "Skipping -- already updated $elapsed_min minute(s) ago (this is the redundant backup attempt)"
+            echo "Skipping -- already updated $elapsed_min minute(s) ago (threshold: 90)"
           else
             echo "should_run=true" >> "$GITHUB_OUTPUT"
+            echo "Due -- last update was $elapsed_min minute(s) ago"
           fi
 
       - uses: actions/setup-node@v4
