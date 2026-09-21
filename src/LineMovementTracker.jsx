@@ -292,6 +292,17 @@ function computeAtsResult(game) {
   return coverSide === combined.movementSide ? 'win' : 'loss';
 }
 
+// True when the line moved against the public majority -- the definition
+// the Season Journal (and the Finished table's grading) uses to decide
+// whether a game is worth tracking at all. False for chalk (line moved
+// with the public) and for anything without enough data to classify.
+function isGameRlm(game) {
+  const combined = getCombinedStats(game);
+  const majority = getPublicMajority(game);
+  if (!combined || !combined.movementSide || !majority) return false;
+  return combined.movementSide !== majority;
+}
+
 function isFlagged(game, view) {
   const majority = getPublicMajority(game);
   if (!majority) return false;
@@ -786,12 +797,10 @@ export default function LineMovementTracker() {
   const rlmRecord = { win: 0, loss: 0, push: 0, games: [] };
   finishedGames.forEach((g) => {
     if (WEEK1_BACKFILLED_MATCHUPS.has(g.matchup.toLowerCase())) return;
+    if (!isGameRlm(g)) return;
     const result = g.result ?? computeAtsResult(g);
     if (!result) return;
     const combined = getCombinedStats(g);
-    const majority = getPublicMajority(g);
-    if (!combined || !combined.movementSide || !majority) return;
-    if (combined.movementSide === majority) return;
     rlmRecord[result] += 1;
     rlmRecord.games.push({ game: g, result, sharpSide: combined.movementSide === 'A' ? g.sideA : g.sideB });
   });
@@ -1390,7 +1399,7 @@ export default function LineMovementTracker() {
                     : null;
                   const historyItems = getHistoryItems(game);
                   const isExpanded = !!expanded[game.id];
-                  const effectiveResult = game.result ?? computeAtsResult(game);
+                  const effectiveResult = isGameRlm(game) ? (game.result ?? computeAtsResult(game)) : null;
                   return (
                     <React.Fragment key={game.id}>
                     <tr>
