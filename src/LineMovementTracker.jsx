@@ -777,15 +777,13 @@ export default function LineMovementTracker() {
   });
   finishedWeekGroups.sort((a, b) => (b.weekNum ?? -1) - (a.weekNum ?? -1));
 
-  // Season journal: every finished game with a real line movement and a
-  // known public side gets bucketed as RLM (the line moved against the
-  // public) or Chalk (the line moved with the public) -- games with no
-  // movement, or no public data, can't be classified either way and are
-  // left out of both records. Graded automatically off the final score
-  // (computeAtsResult); g.result only overrides a specific game if that
-  // ever needs a manual correction.
+  // Season journal: every finished game with a real line movement against
+  // the known public side gets tracked as an RLM play -- games with no
+  // movement, no public data, or where the line moved *with* the public
+  // (chalk) aren't what this journal is for and are left out. Graded
+  // automatically off the final score (computeAtsResult); g.result only
+  // overrides a specific game if that ever needs a manual correction.
   const rlmRecord = { win: 0, loss: 0, push: 0, games: [] };
-  const chalkRecord = { win: 0, loss: 0, push: 0, games: [] };
   finishedGames.forEach((g) => {
     if (WEEK1_BACKFILLED_MATCHUPS.has(g.matchup.toLowerCase())) return;
     const result = g.result ?? computeAtsResult(g);
@@ -793,9 +791,9 @@ export default function LineMovementTracker() {
     const combined = getCombinedStats(g);
     const majority = getPublicMajority(g);
     if (!combined || !combined.movementSide || !majority) return;
-    const bucket = combined.movementSide !== majority ? rlmRecord : chalkRecord;
-    bucket[result] += 1;
-    bucket.games.push({ game: g, result, sharpSide: combined.movementSide === 'A' ? g.sideA : g.sideB });
+    if (combined.movementSide === majority) return;
+    rlmRecord[result] += 1;
+    rlmRecord.games.push({ game: g, result, sharpSide: combined.movementSide === 'A' ? g.sideA : g.sideB });
   });
   let filteredGames = liveGames;
   if (onlyChanged) filteredGames = filteredGames.filter(gameHasLineChange);
@@ -921,10 +919,9 @@ export default function LineMovementTracker() {
         .rlmw-sport-tag { font-size:11px; color:var(--muted); border:1px solid var(--border); padding:2px 7px; border-radius:4px; white-space:nowrap; }
         .rlmw-journal { margin-top:36px; max-width:520px; }
         .rlmw-journal-note { font-size:10.5px; color:var(--faint); margin-bottom:10px; }
-        .rlmw-journal-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+        .rlmw-journal-grid { display:grid; grid-template-columns:minmax(0, 260px); gap:14px; }
         .rlmw-journal-card { background:var(--card-bg); border:1px solid var(--border); border-radius:8px; padding:16px; border-top-width:3px; border-top-style:solid; }
         .rlmw-journal-card--rlm { border-top-color:var(--green); }
-        .rlmw-journal-card--chalk { border-top-color:var(--blue-strong); }
         .rlmw-journal-label { font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; margin-bottom:6px; }
         .rlmw-journal-record { font-family:'IBM Plex Mono', monospace; font-size:24px; font-weight:700; color:var(--text); }
         .rlmw-journal-pct { font-size:12px; color:var(--muted); margin-top:4px; }
@@ -1320,41 +1317,38 @@ export default function LineMovementTracker() {
         })}
       </div>
 
-      {(rlmRecord.win + rlmRecord.loss + rlmRecord.push + chalkRecord.win + chalkRecord.loss + chalkRecord.push) > 0 && (
+      {(rlmRecord.win + rlmRecord.loss + rlmRecord.push) > 0 && (
         <div className="rlmw-journal">
           <div className="rlmw-final-heading">Season Journal</div>
           <div className="rlmw-journal-note">(started tracking Week 2)</div>
           <div className="rlmw-journal-grid">
-            {[{ key: 'rlm', label: 'RLM plays', record: rlmRecord }, { key: 'chalk', label: 'Chalk plays', record: chalkRecord }].map(({ key, label, record }) => (
-              <div
-                key={key}
-                className={`rlmw-journal-card rlmw-journal-card--${key} ${record.games.length ? 'rlmw-journal-card--clickable' : ''}`}
-                onClick={() => record.games.length && setJournalExpanded((p) => ({ ...p, [key]: !p[key] }))}
-              >
-                <div className="rlmw-journal-label">{label}</div>
-                <div className="rlmw-journal-record">{record.win}-{record.loss}-{record.push}</div>
-                {recordWinPct(record) !== null && <div className="rlmw-journal-pct">{recordWinPct(record)}% win rate</div>}
-                {record.games.length > 0 && (
-                  <div className="rlmw-journal-toggle">
-                    <ChevronDown size={12} style={{ transform: journalExpanded[key] ? 'rotate(180deg)' : 'none' }} />
-                    {journalExpanded[key] ? 'Hide bets' : 'Show bets'}
-                  </div>
-                )}
-                {journalExpanded[key] && (
-                  <div className="rlmw-journal-bets" onClick={(e) => e.stopPropagation()}>
-                    {record.games.map(({ game, result, sharpSide }) => (
-                      <div key={game.id} className="rlmw-journal-bet-row">
-                        <div className="rlmw-journal-bet-name">{game.matchup}</div>
-                        <div className="rlmw-journal-bet-detail">{formatScore(game) || '—'} &middot; bet {sharpSide}</div>
-                        <span className={`rlmw-journal-bet-result rlmw-journal-bet-result--${result}`}>
-                          {result === 'win' ? 'W' : result === 'loss' ? 'L' : 'P'}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ))}
+            <div
+              className={`rlmw-journal-card rlmw-journal-card--rlm ${rlmRecord.games.length ? 'rlmw-journal-card--clickable' : ''}`}
+              onClick={() => rlmRecord.games.length && setJournalExpanded((p) => ({ ...p, rlm: !p.rlm }))}
+            >
+              <div className="rlmw-journal-label">RLM plays</div>
+              <div className="rlmw-journal-record">{rlmRecord.win}-{rlmRecord.loss}-{rlmRecord.push}</div>
+              {recordWinPct(rlmRecord) !== null && <div className="rlmw-journal-pct">{recordWinPct(rlmRecord)}% win rate</div>}
+              {rlmRecord.games.length > 0 && (
+                <div className="rlmw-journal-toggle">
+                  <ChevronDown size={12} style={{ transform: journalExpanded.rlm ? 'rotate(180deg)' : 'none' }} />
+                  {journalExpanded.rlm ? 'Hide bets' : 'Show bets'}
+                </div>
+              )}
+              {journalExpanded.rlm && (
+                <div className="rlmw-journal-bets" onClick={(e) => e.stopPropagation()}>
+                  {rlmRecord.games.map(({ game, result, sharpSide }) => (
+                    <div key={game.id} className="rlmw-journal-bet-row">
+                      <div className="rlmw-journal-bet-name">{game.matchup}</div>
+                      <div className="rlmw-journal-bet-detail">{formatScore(game) || '—'} &middot; bet {sharpSide}</div>
+                      <span className={`rlmw-journal-bet-result rlmw-journal-bet-result--${result}`}>
+                        {result === 'win' ? 'W' : result === 'loss' ? 'L' : 'P'}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       )}
