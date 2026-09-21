@@ -10,7 +10,7 @@ import { fetchTop25 } from './lib/rankings.mjs';
 import { canonicalSchool } from './lib/schoolNames.mjs';
 import { fetchInjuryReport } from './lib/injuries.mjs';
 import { fetchStarters } from './lib/depthChart.mjs';
-import { getFirstSeenMap } from './lib/history.mjs';
+import { getHistoryMaps } from './lib/history.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const OUT_PATH = path.join(__dirname, '..', 'public', 'seed-games.json');
@@ -71,7 +71,7 @@ async function fetchStartersOutByTeam(nflGames) {
   return result;
 }
 
-function buildSeedGame(cbsGame, sbdData, cleatzData, top25, startersOutByTeam, firstSeenMap) {
+function buildSeedGame(cbsGame, sbdData, cleatzData, top25, startersOutByTeam, firstSeenMap, kickoffMap) {
   const firstSeenTs = firstSeenMap?.get(cbsGame.matchup.toLowerCase());
   const openMeta = firstSeenTs !== undefined ? { openTimestamp: firstSeenTs } : {};
   const sbd = sbdData ? findSbdEntry(sbdData, cbsGame.sideA, cbsGame.sideB, cbsGame.nameA, cbsGame.nameB) : null;
@@ -113,6 +113,16 @@ function buildSeedGame(cbsGame, sbdData, cleatzData, top25, startersOutByTeam, f
   if (kickoff) {
     seed.kickoff = kickoff;
     seed.kickoffTs = Date.parse(cbsGame.kickoffISO);
+  } else {
+    // Today's kickoff match failed (e.g. a school-name mismatch) -- fall
+    // back to whatever kickoffTs this matchup had in a past commit, so it
+    // doesn't lose its date even if it's since fallen off CBS's live page.
+    const pastKickoffTs = kickoffMap?.get(cbsGame.matchup.toLowerCase());
+    const pastKickoff = pastKickoffTs !== undefined ? formatKickoffCentral(pastKickoffTs) : null;
+    if (pastKickoff) {
+      seed.kickoff = pastKickoff;
+      seed.kickoffTs = pastKickoffTs;
+    }
   }
   if (cbsGame.score) seed.score = cbsGame.score;
   if (sbd && sbd.pctAway !== undefined) {
@@ -200,7 +210,7 @@ function buildSbdOnlyGame(sbdEntry, sport, top25, firstSeenMap) {
 async function run() {
   const allSeeds = [];
   const skipped = [];
-  const firstSeenMap = getFirstSeenMap();
+  const { firstSeenMap, kickoffMap } = getHistoryMaps();
 
   for (const source of SOURCES) {
     let cbsGames = [];
@@ -242,20 +252,48 @@ async function run() {
         skipped.push(g.matchup);
         continue;
       }
-      allSeeds.push(buildSeedGame(g, sbdData, cleatzData, top25, startersOutByTeam, firstSeenMap));
+      allSeeds.push(buildSeedGame(g, sbdData, cleatzData, top25, startersOutByTeam, firstSeenMap, kickoffMap));
     }
 
     if (sbdData) {
+      // Only pull in *next* week from SBD -- not every future week it
+      // happens to have odds posted for. "Next week" is scoped relative to
+      // whatever CBS currently shows (its latest kickoff + 8 days), not a
+      // hardcoded date, so this keeps working as the season moves on.
+      const cbsKickoffs = cbsGames.map((g) => Date.parse(g.kickoffISO)).filter((t) => !Number.isNaN(t));
+      const latestCbsKickoff = cbsKickoffs.length ? Math.max(...cbsKickoffs) : Date.now();
+      const cutoff = latestCbsKickoff + 8 * 24 * 60 * 60 * 1000;
+
       const cbsMatchups = new Set(cbsGames.map((g) => `${g.sideA}@${g.sideB}`));
       let sbdOnlyCount = 0;
       sbdData.entries.forEach((entry) => {
         if (!entry.sideA || !entry.sideB || cbsMatchups.has(`${entry.sideA}@${entry.sideB}`)) return;
+        const kickoffTs = entry.kickoffISO ? Date.parse(entry.kickoffISO) : NaN;
+        if (Number.isNaN(kickoffTs) || kickoffTs > cutoff) return;
         const seed = buildSbdOnlyGame(entry, source.sport, top25, firstSeenMap);
         if (seed) { allSeeds.push(seed); sbdOnlyCount += 1; }
       });
       if (sbdOnlyCount) console.log(`[${source.sport}] added ${sbdOnlyCount} game(s) from SBD not yet on CBS`);
     }
   }
+
+  // Backfill kickoff times for matchups this run has no live data for at
+  // all -- e.g. an already-finished game that fell off CBS's page (and
+  // wasn't matched by SBD/Cleatz either) before a scraper bug like a
+  // school-name mismatch got fixed. `kickoffOnly: true` and an empty
+  // `lines` keep these from ever being treated as a brand-new game on the
+  // client -- they only patch the kickoff of a game the browser already
+  // has stored locally.
+  const liveMatchups = new Set(allSeeds.map((s) => s.matchup.toLowerCase()));
+  let kickoffPatchCount = 0;
+  kickoffMap.forEach((kickoffTs, matchupLower) => {
+    if (liveMatchups.has(matchupLower)) return;
+    const kickoff = formatKickoffCentral(kickoffTs);
+    if (!kickoff) return;
+    allSeeds.push({ matchup: matchupLower.toUpperCase(), kickoff, kickoffTs, lines: [], kickoffOnly: true });
+    kickoffPatchCount += 1;
+  });
+  if (kickoffPatchCount) console.log(`Added ${kickoffPatchCount} kickoff-only backfill patch(es) for games no longer live anywhere`);
 
   await mkdir(path.dirname(OUT_PATH), { recursive: true });
   await writeFile(OUT_PATH, JSON.stringify(allSeeds, null, 2));

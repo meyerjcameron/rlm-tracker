@@ -1,22 +1,31 @@
 import { execFileSync } from 'node:child_process';
 
-// The client can only backfill a game's real open date from whatever
-// survives in its own localStorage -- when that's been wiped (a browser
-// reset, private window, new device), there's nothing left to anchor to and
-// the backfill falls back to "today". But every seed-games.json we've ever
-// written is sitting in this repo's git history, which is a durable record
-// no client-side storage loss can touch. This walks that history once and
-// returns the real commit date each matchup first appeared with a spread,
-// so run.mjs can hand the client the true open date directly instead of
-// leaving it to guess.
-export function getFirstSeenMap() {
-  const map = new Map();
+// The client can only backfill a game's real open date (or a missing
+// kickoff time) from whatever survives in its own localStorage -- when
+// that's been wiped (a browser reset, private window, new device, or the
+// game simply fell off CBS's live page before a bug like a school-name
+// mismatch got fixed), there's nothing left to anchor to. But every
+// seed-games.json we've ever written is sitting in this repo's git
+// history, which is a durable record no client-side storage loss -- or
+// CBS dropping a finished game from its live page -- can touch.
+//
+// Walks that history once and returns:
+//   firstSeenMap -- the real commit date each matchup first appeared with
+//                   a spread, so run.mjs can hand the client the true open
+//                   date directly instead of leaving it to guess.
+//   kickoffMap   -- the real kickoffTs each matchup first appeared with,
+//                   so a game whose kickoff time was missing due to a
+//                   scraper bug (now fixed) can still get backfilled even
+//                   after it's no longer on CBS's live page to re-scrape.
+export function getHistoryMaps() {
+  const firstSeenMap = new Map();
+  const kickoffMap = new Map();
   let log;
   try {
     log = execFileSync('git', ['log', '--reverse', '--format=%H|%cI', '--follow', '--', 'public/seed-games.json'], { encoding: 'utf8' });
   } catch (e) {
     console.error('git log for history backfill failed (continuing without it):', e.message);
-    return map;
+    return { firstSeenMap, kickoffMap };
   }
 
   const commits = log.trim().split('\n').filter(Boolean).map((line) => {
@@ -39,11 +48,11 @@ export function getFirstSeenMap() {
     }
     for (const g of games) {
       const key = g.matchup.toLowerCase();
-      if (map.has(key)) continue;
       const hasSpread = (g.lines || []).some((l) => l.value !== undefined && l.value !== null);
-      if (hasSpread) map.set(key, ts);
+      if (hasSpread && !firstSeenMap.has(key)) firstSeenMap.set(key, ts);
+      if (g.kickoffTs != null && !kickoffMap.has(key)) kickoffMap.set(key, g.kickoffTs);
     }
   }
 
-  return map;
+  return { firstSeenMap, kickoffMap };
 }

@@ -465,7 +465,10 @@ export default function LineMovementTracker() {
     // they must never be used to create a brand-new game -- only to patch
     // one that's already being tracked.
     const correctionKeys = new Set(HISTORICAL_LINE_CORRECTIONS.map((c) => c.matchup.toLowerCase()));
-    const toAdd = SEED_GAMES.filter((s) => !existingKeys.has(s.matchup.toLowerCase()) && !correctionKeys.has(s.matchup.toLowerCase()));
+    // Same idea for run.mjs's kickoff-only backfill patches -- they carry no
+    // sideA/sideB/sport/lines either, and exist purely to patch a kickoff
+    // date onto a game the browser already has, never to create one.
+    const toAdd = SEED_GAMES.filter((s) => !s.kickoffOnly && !existingKeys.has(s.matchup.toLowerCase()) && !correctionKeys.has(s.matchup.toLowerCase()));
     const now = Date.now();
     let changed = false;
 
