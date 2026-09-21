@@ -3147,52 +3147,6 @@
     ]
   },
   {
-    "matchup": "ND @ UNC",
-    "sport": "CFB",
-    "sideA": "ND",
-    "sideB": "UNC",
-    "lines": [
-      {
-        "book": "SBD",
-        "value": -23.5,
-        "open": -24.5,
-        "openTimestamp": 1790004049000
-      }
-    ],
-    "kickoff": "Sat, Oct 3, 2026 · 12:00 PM CT",
-    "kickoffTs": 1791046800000,
-    "public": 0,
-    "conferences": [
-      "Independent",
-      "ACC"
-    ],
-    "rankA": 3,
-    "ranked": true
-  },
-  {
-    "matchup": "MIA @ CLEM",
-    "sport": "CFB",
-    "sideA": "MIA",
-    "sideB": "CLEM",
-    "lines": [
-      {
-        "book": "SBD",
-        "value": -7,
-        "open": -5,
-        "openTimestamp": 1790004049000
-      }
-    ],
-    "kickoff": "Sat, Oct 3, 2026 · 12:00 PM CT",
-    "kickoffTs": 1791046800000,
-    "public": 0,
-    "conferences": [
-      "ACC",
-      "ACC"
-    ],
-    "rankA": 6,
-    "ranked": true
-  },
-  {
     "matchup": "DEN @ KC",
     "kickoff": "Mon, Sep 14, 2026 · 7:15 PM CT",
     "kickoffTs": 1789431300000,
@@ -3861,6 +3815,20 @@
     "matchup": "ATL @ NO",
     "kickoff": "Mon, Oct 5, 2026 · 7:15 PM CT",
     "kickoffTs": 1791245700000,
+    "lines": [],
+    "kickoffOnly": true
+  },
+  {
+    "matchup": "ND @ UNC",
+    "kickoff": "Sat, Oct 3, 2026 · 12:00 PM CT",
+    "kickoffTs": 1791046800000,
+    "lines": [],
+    "kickoffOnly": true
+  },
+  {
+    "matchup": "MIA @ CLEM",
+    "kickoff": "Sat, Oct 3, 2026 · 12:00 PM CT",
+    "kickoffTs": 1791046800000,
     "lines": [],
     "kickoffOnly": true
   },

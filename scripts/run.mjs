@@ -15,6 +15,21 @@ import { getHistoryMaps } from './lib/history.mjs';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const OUT_PATH = path.join(__dirname, '..', 'public', 'seed-games.json');
 
+// Tuesday-to-Monday week boundary in Central time, matching the client's
+// own week bucketing (see weekBucketStart in LineMovementTracker.jsx) --
+// used to scope SBD's early game discovery to exactly the *next* such
+// week. A fixed day offset from "whatever CBS's latest listed kickoff
+// happens to be" drifts depending on CBS's own quirks (CFB's Tue-Sat
+// schedule especially); this doesn't, since it's purely a function of
+// today's date.
+function weekBucketStart(ts) {
+  const central = new Date(new Date(ts).toLocaleString('en-US', { timeZone: 'America/Chicago' }));
+  const daysSinceTuesday = (central.getDay() - 2 + 7) % 7;
+  central.setHours(0, 0, 0, 0);
+  central.setDate(central.getDate() - daysSinceTuesday);
+  return central.getTime();
+}
+
 const SOURCES = [
   { sport: 'NFL', oddsUrl: 'https://www.cbssports.com/nfl/odds/' },
   { sport: 'CFB', oddsUrl: 'https://www.cbssports.com/college-football/odds/' },
@@ -257,19 +272,19 @@ async function run() {
 
     if (sbdData) {
       // Only pull in *next* week from SBD -- not every future week it
-      // happens to have odds posted for. "Next week" is scoped relative to
-      // whatever CBS currently shows (its latest kickoff + 8 days), not a
-      // hardcoded date, so this keeps working as the season moves on.
-      const cbsKickoffs = cbsGames.map((g) => Date.parse(g.kickoffISO)).filter((t) => !Number.isNaN(t));
-      const latestCbsKickoff = cbsKickoffs.length ? Math.max(...cbsKickoffs) : Date.now();
-      const cutoff = latestCbsKickoff + 8 * 24 * 60 * 60 * 1000;
+      // happens to have odds posted for. Bounded to the single Tue-Mon
+      // week right after this one, so a game two weeks out never slips in
+      // no matter what CBS's own current listing happens to span.
+      const thisWeekStart = weekBucketStart(Date.now());
+      const nextWeekStart = thisWeekStart + 7 * 24 * 60 * 60 * 1000;
+      const nextWeekEnd = nextWeekStart + 7 * 24 * 60 * 60 * 1000;
 
       const cbsMatchups = new Set(cbsGames.map((g) => `${g.sideA}@${g.sideB}`));
       let sbdOnlyCount = 0;
       sbdData.entries.forEach((entry) => {
         if (!entry.sideA || !entry.sideB || cbsMatchups.has(`${entry.sideA}@${entry.sideB}`)) return;
         const kickoffTs = entry.kickoffISO ? Date.parse(entry.kickoffISO) : NaN;
-        if (Number.isNaN(kickoffTs) || kickoffTs > cutoff) return;
+        if (Number.isNaN(kickoffTs) || kickoffTs < nextWeekStart || kickoffTs >= nextWeekEnd) return;
         const seed = buildSbdOnlyGame(entry, source.sport, top25, firstSeenMap);
         if (seed) { allSeeds.push(seed); sbdOnlyCount += 1; }
       });
