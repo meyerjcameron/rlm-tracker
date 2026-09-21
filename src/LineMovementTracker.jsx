@@ -672,10 +672,14 @@ export default function LineMovementTracker() {
 
     // Drop unfinished games that no longer appear in the current seed list
     // (e.g. a game that fell out of scope after a filter change like the
-    // CFB Power-4 restriction). Finished games are historical record and
-    // are never pruned, even if the source stops listing them.
+    // CFB Power-4 restriction, or a game that was only ever live-tracked
+    // via SBD's early-discovery window and has since scrolled back out of
+    // it). Finished games are historical record and are never pruned, even
+    // if the source stops listing them. kickoffOnly patches don't count --
+    // they only exist to backfill a kickoff date onto an already-finished
+    // game and shouldn't protect a stale *unfinished* one from pruning.
     if (SEED_GAMES.length) {
-      const seedKeys = new Set(SEED_GAMES.map((s) => s.matchup.toLowerCase()));
+      const seedKeys = new Set(SEED_GAMES.filter((s) => !s.kickoffOnly).map((s) => s.matchup.toLowerCase()));
       const beforeCount = finalList.length;
       finalList = finalList.filter((g) => g.finished || seedKeys.has(g.matchup.toLowerCase()));
       if (finalList.length !== beforeCount) changed = true;
