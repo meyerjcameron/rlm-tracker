@@ -149,6 +149,54 @@ function buildSeedGame(cbsGame, sbdData, cleatzData, top25, startersOutByTeam, f
   return seed;
 }
 
+// Real sportsbooks (and so SBD, which aggregates them) open next week's
+// lines well before CBS's own odds page catches up -- often by Monday
+// morning, sometimes even Sunday. Builds a standalone seed entry straight
+// from SBD's data for a game CBS hasn't posted yet, using SBD as the sole
+// line source until CBS does.
+function buildSbdOnlyGame(sbdEntry, sport, top25, firstSeenMap) {
+  if (!sbdEntry.sideA || !sbdEntry.sideB || sbdEntry.spreadCurrent === undefined) return null;
+  const matchup = `${sbdEntry.sideA} @ ${sbdEntry.sideB}`;
+  const firstSeenTs = firstSeenMap?.get(matchup.toLowerCase());
+  const openMeta = firstSeenTs !== undefined ? { openTimestamp: firstSeenTs } : {};
+
+  const seed = {
+    matchup,
+    sport,
+    sideA: sbdEntry.sideA,
+    sideB: sbdEntry.sideB,
+    lines: [{
+      book: 'SBD',
+      value: sbdEntry.spreadCurrent,
+      ...(sbdEntry.spreadOpen !== undefined ? { open: sbdEntry.spreadOpen } : {}),
+      ...openMeta,
+    }],
+  };
+  const kickoff = formatKickoffCentral(sbdEntry.kickoffISO);
+  if (kickoff) {
+    seed.kickoff = kickoff;
+    seed.kickoffTs = Date.parse(sbdEntry.kickoffISO);
+  }
+  if (sbdEntry.pctAway !== undefined) {
+    seed.public = Math.round(sbdEntry.pctAway * 10) / 10;
+  }
+
+  if (sport === 'CFB') {
+    const confA = conferenceForSchool(sbdEntry.nameA);
+    const confB = conferenceForSchool(sbdEntry.nameB);
+    seed.conferences = [confA, confB].filter(Boolean);
+    if (top25) {
+      const rankA = top25.get(canonicalSchool(sbdEntry.nameA));
+      const rankB = top25.get(canonicalSchool(sbdEntry.nameB));
+      if (rankA) seed.rankA = rankA;
+      if (rankB) seed.rankB = rankB;
+      if (rankA || rankB) seed.ranked = true;
+    }
+  }
+
+  return seed;
+}
+
 async function run() {
   const allSeeds = [];
   const skipped = [];
@@ -195,6 +243,17 @@ async function run() {
         continue;
       }
       allSeeds.push(buildSeedGame(g, sbdData, cleatzData, top25, startersOutByTeam, firstSeenMap));
+    }
+
+    if (sbdData) {
+      const cbsMatchups = new Set(cbsGames.map((g) => `${g.sideA}@${g.sideB}`));
+      let sbdOnlyCount = 0;
+      sbdData.entries.forEach((entry) => {
+        if (!entry.sideA || !entry.sideB || cbsMatchups.has(`${entry.sideA}@${entry.sideB}`)) return;
+        const seed = buildSbdOnlyGame(entry, source.sport, top25, firstSeenMap);
+        if (seed) { allSeeds.push(seed); sbdOnlyCount += 1; }
+      });
+      if (sbdOnlyCount) console.log(`[${source.sport}] added ${sbdOnlyCount} game(s) from SBD not yet on CBS`);
     }
   }
 

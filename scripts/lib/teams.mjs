@@ -30,7 +30,7 @@ export const NFL_TEAMS = {
   'new orleans saints': 'NO', saints: 'NO', no: 'NO', nor: 'NO',
   'tampa bay buccaneers': 'TB', buccaneers: 'TB', tb: 'TB', tam: 'TB',
   'arizona cardinals': 'ARI', cardinals: 'ARI', ari: 'ARI',
-  'los angeles rams': 'LAR', rams: 'LAR', lar: 'LAR',
+  'los angeles rams': 'LAR', rams: 'LAR', lar: 'LAR', la: 'LAR',
   'san francisco 49ers': 'SF', '49ers': 'SF', sf: 'SF', sfo: 'SF',
   'seattle seahawks': 'SEA', seahawks: 'SEA', sea: 'SEA',
 };

@@ -1212,7 +1212,7 @@ export default function LineMovementTracker() {
 
               {publicLatest && (
                 <div>
-                  <div className="rlmw-public-source">Public bet % — real sportsbook split (matches CBS)</div>
+                  <div className="rlmw-public-source">Public bet % — real sportsbook split{books.includes('CBS') ? ' (matches CBS)' : ''}</div>
                   <div className="rlmw-splitbar-labels">
                     <span className={`rlmw-side-label ${majority === 'A' ? 'majority' : ''}`}>
                       {game.sideA} {formatPct(publicLatest.publicPctA)}%
