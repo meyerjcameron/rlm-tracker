@@ -414,6 +414,7 @@ export default function LineMovementTracker() {
   const [expanded, setExpanded] = useState({});
   const [injuryExpanded, setInjuryExpanded] = useState({});
   const [expandedWeeks, setExpandedWeeks] = useState({});
+  const [journalExpanded, setJournalExpanded] = useState({ rlm: false, chalk: false });
   const [selectedView, setSelectedView] = useState({});
   const [theme, setTheme] = useState(() => {
     try {
@@ -776,8 +777,8 @@ export default function LineMovementTracker() {
   // left out of both records. Graded automatically off the final score
   // (computeAtsResult); g.result only overrides a specific game if that
   // ever needs a manual correction.
-  const rlmRecord = { win: 0, loss: 0, push: 0 };
-  const chalkRecord = { win: 0, loss: 0, push: 0 };
+  const rlmRecord = { win: 0, loss: 0, push: 0, games: [] };
+  const chalkRecord = { win: 0, loss: 0, push: 0, games: [] };
   finishedGames.forEach((g) => {
     if (WEEK1_BACKFILLED_MATCHUPS.has(g.matchup.toLowerCase())) return;
     const result = g.result ?? computeAtsResult(g);
@@ -787,6 +788,7 @@ export default function LineMovementTracker() {
     if (!combined || !combined.movementSide || !majority) return;
     const bucket = combined.movementSide !== majority ? rlmRecord : chalkRecord;
     bucket[result] += 1;
+    bucket.games.push({ game: g, result, sharpSide: combined.movementSide === 'A' ? g.sideA : g.sideB });
   });
   let filteredGames = liveGames;
   if (onlyChanged) filteredGames = filteredGames.filter(gameHasLineChange);
@@ -919,6 +921,17 @@ export default function LineMovementTracker() {
         .rlmw-journal-label { font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; margin-bottom:6px; }
         .rlmw-journal-record { font-family:'IBM Plex Mono', monospace; font-size:24px; font-weight:700; color:var(--text); }
         .rlmw-journal-pct { font-size:12px; color:var(--muted); margin-top:4px; }
+        .rlmw-journal-card--clickable { cursor:pointer; }
+        .rlmw-journal-card--clickable:hover { border-color:var(--accent); }
+        .rlmw-journal-toggle { display:flex; align-items:center; gap:4px; font-size:11px; color:var(--muted); margin-top:8px; }
+        .rlmw-journal-bets { border-top:1px solid var(--border); margin-top:10px; padding-top:10px; display:flex; flex-direction:column; gap:8px; }
+        .rlmw-journal-bet-row { display:grid; grid-template-columns:1fr auto; column-gap:8px; row-gap:2px; align-items:center; font-size:12px; }
+        .rlmw-journal-bet-name { font-weight:600; color:var(--text); }
+        .rlmw-journal-bet-detail { grid-column:1; font-size:11px; color:var(--muted); font-family:'IBM Plex Mono', monospace; }
+        .rlmw-journal-bet-result { grid-row:1 / span 2; width:22px; height:22px; border-radius:4px; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; }
+        .rlmw-journal-bet-result--win { background:var(--green-bg); color:var(--green); }
+        .rlmw-journal-bet-result--loss { background:var(--red-bg); color:var(--red); }
+        .rlmw-journal-bet-result--push { background:var(--input-bg); color:var(--muted); }
         .rlmw-final-section { margin-top:36px; max-width:760px; }
         .rlmw-final-heading { font-family:'Bebas Neue', sans-serif; font-size:20px; letter-spacing:0.3px; color:var(--muted); margin-bottom:10px; }
         .rlmw-week-group { margin-bottom:14px; }
@@ -1305,16 +1318,36 @@ export default function LineMovementTracker() {
           <div className="rlmw-final-heading">Season Journal</div>
           <div className="rlmw-journal-note">(started tracking Week 2)</div>
           <div className="rlmw-journal-grid">
-            <div className="rlmw-journal-card rlmw-journal-card--rlm">
-              <div className="rlmw-journal-label">RLM plays</div>
-              <div className="rlmw-journal-record">{rlmRecord.win}-{rlmRecord.loss}-{rlmRecord.push}</div>
-              {recordWinPct(rlmRecord) !== null && <div className="rlmw-journal-pct">{recordWinPct(rlmRecord)}% win rate</div>}
-            </div>
-            <div className="rlmw-journal-card rlmw-journal-card--chalk">
-              <div className="rlmw-journal-label">Chalk plays</div>
-              <div className="rlmw-journal-record">{chalkRecord.win}-{chalkRecord.loss}-{chalkRecord.push}</div>
-              {recordWinPct(chalkRecord) !== null && <div className="rlmw-journal-pct">{recordWinPct(chalkRecord)}% win rate</div>}
-            </div>
+            {[{ key: 'rlm', label: 'RLM plays', record: rlmRecord }, { key: 'chalk', label: 'Chalk plays', record: chalkRecord }].map(({ key, label, record }) => (
+              <div
+                key={key}
+                className={`rlmw-journal-card rlmw-journal-card--${key} ${record.games.length ? 'rlmw-journal-card--clickable' : ''}`}
+                onClick={() => record.games.length && setJournalExpanded((p) => ({ ...p, [key]: !p[key] }))}
+              >
+                <div className="rlmw-journal-label">{label}</div>
+                <div className="rlmw-journal-record">{record.win}-{record.loss}-{record.push}</div>
+                {recordWinPct(record) !== null && <div className="rlmw-journal-pct">{recordWinPct(record)}% win rate</div>}
+                {record.games.length > 0 && (
+                  <div className="rlmw-journal-toggle">
+                    <ChevronDown size={12} style={{ transform: journalExpanded[key] ? 'rotate(180deg)' : 'none' }} />
+                    {journalExpanded[key] ? 'Hide bets' : 'Show bets'}
+                  </div>
+                )}
+                {journalExpanded[key] && (
+                  <div className="rlmw-journal-bets" onClick={(e) => e.stopPropagation()}>
+                    {record.games.map(({ game, result, sharpSide }) => (
+                      <div key={game.id} className="rlmw-journal-bet-row">
+                        <div className="rlmw-journal-bet-name">{game.matchup}</div>
+                        <div className="rlmw-journal-bet-detail">{formatScore(game) || '—'} &middot; bet {sharpSide}</div>
+                        <span className={`rlmw-journal-bet-result rlmw-journal-bet-result--${result}`}>
+                          {result === 'win' ? 'W' : result === 'loss' ? 'L' : 'P'}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
           </div>
         </div>
       )}
