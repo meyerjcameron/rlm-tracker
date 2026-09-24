@@ -271,20 +271,32 @@ async function run() {
     }
 
     if (sbdData) {
-      // Only pull in *next* week from SBD -- not every future week it
-      // happens to have odds posted for. Bounded to the single Tue-Mon
-      // week right after this one, so a game two weeks out never slips in
-      // no matter what CBS's own current listing happens to span.
+      // Only pull in one week's worth from SBD -- not every future week it
+      // happens to have odds posted for. Which week depends on how far
+      // along *this* week already is: while this week's CBS games are
+      // still mostly ahead of us, SBD is only used to fill in whatever
+      // this week CBS hasn't posted yet (usually nothing, once CBS has
+      // caught up). Only once this week is mostly wrapped up (the Monday-
+      // morning gap the whole feature exists for) does the window advance
+      // to next week. A fixed "today + 7 days" window would instead creep
+      // forward every single day and start pulling in the week after next
+      // as soon as "today" rolls past the start of this one.
       const thisWeekStart = weekBucketStart(Date.now());
-      const nextWeekStart = thisWeekStart + 7 * 24 * 60 * 60 * 1000;
-      const nextWeekEnd = nextWeekStart + 7 * 24 * 60 * 60 * 1000;
+      const thisWeekEnd = thisWeekStart + 7 * 24 * 60 * 60 * 1000;
+      const cbsThisWeek = cbsGames.filter((g) => {
+        const t = Date.parse(g.kickoffISO);
+        return !Number.isNaN(t) && t >= thisWeekStart && t < thisWeekEnd;
+      });
+      const finishedRatio = cbsThisWeek.length ? cbsThisWeek.filter((g) => g.score).length / cbsThisWeek.length : 1;
+      const windowStart = finishedRatio >= 0.5 ? thisWeekEnd : thisWeekStart;
+      const windowEnd = windowStart + 7 * 24 * 60 * 60 * 1000;
 
       const cbsMatchups = new Set(cbsGames.map((g) => `${g.sideA}@${g.sideB}`));
       let sbdOnlyCount = 0;
       sbdData.entries.forEach((entry) => {
         if (!entry.sideA || !entry.sideB || cbsMatchups.has(`${entry.sideA}@${entry.sideB}`)) return;
         const kickoffTs = entry.kickoffISO ? Date.parse(entry.kickoffISO) : NaN;
-        if (Number.isNaN(kickoffTs) || kickoffTs < nextWeekStart || kickoffTs >= nextWeekEnd) return;
+        if (Number.isNaN(kickoffTs) || kickoffTs < windowStart || kickoffTs >= windowEnd) return;
         const seed = buildSbdOnlyGame(entry, source.sport, top25, firstSeenMap);
         if (seed) { allSeeds.push(seed); sbdOnlyCount += 1; }
       });
