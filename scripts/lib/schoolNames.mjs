@@ -5,6 +5,7 @@ export function normalizeSchool(name) {
   return String(name || '')
     .toLowerCase()
     .replace(/\./g, '')
+    .replace(/['’]/g, '')
     .replace(/\(fla\)/g, '(fl)')
     .replace(/\(ohio\)/g, '(oh)')
     // Sites disagree on whether the state qualifier gets parens at all --
@@ -47,6 +48,7 @@ const ALIASES = {
   'ul monroe': 'louisiana monroe',
   'umass': 'massachusetts',
   'fau': 'florida atlantic',
+  'fiu': 'florida international',
 };
 
 export function canonicalSchool(name) {

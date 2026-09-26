@@ -291,10 +291,18 @@ async function run() {
       const windowStart = finishedRatio >= 0.5 ? thisWeekEnd : thisWeekStart;
       const windowEnd = windowStart + 7 * 24 * 60 * 60 * 1000;
 
+      // Keyed by abbreviation *and* by school name -- CFB has no shared
+      // abbreviation map like NFL's toNflAbbrev, so CBS and SBD often
+      // spell the same school differently ("HAWAII" vs "HAW", "RICE @
+      // FRESNO" vs "RICE @ FRES"). Abbreviation-only matching missed those
+      // and added the same real game a second time under SBD's spelling.
       const cbsMatchups = new Set(cbsGames.map((g) => `${g.sideA}@${g.sideB}`));
+      const cbsSchoolMatchups = new Set(cbsGames.map((g) => `${canonicalSchool(g.nameA)}@${canonicalSchool(g.nameB)}`));
       let sbdOnlyCount = 0;
       sbdData.entries.forEach((entry) => {
-        if (!entry.sideA || !entry.sideB || cbsMatchups.has(`${entry.sideA}@${entry.sideB}`)) return;
+        if (!entry.sideA || !entry.sideB) return;
+        if (cbsMatchups.has(`${entry.sideA}@${entry.sideB}`)) return;
+        if (entry.nameA && entry.nameB && cbsSchoolMatchups.has(`${canonicalSchool(entry.nameA)}@${canonicalSchool(entry.nameB)}`)) return;
         const kickoffTs = entry.kickoffISO ? Date.parse(entry.kickoffISO) : NaN;
         if (Number.isNaN(kickoffTs) || kickoffTs < windowStart || kickoffTs >= windowEnd) return;
         const seed = buildSbdOnlyGame(entry, source.sport, top25, firstSeenMap);
