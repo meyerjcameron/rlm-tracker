@@ -552,22 +552,6 @@
     "public": 53.7
   },
   {
-    "matchup": "WAS @ SF",
-    "sport": "NFL",
-    "sideA": "WAS",
-    "sideB": "SF",
-    "lines": [
-      {
-        "book": "SBD",
-        "value": 7.5,
-        "open": 6.5
-      }
-    ],
-    "kickoff": "Mon, Oct 19, 2026 · 7:15 PM CT",
-    "kickoffTs": 1792455300000,
-    "public": 37.8
-  },
-  {
     "matchup": "DE @ MTSU",
     "sport": "CFB",
     "sideA": "DE",
@@ -6303,6 +6287,13 @@
     "matchup": "MONT @ NAU",
     "kickoff": "Sat, Oct 10, 2026 · 4:00 PM CT",
     "kickoffTs": 1791666000000,
+    "lines": [],
+    "kickoffOnly": true
+  },
+  {
+    "matchup": "WAS @ SF",
+    "kickoff": "Mon, Oct 19, 2026 · 7:15 PM CT",
+    "kickoffTs": 1792455300000,
     "lines": [],
     "kickoffOnly": true
   }
