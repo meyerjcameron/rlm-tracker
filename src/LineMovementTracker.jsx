@@ -417,6 +417,16 @@ function migrateGame(g) {
 export default function LineMovementTracker() {
   const [games, setGames] = useState([]);
   const [loaded, setLoaded] = useState(false);
+  const [journalMap, setJournalMap] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await fetch('/season-journal.json', { cache: 'no-store' });
+        if (res.ok) setJournalMap((await res.json()).games || null);
+      } catch (e) { /* offline -- rlmInfo falls back to local snapshots */ }
+    })();
+  }, []);
   const [saveError, setSaveError] = useState(false);
   const [onlyChanged, setOnlyChanged] = useState(false);
   const [onlyRLM, setOnlyRLM] = useState(false);
@@ -794,16 +804,55 @@ export default function LineMovementTracker() {
   // (chalk) aren't what this journal is for and are left out. Graded
   // automatically off the final score (computeAtsResult); g.result only
   // overrides a specific game if that ever needs a manual correction.
-  const rlmRecord = { win: 0, loss: 0, push: 0, games: [] };
-  finishedGames.forEach((g) => {
-    if (WEEK1_BACKFILLED_MATCHUPS.has(g.matchup.toLowerCase())) return;
-    if (!isGameRlm(g)) return;
+  //
+  // Classification and grading come from public/season-journal.json, built
+  // once by the scraper, so every device shows the same record -- computing
+  // it from this browser's own snapshots made phone and computer disagree
+  // (closing line / latest public% depend on when each last loaded a game).
+  // Only if that file couldn't be loaded does it fall back to local data.
+  const rlmInfo = (g) => {
+    if (journalMap) {
+      const e = journalMap[`${g.sport}|${g.matchup}`];
+      if (!e || !e.final || !e.isRlm) return null;
+      const result = g.result ?? e.result;
+      return result ? { result, sharpSide: e.sharpSide } : null;
+    }
+    if (WEEK1_BACKFILLED_MATCHUPS.has(g.matchup.toLowerCase()) || !isGameRlm(g)) return null;
     const result = g.result ?? computeAtsResult(g);
-    if (!result) return;
+    if (!result) return null;
     const combined = getCombinedStats(g);
-    rlmRecord[result] += 1;
-    rlmRecord.games.push({ game: g, result, sharpSide: combined.movementSide === 'A' ? g.sideA : g.sideB });
-  });
+    return { result, sharpSide: combined.movementSide === 'A' ? g.sideA : g.sideB };
+  };
+  const rlmRecord = { win: 0, loss: 0, push: 0, games: [] };
+  if (journalMap) {
+    // Count straight from the journal file, not from whichever finished games
+    // this device happens to still have in localStorage -- otherwise a fresh
+    // device would undercount.
+    const localByKey = new Map(games.map((g) => [`${g.sport}|${g.matchup}`, g]));
+    Object.entries(journalMap).forEach(([key, e]) => {
+      if (!e.final || !e.isRlm || e.sport !== sportTab) return;
+      if (sportTab === 'CFB' && cfbFilter !== 'ALL') {
+        if (cfbFilter === 'Top 25' ? !e.ranked : !(Array.isArray(e.conferences) && e.conferences.includes(cfbFilter))) return;
+      }
+      const local = localByKey.get(key);
+      const result = local?.result ?? e.result;
+      if (!result) return;
+      rlmRecord[result] += 1;
+      rlmRecord.games.push({
+        game: { id: key, matchup: e.matchup, sideA: e.sideA, sideB: e.sideB, score: e.score, finishedAt: e.kickoffTs },
+        result,
+        sharpSide: e.sharpSide,
+      });
+    });
+    rlmRecord.games.sort((a, b) => (b.game.finishedAt || 0) - (a.game.finishedAt || 0));
+  } else {
+    finishedGames.forEach((g) => {
+      const info = rlmInfo(g);
+      if (!info) return;
+      rlmRecord[info.result] += 1;
+      rlmRecord.games.push({ game: g, result: info.result, sharpSide: info.sharpSide });
+    });
+  }
   let filteredGames = liveGames;
   if (onlyChanged) filteredGames = filteredGames.filter(gameHasLineChange);
   if (onlyRLM) filteredGames = filteredGames.filter((g) => isFlagged(g, 'ALL'));
@@ -1399,7 +1448,7 @@ export default function LineMovementTracker() {
                     : null;
                   const historyItems = getHistoryItems(game);
                   const isExpanded = !!expanded[game.id];
-                  const effectiveResult = isGameRlm(game) ? (game.result ?? computeAtsResult(game)) : null;
+                  const effectiveResult = rlmInfo(game)?.result ?? null;
                   return (
                     <React.Fragment key={game.id}>
                     <tr>

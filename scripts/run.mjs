@@ -11,9 +11,11 @@ import { canonicalSchool } from './lib/schoolNames.mjs';
 import { fetchInjuryReport } from './lib/injuries.mjs';
 import { fetchStarters } from './lib/depthChart.mjs';
 import { getHistoryMaps } from './lib/history.mjs';
+import { loadJournal, updateJournal, replayJournalFromHistory } from './lib/journal.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const OUT_PATH = path.join(__dirname, '..', 'public', 'seed-games.json');
+const JOURNAL_PATH = path.join(__dirname, '..', 'public', 'season-journal.json');
 
 // Tuesday-to-Monday week boundary in Central time, matching the client's
 // own week bucketing (see weekBucketStart in LineMovementTracker.jsx) --
@@ -332,6 +334,17 @@ async function run() {
 
   await mkdir(path.dirname(OUT_PATH), { recursive: true });
   await writeFile(OUT_PATH, JSON.stringify(allSeeds, null, 2));
+
+  // Canonical, device-independent Season Journal -- see lib/journal.mjs.
+  const journal = await loadJournal(JOURNAL_PATH);
+  if (!journal.existed) {
+    console.log('No season-journal.json yet -- replaying git history to build it...');
+    replayJournalFromHistory(journal);
+  }
+  updateJournal(journal, allSeeds);
+  await writeFile(JOURNAL_PATH, JSON.stringify({ games: journal.games }, null, 1));
+  const finalCount = Object.values(journal.games).filter((g) => g.final).length;
+  console.log(`Season journal: ${finalCount} finalized game(s)`);
 
   console.log(`Wrote ${allSeeds.length} games to ${OUT_PATH}`);
   if (skipped.length) console.log(`Skipped (no spread found): ${skipped.join(', ')}`);

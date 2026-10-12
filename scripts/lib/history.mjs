@@ -17,6 +17,29 @@ import { execFileSync } from 'node:child_process';
 //                   so a game whose kickoff time was missing due to a
 //                   scraper bug (now fixed) can still get backfilled even
 //                   after it's no longer on CBS's live page to re-scrape.
+// Streams every past seed-games.json (oldest first) to `fn(games, ts)`
+// without holding them all in memory -- used to replay the Season Journal
+// from scratch the first time season-journal.json doesn't exist yet.
+export function forEachSeedCommit(fn) {
+  let log;
+  try {
+    log = execFileSync('git', ['log', '--reverse', '--format=%H|%cI', '--follow', '--', 'public/seed-games.json'], { encoding: 'utf8' });
+  } catch (e) {
+    console.error('git log for journal replay failed:', e.message);
+    return;
+  }
+  for (const line of log.trim().split('\n').filter(Boolean)) {
+    const [hash, date] = line.split('|');
+    let games;
+    try {
+      games = JSON.parse(execFileSync('git', ['show', `${hash}:public/seed-games.json`], { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 }));
+    } catch (e) {
+      continue;
+    }
+    fn(games, Date.parse(date));
+  }
+}
+
 export function getHistoryMaps() {
   const firstSeenMap = new Map();
   const kickoffMap = new Map();
