@@ -414,12 +414,18 @@ function migrateGame(g) {
   };
 }
 
+// Flip to true to grade the Season Journal from the scraper's frozen
+// public/season-journal.json (identical on every device) instead of each
+// browser's own snapshots.
+const USE_FROZEN_JOURNAL = false;
+
 export default function LineMovementTracker() {
   const [games, setGames] = useState([]);
   const [loaded, setLoaded] = useState(false);
   const [journalMap, setJournalMap] = useState(null);
 
   useEffect(() => {
+    if (!USE_FROZEN_JOURNAL) return;
     (async () => {
       try {
         const res = await fetch('/season-journal.json', { cache: 'no-store' });
