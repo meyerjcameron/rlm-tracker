@@ -13282,16 +13282,16 @@
    "sideB": "GB",
    "lines": {
     "SBD": {
-     "value": 0.5,
+     "value": -1,
      "open": 0.5
     },
     "CBS": {
-     "value": 1.5,
+     "value": -1,
      "open": -1.5
     }
    },
    "kickoffTs": 1792369200000,
-   "publicPctA": 60.1
+   "publicPctA": 59.2
   },
   "NFL|WAS @ SF": {
    "sport": "NFL",
@@ -13309,7 +13309,7 @@
     }
    },
    "kickoffTs": 1792455300000,
-   "publicPctA": 21.1
+   "publicPctA": 21.2
   },
   "CFB|CHARSO @ CLEM": {
    "final": true,
@@ -14216,7 +14216,7 @@
    },
    "conferences": [],
    "kickoffTs": 1792537200000,
-   "publicPctA": 67.9
+   "publicPctA": 67
   },
   "CFB|MOSU @ DEL": {
    "sport": "CFB",
@@ -14538,7 +14538,7 @@
    },
    "conferences": [],
    "kickoffTs": 1792539000000,
-   "publicPctA": 0
+   "publicPctA": 57.3
   },
   "CFB|NMEXST @ SAMST": {
    "sport": "CFB",
@@ -14589,7 +14589,7 @@
      "open": -9.5
     },
     "SBD": {
-     "value": -11,
+     "value": -10.5,
      "open": -10
     }
    },
@@ -14608,7 +14608,7 @@
      "open": -6.5
     },
     "SBD": {
-     "value": -7.5,
+     "value": -8,
      "open": -6
     }
    },
@@ -14650,7 +14650,7 @@
    "sideB": "MIAMI",
    "lines": {
     "CBS": {
-     "value": 22.5,
+     "value": 21,
      "open": 23.5
     },
     "SBD": {
@@ -14673,11 +14673,11 @@
    "sideB": "CLEM",
    "lines": {
     "CBS": {
-     "value": 2.5,
+     "value": 3,
      "open": -1.5
     },
     "SBD": {
-     "value": 2.5,
+     "value": 3,
      "open": 0.5
     }
    },
@@ -14699,7 +14699,7 @@
      "open": 10
     },
     "SBD": {
-     "value": 10,
+     "value": 10.5,
      "open": 9.5
     }
    },
@@ -14718,7 +14718,7 @@
    "sideB": "SC",
    "lines": {
     "CBS": {
-     "value": -1.5,
+     "value": 1.5,
      "open": -2.5
     },
     "SBD": {
@@ -14764,7 +14764,7 @@
    "sideB": "UK",
    "lines": {
     "CBS": {
-     "value": 11.5,
+     "value": 10.5,
      "open": 9.5
     },
     "SBD": {
@@ -14833,7 +14833,7 @@
    "sideB": "NMEX",
    "lines": {
     "CBS": {
-     "value": 4,
+     "value": 4.5,
      "open": 3.5
     }
    },
@@ -14846,11 +14846,11 @@
    "sideB": "MEMP",
    "lines": {
     "CBS": {
-     "value": 10,
+     "value": 10.5,
      "open": 9.5
     },
     "SBD": {
-     "value": 9.5,
+     "value": 10.5,
      "open": 9.5
     }
    },
@@ -14966,7 +14966,7 @@
    "sideB": "SMU",
    "lines": {
     "CBS": {
-     "value": 18.5,
+     "value": 19,
      "open": 16.5
     },
     "SBD": {
@@ -14993,7 +14993,7 @@
      "open": 15.5
     },
     "SBD": {
-     "value": 16,
+     "value": 15.5,
      "open": 16.5
     }
    },
@@ -15061,7 +15061,7 @@
      "open": 13.5
     },
     "SBD": {
-     "value": 14,
+     "value": 14.5,
      "open": 13
     }
    },
@@ -15080,7 +15080,7 @@
    "sideB": "WASHST",
    "lines": {
     "CBS": {
-     "value": -12.5,
+     "value": -12,
      "open": -16.5
     },
     "SBD": {
@@ -15258,7 +15258,7 @@
    "sideB": "ILL",
    "lines": {
     "CBS": {
-     "value": -10.5,
+     "value": -10,
      "open": -11.5
     },
     "SBD": {
@@ -15378,7 +15378,7 @@
    "sideB": "OHIO",
    "lines": {
     "CBS": {
-     "value": 10.5,
+     "value": 11,
      "open": 9.5
     },
     "SBD": {
@@ -15477,7 +15477,7 @@
      "open": -1.5
     },
     "SBD": {
-     "value": -2,
+     "value": -2.5,
      "open": -1.5
     }
    },
@@ -15492,7 +15492,7 @@
    "sideB": "OKLAST",
    "lines": {
     "CBS": {
-     "value": 14,
+     "value": 13.5,
      "open": 14.5
     },
     "SBD": {
@@ -15515,11 +15515,11 @@
    "sideB": "TULANE",
    "lines": {
     "CBS": {
-     "value": -2,
+     "value": -1.5,
      "open": -4
     },
     "SBD": {
-     "value": -2.5,
+     "value": -2,
      "open": -3.5
     }
    },
@@ -15534,12 +15534,12 @@
    "sideB": "CHI",
    "lines": {
     "SBD": {
-     "value": 2,
+     "value": 3,
      "open": 2
     }
    },
    "kickoffTs": 1792714500000,
-   "publicPctA": 81.3
+   "publicPctA": 78.9
   },
   "NFL|PIT @ NO": {
    "sport": "NFL",
@@ -15548,12 +15548,12 @@
    "sideB": "NO",
    "lines": {
     "SBD": {
-     "value": -2,
+     "value": -2.5,
      "open": -1.5
     }
    },
    "kickoffTs": 1792935000000,
-   "publicPctA": 43.5
+   "publicPctA": 43.7
   },
   "NFL|SF @ ATL": {
    "sport": "NFL",
@@ -15567,7 +15567,7 @@
     }
    },
    "kickoffTs": 1792947600000,
-   "publicPctA": 0
+   "publicPctA": 70.1
   },
   "NFL|CIN @ BAL": {
    "sport": "NFL",
@@ -15576,12 +15576,12 @@
    "sideB": "BAL",
    "lines": {
     "SBD": {
-     "value": 3.5,
+     "value": 3,
      "open": 3.5
     }
    },
    "kickoffTs": 1792947600000,
-   "publicPctA": 56.9
+   "publicPctA": 60.5
   },
   "NFL|TB @ CAR": {
    "sport": "NFL",
@@ -15595,7 +15595,7 @@
     }
    },
    "kickoffTs": 1792947600000,
-   "publicPctA": 0
+   "publicPctA": 33.3
   },
   "NFL|NYG @ HOU": {
    "sport": "NFL",
@@ -15604,7 +15604,7 @@
    "sideB": "HOU",
    "lines": {
     "SBD": {
-     "value": 8.5,
+     "value": 9,
      "open": 7.5
     }
    },
@@ -15619,11 +15619,11 @@
    "lines": {
     "SBD": {
      "value": 5.5,
-     "open": 3.5
+     "open": 4
     }
    },
    "kickoffTs": 1792947600000,
-   "publicPctA": 0
+   "publicPctA": 49
   },
   "NFL|MIA @ NYJ": {
    "sport": "NFL",
@@ -15647,7 +15647,7 @@
    "lines": {
     "SBD": {
      "value": -1.5,
-     "open": 0.5
+     "open": 0
     }
    },
    "kickoffTs": 1792947600000,
@@ -15660,7 +15660,7 @@
    "sideB": "ARI",
    "lines": {
     "SBD": {
-     "value": -5,
+     "value": -4.5,
      "open": -5.5
     }
    },
@@ -15688,7 +15688,7 @@
    "sideB": "LV",
    "lines": {
     "SBD": {
-     "value": -6,
+     "value": -5.5,
      "open": -7
     }
    },
@@ -15702,8 +15702,8 @@
    "sideB": "SEA",
    "lines": {
     "SBD": {
-     "value": 2,
-     "open": 3
+     "value": 1.5,
+     "open": 2.5
     }
    },
    "kickoffTs": 1792974000000,
