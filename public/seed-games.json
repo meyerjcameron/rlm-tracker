@@ -13,14 +13,14 @@
       },
       {
         "book": "SBD",
-        "value": 2.5,
+        "value": 3,
         "open": 2,
         "openTimestamp": 1792359192000
       }
     ],
     "kickoff": "Thu, Oct 22, 2026 · 7:15 PM CT",
     "kickoffTs": 1792714500000,
-    "public": 72.9,
+    "public": 72.4,
     "injuriesA": [
       {
         "name": "A. Vera-Tucker",
@@ -65,7 +65,7 @@
     ],
     "kickoff": "Sun, Oct 25, 2026 · 8:30 AM CT",
     "kickoffTs": 1792935000000,
-    "public": 42.6
+    "public": 43.1
   },
   {
     "matchup": "SF @ ATL",
@@ -88,7 +88,7 @@
     ],
     "kickoff": "Sun, Oct 25, 2026 · 12:00 PM CT",
     "kickoffTs": 1792947600000,
-    "public": 70.9
+    "public": 71.2
   },
   {
     "matchup": "CIN @ BAL",
@@ -111,7 +111,7 @@
     ],
     "kickoff": "Sun, Oct 25, 2026 · 12:00 PM CT",
     "kickoffTs": 1792947600000,
-    "public": 71.8
+    "public": 70.8
   },
   {
     "matchup": "TB @ CAR",
@@ -134,7 +134,7 @@
     ],
     "kickoff": "Sun, Oct 25, 2026 · 12:00 PM CT",
     "kickoffTs": 1792947600000,
-    "public": 33.4
+    "public": 33.6
   },
   {
     "matchup": "NYG @ HOU",
@@ -157,7 +157,7 @@
     ],
     "kickoff": "Sun, Oct 25, 2026 · 12:00 PM CT",
     "kickoffTs": 1792947600000,
-    "public": 62.4
+    "public": 62.6
   },
   {
     "matchup": "IND @ MIN",
@@ -180,7 +180,7 @@
     ],
     "kickoff": "Sun, Oct 25, 2026 · 12:00 PM CT",
     "kickoffTs": 1792947600000,
-    "public": 50.5
+    "public": 50
   },
   {
     "matchup": "MIA @ NYJ",
@@ -203,7 +203,7 @@
     ],
     "kickoff": "Sun, Oct 25, 2026 · 12:00 PM CT",
     "kickoffTs": 1792947600000,
-    "public": 45.5
+    "public": 46.3
   },
   {
     "matchup": "CLE @ TEN",
@@ -226,7 +226,7 @@
     ],
     "kickoff": "Sun, Oct 25, 2026 · 12:00 PM CT",
     "kickoffTs": 1792947600000,
-    "public": 72.7
+    "public": 73.3
   },
   {
     "matchup": "DEN @ ARI",
@@ -249,7 +249,7 @@
     ],
     "kickoff": "Sun, Oct 25, 2026 · 3:05 PM CT",
     "kickoffTs": 1792958700000,
-    "public": 62.6
+    "public": 63
   },
   {
     "matchup": "GB @ DET",
@@ -272,7 +272,7 @@
     ],
     "kickoff": "Sun, Oct 25, 2026 · 3:25 PM CT",
     "kickoffTs": 1792959900000,
-    "public": 66.2
+    "public": 66.6
   },
   {
     "matchup": "LAR @ LV",
@@ -283,7 +283,7 @@
       {
         "book": "CBS",
         "value": -4,
-        "open": -6.5,
+        "open": -4.5,
         "openTimestamp": 1792359192000
       },
       {
@@ -295,7 +295,7 @@
     ],
     "kickoff": "Sun, Oct 25, 2026 · 3:25 PM CT",
     "kickoffTs": 1792959900000,
-    "public": 39.3
+    "public": 38.5
   },
   {
     "matchup": "KC @ SEA",
@@ -318,7 +318,7 @@
     ],
     "kickoff": "Sun, Oct 25, 2026 · 7:20 PM CT",
     "kickoffTs": 1792974000000,
-    "public": 88.9,
+    "public": 89.3,
     "injuriesB": [
       {
         "name": "S. Darnold",
@@ -348,32 +348,7 @@
     ],
     "kickoff": "Mon, Oct 26, 2026 · 7:15 PM CT",
     "kickoffTs": 1793060100000,
-    "public": 68
-  },
-  {
-    "matchup": "NMEXST @ SAMST",
-    "sport": "CFB",
-    "sideA": "NMEXST",
-    "sideB": "SAMST",
-    "lines": [
-      {
-        "book": "CBS",
-        "value": -3,
-        "open": -3,
-        "openTimestamp": 1792298440000
-      },
-      {
-        "book": "SBD",
-        "value": -3,
-        "open": -2.5,
-        "openTimestamp": 1792298440000
-      }
-    ],
-    "kickoff": "Wed, Oct 21, 2026 · 7:00 PM CT",
-    "kickoffTs": 1792627200000,
-    "public": 0,
-    "handlePublic": 29,
-    "conferences": []
+    "public": 67.9
   },
   {
     "matchup": "JMAD @ APLST",
@@ -396,8 +371,8 @@
     ],
     "kickoff": "Thu, Oct 22, 2026 · 6:00 PM CT",
     "kickoffTs": 1792710000000,
-    "public": 59.8,
-    "handlePublic": 77,
+    "public": 62.1,
+    "handlePublic": 81,
     "conferences": []
   },
   {
@@ -422,7 +397,7 @@
     "kickoff": "Thu, Oct 22, 2026 · 6:00 PM CT",
     "kickoffTs": 1792710000000,
     "public": 0,
-    "handlePublic": 48,
+    "handlePublic": 54,
     "conferences": []
   },
   {
@@ -446,8 +421,8 @@
     ],
     "kickoff": "Thu, Oct 22, 2026 · 6:30 PM CT",
     "kickoffTs": 1792711800000,
-    "public": 46.1,
-    "handlePublic": 94,
+    "public": 44.6,
+    "handlePublic": 99,
     "conferences": []
   },
   {
@@ -471,8 +446,8 @@
     ],
     "kickoff": "Fri, Oct 23, 2026 · 6:00 PM CT",
     "kickoffTs": 1792796400000,
-    "public": 73.5,
-    "handlePublic": 3,
+    "public": 74.3,
+    "handlePublic": 4,
     "conferences": []
   },
   {
@@ -483,7 +458,7 @@
     "lines": [
       {
         "book": "CBS",
-        "value": 2.5,
+        "value": 2,
         "open": 6.5,
         "openTimestamp": 1790004049000
       },
@@ -496,7 +471,7 @@
     ],
     "kickoff": "Fri, Oct 23, 2026 · 6:00 PM CT",
     "kickoffTs": 1792796400000,
-    "public": 46.4,
+    "public": 44.5,
     "handlePublic": 90,
     "conferences": [
       "ACC",
@@ -524,7 +499,7 @@
     ],
     "kickoff": "Fri, Oct 23, 2026 · 7:30 PM CT",
     "kickoffTs": 1792801800000,
-    "public": 64.2,
+    "public": 63.2,
     "handlePublic": 37,
     "conferences": []
   },
@@ -549,7 +524,7 @@
     ],
     "kickoff": "Fri, Oct 23, 2026 · 8:00 PM CT",
     "kickoffTs": 1792803600000,
-    "public": 48.5,
+    "public": 49.8,
     "handlePublic": 99,
     "conferences": []
   },
@@ -574,7 +549,7 @@
     ],
     "kickoff": "Fri, Oct 23, 2026 · 9:30 PM CT",
     "kickoffTs": 1792809000000,
-    "public": 65.3,
+    "public": 67.2,
     "handlePublic": 58,
     "conferences": [
       "ACC",
@@ -582,59 +557,34 @@
     ]
   },
   {
-    "matchup": "PITT @ MIAMI",
+    "matchup": "IND @ MICH",
     "sport": "CFB",
-    "sideA": "PITT",
-    "sideB": "MIAMI",
+    "sideA": "IND",
+    "sideB": "MICH",
     "lines": [
       {
         "book": "CBS",
-        "value": 20.5,
-        "open": 23.5,
-        "openTimestamp": 1792298440000
+        "value": -7,
+        "open": -6,
+        "openTimestamp": 1790004049000
       },
       {
         "book": "SBD",
-        "value": 20.5,
-        "open": 23,
-        "openTimestamp": 1792298440000
+        "value": -7,
+        "open": -8,
+        "openTimestamp": 1790004049000
       }
     ],
     "kickoff": "Sat, Oct 24, 2026 · 11:00 AM CT",
     "kickoffTs": 1792857600000,
-    "public": 53.2,
-    "handlePublic": 58,
+    "public": 62.5,
+    "handlePublic": 30,
     "conferences": [
-      "ACC",
-      "ACC"
+      "Big Ten",
+      "Big Ten"
     ],
-    "rankB": 1,
+    "rankA": 6,
     "ranked": true
-  },
-  {
-    "matchup": "WMICH @ TOLEDO",
-    "sport": "CFB",
-    "sideA": "WMICH",
-    "sideB": "TOLEDO",
-    "lines": [
-      {
-        "book": "CBS",
-        "value": 3.5,
-        "open": 1.5,
-        "openTimestamp": 1792342280000
-      },
-      {
-        "book": "SBD",
-        "value": 3.5,
-        "open": 3,
-        "openTimestamp": 1792342280000
-      }
-    ],
-    "kickoff": "Sat, Oct 24, 2026 · 11:00 AM CT",
-    "kickoffTs": 1792857600000,
-    "public": 44.3,
-    "handlePublic": 0,
-    "conferences": []
   },
   {
     "matchup": "WVU @ TCU",
@@ -657,8 +607,8 @@
     ],
     "kickoff": "Sat, Oct 24, 2026 · 11:00 AM CT",
     "kickoffTs": 1792857600000,
-    "public": 79.3,
-    "handlePublic": 95,
+    "public": 80.3,
+    "handlePublic": 71,
     "conferences": [
       "Big 12",
       "Big 12"
@@ -685,8 +635,8 @@
     ],
     "kickoff": "Sat, Oct 24, 2026 · 11:00 AM CT",
     "kickoffTs": 1792857600000,
-    "public": 69,
-    "handlePublic": 96,
+    "public": 67.8,
+    "handlePublic": 20,
     "conferences": [
       "ACC",
       "ACC"
@@ -715,8 +665,8 @@
     ],
     "kickoff": "Sat, Oct 24, 2026 · 11:00 AM CT",
     "kickoffTs": 1792857600000,
-    "public": 49.4,
-    "handlePublic": 22,
+    "public": 48.6,
+    "handlePublic": 23,
     "conferences": [
       "Big Ten",
       "Big Ten"
@@ -745,8 +695,8 @@
     ],
     "kickoff": "Sat, Oct 24, 2026 · 11:00 AM CT",
     "kickoffTs": 1792857600000,
-    "public": 36.1,
-    "handlePublic": 35,
+    "public": 37.3,
+    "handlePublic": 50,
     "conferences": [
       "SEC",
       "SEC"
@@ -755,63 +705,58 @@
     "ranked": true
   },
   {
-    "matchup": "TXTECH @ CINCY",
+    "matchup": "WMICH @ TOLEDO",
     "sport": "CFB",
-    "sideA": "TXTECH",
-    "sideB": "CINCY",
+    "sideA": "WMICH",
+    "sideB": "TOLEDO",
     "lines": [
       {
         "book": "CBS",
-        "value": -10.5,
-        "open": -11,
-        "openTimestamp": 1792298440000
+        "value": 3.5,
+        "open": 1.5,
+        "openTimestamp": 1792342280000
       },
       {
         "book": "SBD",
-        "value": -10.5,
-        "open": -11.5,
-        "openTimestamp": 1792298440000
+        "value": 3.5,
+        "open": 3,
+        "openTimestamp": 1792342280000
       }
     ],
     "kickoff": "Sat, Oct 24, 2026 · 11:00 AM CT",
     "kickoffTs": 1792857600000,
-    "public": 57.4,
-    "handlePublic": 29,
-    "conferences": [
-      "Big 12",
-      "Big 12"
-    ],
-    "rankA": 8,
-    "ranked": true
+    "public": 43.7,
+    "handlePublic": 35,
+    "conferences": []
   },
   {
-    "matchup": "IND @ MICH",
+    "matchup": "PITT @ MIAMI",
     "sport": "CFB",
-    "sideA": "IND",
-    "sideB": "MICH",
+    "sideA": "PITT",
+    "sideB": "MIAMI",
     "lines": [
       {
         "book": "CBS",
-        "value": -7,
-        "open": -6,
-        "openTimestamp": 1790004049000
+        "value": 20.5,
+        "open": 23.5,
+        "openTimestamp": 1792298440000
       },
       {
         "book": "SBD",
-        "value": -7,
-        "open": -8,
-        "openTimestamp": 1790004049000
+        "value": 20.5,
+        "open": 23,
+        "openTimestamp": 1792298440000
       }
     ],
     "kickoff": "Sat, Oct 24, 2026 · 11:00 AM CT",
     "kickoffTs": 1792857600000,
-    "public": 62.2,
-    "handlePublic": 31,
+    "public": 53.1,
+    "handlePublic": 58,
     "conferences": [
-      "Big Ten",
-      "Big Ten"
+      "ACC",
+      "ACC"
     ],
-    "rankA": 6,
+    "rankB": 1,
     "ranked": true
   },
   {
@@ -835,9 +780,67 @@
     ],
     "kickoff": "Sat, Oct 24, 2026 · 11:00 AM CT",
     "kickoffTs": 1792857600000,
-    "public": 39.4,
+    "public": 38,
     "handlePublic": 7,
     "conferences": []
+  },
+  {
+    "matchup": "TXTECH @ CINCY",
+    "sport": "CFB",
+    "sideA": "TXTECH",
+    "sideB": "CINCY",
+    "lines": [
+      {
+        "book": "CBS",
+        "value": -10.5,
+        "open": -11,
+        "openTimestamp": 1792298440000
+      },
+      {
+        "book": "SBD",
+        "value": -10.5,
+        "open": -11.5,
+        "openTimestamp": 1792298440000
+      }
+    ],
+    "kickoff": "Sat, Oct 24, 2026 · 11:00 AM CT",
+    "kickoffTs": 1792857600000,
+    "public": 58.6,
+    "handlePublic": 28,
+    "conferences": [
+      "Big 12",
+      "Big 12"
+    ],
+    "rankA": 8,
+    "ranked": true
+  },
+  {
+    "matchup": "BAYLOR @ KANSAS",
+    "sport": "CFB",
+    "sideA": "BAYLOR",
+    "sideB": "KANSAS",
+    "lines": [
+      {
+        "book": "CBS",
+        "value": -2.5,
+        "open": -2.5,
+        "openTimestamp": 1792342280000
+      },
+      {
+        "book": "SBD",
+        "value": -2.5,
+        "open": -2,
+        "openTimestamp": 1792342280000
+      }
+    ],
+    "kickoff": "Sat, Oct 24, 2026 · 12:00 PM CT",
+    "kickoffTs": 1792861200000,
+    "public": 63.6,
+    "handlePublic": 41,
+    "conferences": [
+      "Big 12",
+      "Big 12"
+    ]
   },
   {
     "matchup": "MIAOH @ CMICH",
@@ -890,34 +893,6 @@
     "conferences": []
   },
   {
-    "matchup": "BAYLOR @ KANSAS",
-    "sport": "CFB",
-    "sideA": "BAYLOR",
-    "sideB": "KANSAS",
-    "lines": [
-      {
-        "book": "CBS",
-        "value": -2.5,
-        "open": -2.5,
-        "openTimestamp": 1792342280000
-      },
-      {
-        "book": "SBD",
-        "value": -2.5,
-        "open": -2,
-        "openTimestamp": 1792342280000
-      }
-    ],
-    "kickoff": "Sat, Oct 24, 2026 · 12:00 PM CT",
-    "kickoffTs": 1792861200000,
-    "public": 63.7,
-    "handlePublic": 41,
-    "conferences": [
-      "Big 12",
-      "Big 12"
-    ]
-  },
-  {
     "matchup": "OREG @ ILL",
     "sport": "CFB",
     "sideA": "OREG",
@@ -931,14 +906,14 @@
       },
       {
         "book": "SBD",
-        "value": -8.5,
+        "value": -9,
         "open": -12.5,
         "openTimestamp": 1792342280000
       }
     ],
     "kickoff": "Sat, Oct 24, 2026 · 2:00 PM CT",
     "kickoffTs": 1792868400000,
-    "public": 45.6,
+    "public": 47.1,
     "handlePublic": 74,
     "conferences": [
       "Big Ten",
@@ -953,7 +928,7 @@
     "lines": [
       {
         "book": "CBS",
-        "value": -4,
+        "value": -4.5,
         "open": -4,
         "openTimestamp": 1792315098000
       },
@@ -966,7 +941,7 @@
     ],
     "kickoff": "Sat, Oct 24, 2026 · 2:30 PM CT",
     "kickoffTs": 1792870200000,
-    "public": 59.9,
+    "public": 59.8,
     "handlePublic": 0,
     "conferences": [
       "SEC",
@@ -994,7 +969,7 @@
     ],
     "kickoff": "Sat, Oct 24, 2026 · 2:30 PM CT",
     "kickoffTs": 1792870200000,
-    "public": 68.1,
+    "public": 68.5,
     "handlePublic": 45,
     "conferences": [
       "Big Ten",
@@ -1024,9 +999,39 @@
     ],
     "kickoff": "Sat, Oct 24, 2026 · 2:30 PM CT",
     "kickoffTs": 1792870200000,
-    "public": 0,
-    "handlePublic": 31,
+    "public": 60,
+    "handlePublic": 27,
     "conferences": []
+  },
+  {
+    "matchup": "BYU @ UCF",
+    "sport": "CFB",
+    "sideA": "BYU",
+    "sideB": "UCF",
+    "lines": [
+      {
+        "book": "CBS",
+        "value": -6.5,
+        "open": -6.5,
+        "openTimestamp": 1792281903000
+      },
+      {
+        "book": "SBD",
+        "value": -6.5,
+        "open": -7.5,
+        "openTimestamp": 1792281903000
+      }
+    ],
+    "kickoff": "Sat, Oct 24, 2026 · 2:30 PM CT",
+    "kickoffTs": 1792870200000,
+    "public": 84.9,
+    "handlePublic": 40,
+    "conferences": [
+      "Big 12",
+      "Big 12"
+    ],
+    "rankA": 2,
+    "ranked": true
   },
   {
     "matchup": "HAWAII @ NILL",
@@ -1050,38 +1055,8 @@
     "kickoff": "Sat, Oct 24, 2026 · 2:30 PM CT",
     "kickoffTs": 1792870200000,
     "public": 0,
-    "handlePublic": 0,
+    "handlePublic": 78,
     "conferences": []
-  },
-  {
-    "matchup": "BYU @ UCF",
-    "sport": "CFB",
-    "sideA": "BYU",
-    "sideB": "UCF",
-    "lines": [
-      {
-        "book": "CBS",
-        "value": -6.5,
-        "open": -9.5,
-        "openTimestamp": 1792281903000
-      },
-      {
-        "book": "SBD",
-        "value": -6.5,
-        "open": -7.5,
-        "openTimestamp": 1792281903000
-      }
-    ],
-    "kickoff": "Sat, Oct 24, 2026 · 2:30 PM CT",
-    "kickoffTs": 1792870200000,
-    "public": 84.5,
-    "handlePublic": 43,
-    "conferences": [
-      "Big 12",
-      "Big 12"
-    ],
-    "rankA": 2,
-    "ranked": true
   },
   {
     "matchup": "MICHST @ UCLA",
@@ -1091,21 +1066,21 @@
     "lines": [
       {
         "book": "CBS",
-        "value": 15.5,
+        "value": 15,
         "open": 13.5,
         "openTimestamp": 1792315098000
       },
       {
         "book": "SBD",
-        "value": 14.5,
+        "value": 15,
         "open": 13,
         "openTimestamp": 1792315098000
       }
     ],
     "kickoff": "Sat, Oct 24, 2026 · 2:30 PM CT",
     "kickoffTs": 1792870200000,
-    "public": 56,
-    "handlePublic": 87,
+    "public": 55.3,
+    "handlePublic": 88,
     "conferences": [
       "Big Ten",
       "Big Ten"
@@ -1134,8 +1109,8 @@
     ],
     "kickoff": "Sat, Oct 24, 2026 · 2:30 PM CT",
     "kickoffTs": 1792870200000,
-    "public": 56,
-    "handlePublic": 74,
+    "public": 54.1,
+    "handlePublic": 91,
     "conferences": [
       "SEC",
       "SEC"
@@ -1144,27 +1119,28 @@
     "ranked": true
   },
   {
-    "matchup": "BGREEN @ BUFF",
+    "matchup": "SACST @ BALLST",
     "sport": "CFB",
-    "sideA": "BGREEN",
-    "sideB": "BUFF",
+    "sideA": "SACST",
+    "sideB": "BALLST",
     "lines": [
       {
         "book": "CBS",
-        "value": 3.5,
-        "open": 4,
+        "value": 14.5,
+        "open": 9.5,
         "openTimestamp": 1792342280000
       },
       {
         "book": "SBD",
-        "value": 3,
-        "open": 4.5,
+        "value": 14.5,
+        "open": 10,
         "openTimestamp": 1792342280000
       }
     ],
     "kickoff": "Sat, Oct 24, 2026 · 2:30 PM CT",
     "kickoffTs": 1792870200000,
-    "public": 0,
+    "public": 59.1,
+    "handlePublic": 100,
     "conferences": []
   },
   {
@@ -1188,8 +1164,8 @@
     ],
     "kickoff": "Sat, Oct 24, 2026 · 2:30 PM CT",
     "kickoffTs": 1792870200000,
-    "public": 83.8,
-    "handlePublic": 38,
+    "public": 83.5,
+    "handlePublic": 43,
     "conferences": [
       "SEC",
       "SEC"
@@ -1205,7 +1181,7 @@
     "lines": [
       {
         "book": "CBS",
-        "value": 4.5,
+        "value": 5,
         "open": 5.5,
         "openTimestamp": 1792315098000
       },
@@ -1218,7 +1194,7 @@
     ],
     "kickoff": "Sat, Oct 24, 2026 · 2:30 PM CT",
     "kickoffTs": 1792870200000,
-    "public": 55.5,
+    "public": 55.2,
     "handlePublic": 100,
     "conferences": [
       "ACC",
@@ -1226,27 +1202,27 @@
     ]
   },
   {
-    "matchup": "SACST @ BALLST",
+    "matchup": "BGREEN @ BUFF",
     "sport": "CFB",
-    "sideA": "SACST",
-    "sideB": "BALLST",
+    "sideA": "BGREEN",
+    "sideB": "BUFF",
     "lines": [
       {
         "book": "CBS",
-        "value": 14.5,
-        "open": 9.5,
+        "value": 3.5,
+        "open": 4,
         "openTimestamp": 1792342280000
       },
       {
         "book": "SBD",
-        "value": 14.5,
-        "open": 10,
+        "value": 3,
+        "open": 4.5,
         "openTimestamp": 1792342280000
       }
     ],
     "kickoff": "Sat, Oct 24, 2026 · 2:30 PM CT",
     "kickoffTs": 1792870200000,
-    "public": 57.4,
+    "public": 0,
     "handlePublic": 100,
     "conferences": []
   },
@@ -1258,13 +1234,13 @@
     "lines": [
       {
         "book": "CBS",
-        "value": -3.5,
+        "value": -2.5,
         "open": -3,
         "openTimestamp": 1792342280000
       },
       {
         "book": "SBD",
-        "value": -3.5,
+        "value": -2.5,
         "open": -3,
         "openTimestamp": 1792342280000
       }
@@ -1277,30 +1253,6 @@
       "Big 12",
       "Big 12"
     ]
-  },
-  {
-    "matchup": "LAMON @ TROY",
-    "sport": "CFB",
-    "sideA": "LAMON",
-    "sideB": "TROY",
-    "lines": [
-      {
-        "book": "CBS",
-        "value": 14.5,
-        "open": 17.5,
-        "openTimestamp": 1792342280000
-      },
-      {
-        "book": "SBD",
-        "value": 14,
-        "open": 17.5,
-        "openTimestamp": 1792342280000
-      }
-    ],
-    "kickoff": "Sat, Oct 24, 2026 · 3:00 PM CT",
-    "kickoffTs": 1792872000000,
-    "public": 0,
-    "conferences": []
   },
   {
     "matchup": "EMICH @ OHIO",
@@ -1328,21 +1280,45 @@
     "conferences": []
   },
   {
-    "matchup": "UL @ USM",
+    "matchup": "LAMON @ TROY",
     "sport": "CFB",
-    "sideA": "UL",
-    "sideB": "USM",
+    "sideA": "LAMON",
+    "sideB": "TROY",
     "lines": [
       {
         "book": "CBS",
-        "value": -10,
-        "open": -10,
+        "value": 14.5,
+        "open": 17.5,
         "openTimestamp": 1792342280000
       },
       {
         "book": "SBD",
-        "value": -10,
-        "open": -11,
+        "value": 14,
+        "open": 17.5,
+        "openTimestamp": 1792342280000
+      }
+    ],
+    "kickoff": "Sat, Oct 24, 2026 · 3:00 PM CT",
+    "kickoffTs": 1792872000000,
+    "public": 0,
+    "conferences": []
+  },
+  {
+    "matchup": "SJST @ NEVADA",
+    "sport": "CFB",
+    "sideA": "SJST",
+    "sideB": "NEVADA",
+    "lines": [
+      {
+        "book": "CBS",
+        "value": 6.5,
+        "open": 5.5,
+        "openTimestamp": 1792342280000
+      },
+      {
+        "book": "SBD",
+        "value": 6.5,
+        "open": 5.5,
         "openTimestamp": 1792342280000
       }
     ],
@@ -1377,27 +1353,28 @@
     "conferences": []
   },
   {
-    "matchup": "SJST @ NEVADA",
+    "matchup": "UL @ USM",
     "sport": "CFB",
-    "sideA": "SJST",
-    "sideB": "NEVADA",
+    "sideA": "UL",
+    "sideB": "USM",
     "lines": [
       {
         "book": "CBS",
-        "value": 6.5,
-        "open": 5.5,
+        "value": -10,
+        "open": -10,
         "openTimestamp": 1792342280000
       },
       {
         "book": "SBD",
-        "value": 6,
-        "open": 5.5,
+        "value": -10,
+        "open": -11,
         "openTimestamp": 1792342280000
       }
     ],
     "kickoff": "Sat, Oct 24, 2026 · 4:00 PM CT",
     "kickoffTs": 1792875600000,
     "public": 0,
+    "handlePublic": 100,
     "conferences": []
   },
   {
@@ -1421,8 +1398,8 @@
     ],
     "kickoff": "Sat, Oct 24, 2026 · 5:00 PM CT",
     "kickoffTs": 1792879200000,
-    "public": 58.5,
-    "handlePublic": 15,
+    "public": 60.8,
+    "handlePublic": 8,
     "conferences": [],
     "rankA": 21,
     "ranked": true
@@ -1524,7 +1501,7 @@
     ],
     "kickoff": "Sat, Oct 24, 2026 · 6:00 PM CT",
     "kickoffTs": 1792882800000,
-    "public": 46.3,
+    "public": 46.5,
     "handlePublic": 100,
     "conferences": [
       "Big 12",
@@ -1552,13 +1529,43 @@
     ],
     "kickoff": "Sat, Oct 24, 2026 · 6:30 PM CT",
     "kickoffTs": 1792884600000,
-    "public": 0,
+    "public": 67.7,
     "handlePublic": 84,
     "conferences": [
       "Big 12",
       "Big 12"
     ],
     "rankB": 25,
+    "ranked": true
+  },
+  {
+    "matchup": "USC @ WISC",
+    "sport": "CFB",
+    "sideA": "USC",
+    "sideB": "WISC",
+    "lines": [
+      {
+        "book": "CBS",
+        "value": -2.5,
+        "open": -3,
+        "openTimestamp": 1792298440000
+      },
+      {
+        "book": "SBD",
+        "value": -3,
+        "open": -2,
+        "openTimestamp": 1792298440000
+      }
+    ],
+    "kickoff": "Sat, Oct 24, 2026 · 6:30 PM CT",
+    "kickoffTs": 1792884600000,
+    "public": 80.5,
+    "handlePublic": 32,
+    "conferences": [
+      "Big Ten",
+      "Big Ten"
+    ],
+    "rankA": 16,
     "ranked": true
   },
   {
@@ -1582,7 +1589,7 @@
     ],
     "kickoff": "Sat, Oct 24, 2026 · 6:30 PM CT",
     "kickoffTs": 1792884600000,
-    "public": 44.1,
+    "public": 42.4,
     "handlePublic": 43,
     "conferences": [
       "SEC",
@@ -1599,7 +1606,7 @@
     "lines": [
       {
         "book": "CBS",
-        "value": 8.5,
+        "value": 9,
         "open": 9.5,
         "openTimestamp": 1792315098000
       },
@@ -1640,8 +1647,8 @@
     ],
     "kickoff": "Sat, Oct 24, 2026 · 6:30 PM CT",
     "kickoffTs": 1792884600000,
-    "public": 83.8,
-    "handlePublic": 27,
+    "public": 84.9,
+    "handlePublic": 32,
     "conferences": [
       "SEC",
       "SEC"
@@ -1674,36 +1681,6 @@
     "public": 0,
     "handlePublic": 96,
     "conferences": []
-  },
-  {
-    "matchup": "USC @ WISC",
-    "sport": "CFB",
-    "sideA": "USC",
-    "sideB": "WISC",
-    "lines": [
-      {
-        "book": "CBS",
-        "value": -2.5,
-        "open": -3,
-        "openTimestamp": 1792298440000
-      },
-      {
-        "book": "SBD",
-        "value": -3,
-        "open": -2,
-        "openTimestamp": 1792298440000
-      }
-    ],
-    "kickoff": "Sat, Oct 24, 2026 · 6:30 PM CT",
-    "kickoffTs": 1792884600000,
-    "public": 80.3,
-    "handlePublic": 33,
-    "conferences": [
-      "Big Ten",
-      "Big Ten"
-    ],
-    "rankA": 16,
-    "ranked": true
   },
   {
     "matchup": "TXSA @ TULANE",
@@ -1765,8 +1742,8 @@
     ],
     "kickoff": "Sat, Oct 24, 2026 · 9:15 PM CT",
     "kickoffTs": 1792894500000,
-    "public": 71,
-    "handlePublic": 28,
+    "public": 71.7,
+    "handlePublic": 26,
     "conferences": [
       "Big 12",
       "Big 12"
@@ -1774,6 +1751,27 @@
     "rankA": 14,
     "rankB": 10,
     "ranked": true
+  },
+  {
+    "matchup": "NMEXST @ SAMST",
+    "sport": "CFB",
+    "sideA": "NMEXST",
+    "sideB": "SAMST",
+    "lines": [
+      {
+        "book": "CBS",
+        "value": -3,
+        "open": -3,
+        "openTimestamp": 1792298440000
+      }
+    ],
+    "kickoff": "Wed, Oct 21, 2026 · 7:00 PM CT",
+    "kickoffTs": 1792627200000,
+    "score": {
+      "a": 30,
+      "b": 24
+    },
+    "conferences": []
   },
   {
     "matchup": "SALA @ MRSHL",
@@ -1844,7 +1842,7 @@
     "lines": [
       {
         "book": "SBD",
-        "value": 5,
+        "value": 5.5,
         "open": 5.5,
         "openTimestamp": 1792608327000
       }
@@ -2060,7 +2058,7 @@
     "lines": [
       {
         "book": "SBD",
-        "value": 8.5,
+        "value": 9.5,
         "open": 7.5,
         "openTimestamp": 1792608327000
       }
@@ -2078,7 +2076,7 @@
     "lines": [
       {
         "book": "SBD",
-        "value": -2.5,
+        "value": -1.5,
         "open": -2.5,
         "openTimestamp": 1792608327000
       }
@@ -2132,7 +2130,7 @@
     "lines": [
       {
         "book": "SBD",
-        "value": -9.5,
+        "value": -8.5,
         "open": -10.5,
         "openTimestamp": 1792608327000
       }
@@ -2150,7 +2148,7 @@
     "lines": [
       {
         "book": "SBD",
-        "value": 17.5,
+        "value": 16.5,
         "open": 16.5,
         "openTimestamp": 1792608327000
       }
@@ -2168,7 +2166,7 @@
     "lines": [
       {
         "book": "SBD",
-        "value": -33.5,
+        "value": -32.5,
         "open": -28.5,
         "openTimestamp": 1792608327000
       }
@@ -2186,7 +2184,7 @@
     "lines": [
       {
         "book": "SBD",
-        "value": -1.5,
+        "value": -2.5,
         "open": 1.5,
         "openTimestamp": 1792608327000
       }
@@ -2294,7 +2292,7 @@
     "lines": [
       {
         "book": "SBD",
-        "value": 9.5,
+        "value": 8.5,
         "open": 9.5,
         "openTimestamp": 1792608327000
       }
@@ -2330,7 +2328,7 @@
     "lines": [
       {
         "book": "SBD",
-        "value": -24.5,
+        "value": -23.5,
         "open": -28.5,
         "openTimestamp": 1792608327000
       }
@@ -2456,7 +2454,7 @@
     "lines": [
       {
         "book": "SBD",
-        "value": 21.5,
+        "value": 20.5,
         "open": 21.5,
         "openTimestamp": 1792608327000
       }
@@ -2492,7 +2490,7 @@
     "lines": [
       {
         "book": "SBD",
-        "value": 2.5,
+        "value": 1.5,
         "open": 1.5,
         "openTimestamp": 1792608327000
       }
@@ -2528,7 +2526,7 @@
     "lines": [
       {
         "book": "SBD",
-        "value": 25.5,
+        "value": 24.5,
         "open": 24.5,
         "openTimestamp": 1792608327000
       }
@@ -2564,7 +2562,7 @@
     "lines": [
       {
         "book": "SBD",
-        "value": 40.5,
+        "value": 39.5,
         "open": 37.5,
         "openTimestamp": 1792608327000
       }
@@ -2600,7 +2598,7 @@
     "lines": [
       {
         "book": "SBD",
-        "value": -3.5,
+        "value": -4.5,
         "open": -5.5,
         "openTimestamp": 1792608327000
       }
@@ -2690,7 +2688,7 @@
     "lines": [
       {
         "book": "SBD",
-        "value": 19.5,
+        "value": 18.5,
         "open": 21.5,
         "openTimestamp": 1792608327000
       }
@@ -2726,7 +2724,7 @@
     "lines": [
       {
         "book": "SBD",
-        "value": 13.5,
+        "value": 14.5,
         "open": 13.5,
         "openTimestamp": 1792608327000
       }
@@ -2744,7 +2742,7 @@
     "lines": [
       {
         "book": "SBD",
-        "value": 3.5,
+        "value": 4.5,
         "open": 3.5,
         "openTimestamp": 1792608327000
       }
@@ -2834,7 +2832,7 @@
     "lines": [
       {
         "book": "SBD",
-        "value": -13.5,
+        "value": -12.5,
         "open": -16.5,
         "openTimestamp": 1792608327000
       }
