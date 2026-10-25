@@ -5267,8 +5267,8 @@
    "sideB": "FSU",
    "lines": {
     "SBD": {
-     "value": 5.5,
-     "open": 3
+     "value": 6,
+     "open": 4
     },
     "CBS": {
      "value": 6.5,
@@ -5350,7 +5350,7 @@
      "open": 10.5
     },
     "CBS": {
-     "value": 10.5,
+     "value": 11,
      "open": 10.5
     }
    },
@@ -15664,58 +15664,64 @@
    "result": "win"
   },
   "NFL|SF @ ATL": {
+   "final": true,
    "sport": "NFL",
    "matchup": "SF @ ATL",
    "sideA": "SF",
    "sideB": "ATL",
-   "lines": {
-    "SBD": {
-     "value": -2.5,
-     "open": -5
-    },
-    "CBS": {
-     "value": -2.5,
-     "open": -3.5
-    }
-   },
    "kickoffTs": 1792947600000,
-   "publicPctA": 60.8
+   "score": {
+    "a": 20,
+    "b": 29
+   },
+   "openAvg": -4.25,
+   "closeAvg": -2.5,
+   "publicPctA": 58.4,
+   "movementSide": "B",
+   "publicMajority": "A",
+   "isRlm": true,
+   "sharpSide": "ATL",
+   "result": "win"
   },
   "NFL|CIN @ BAL": {
+   "final": true,
    "sport": "NFL",
    "matchup": "CIN @ BAL",
    "sideA": "CIN",
    "sideB": "BAL",
-   "lines": {
-    "SBD": {
-     "value": -3,
-     "open": 3.5
-    },
-    "CBS": {
-     "value": -3,
-     "open": 3.5
-    }
-   },
    "kickoffTs": 1792947600000,
-   "publicPctA": 67.4
+   "score": {
+    "a": 35,
+    "b": 13
+   },
+   "openAvg": 3.5,
+   "closeAvg": -3,
+   "publicPctA": 65.2,
+   "movementSide": "A",
+   "publicMajority": "A",
+   "isRlm": false,
+   "sharpSide": "CIN",
+   "result": "win"
   },
   "NFL|TB @ CAR": {
+   "final": true,
    "sport": "NFL",
    "matchup": "TB @ CAR",
    "sideA": "TB",
    "sideB": "CAR",
-   "lines": {
-    "SBD": {
-     "value": 3,
-     "open": 3
-    },
-    "CBS": {
-     "value": 3,
-     "open": 3.5
-    }
-   },
    "kickoffTs": 1792947600000,
-   "publicPctA": 37.6
+   "score": {
+    "a": 43,
+    "b": 13
+   },
+   "openAvg": 3.5,
+   "closeAvg": 3,
+   "publicPctA": 37.6,
+   "movementSide": "A",
+   "publicMajority": "B",
+   "isRlm": true,
+   "sharpSide": "TB",
+   "result": "win"
   },
   "NFL|NYG @ HOU": {
    "sport": "NFL",
@@ -15733,61 +15739,67 @@
     }
    },
    "kickoffTs": 1792947600000,
-   "publicPctA": 51.6
+   "publicPctA": 50.8
   },
   "NFL|IND @ MIN": {
+   "final": true,
    "sport": "NFL",
    "matchup": "IND @ MIN",
    "sideA": "IND",
    "sideB": "MIN",
-   "lines": {
-    "SBD": {
-     "value": 7,
-     "open": 4
-    },
-    "CBS": {
-     "value": 7,
-     "open": 6.5
-    }
-   },
    "kickoffTs": 1792947600000,
-   "publicPctA": 51.5
+   "score": {
+    "a": 10,
+    "b": 16
+   },
+   "openAvg": 5.25,
+   "closeAvg": 7,
+   "publicPctA": 51.5,
+   "movementSide": "B",
+   "publicMajority": "A",
+   "isRlm": true,
+   "sharpSide": "MIN",
+   "result": "loss"
   },
   "NFL|MIA @ NYJ": {
+   "final": true,
    "sport": "NFL",
    "matchup": "MIA @ NYJ",
    "sideA": "MIA",
    "sideB": "NYJ",
-   "lines": {
-    "SBD": {
-     "value": 3.5,
-     "open": 4
-    },
-    "CBS": {
-     "value": 4,
-     "open": 4.5
-    }
-   },
    "kickoffTs": 1792947600000,
-   "publicPctA": 46.3
+   "score": {
+    "a": 28,
+    "b": 25
+   },
+   "openAvg": 4.25,
+   "closeAvg": 3.75,
+   "publicPctA": 48.3,
+   "movementSide": "A",
+   "publicMajority": "B",
+   "isRlm": true,
+   "sharpSide": "MIA",
+   "result": "win"
   },
   "NFL|CLE @ TEN": {
+   "final": true,
    "sport": "NFL",
    "matchup": "CLE @ TEN",
    "sideA": "CLE",
    "sideB": "TEN",
-   "lines": {
-    "SBD": {
-     "value": -1.5,
-     "open": 0
-    },
-    "CBS": {
-     "value": -1.5,
-     "open": -1.5
-    }
-   },
    "kickoffTs": 1792947600000,
-   "publicPctA": 67
+   "score": {
+    "a": 27,
+    "b": 24
+   },
+   "openAvg": 1.25,
+   "closeAvg": -1.5,
+   "publicPctA": 64.8,
+   "movementSide": "A",
+   "publicMajority": "A",
+   "isRlm": false,
+   "sharpSide": "CLE",
+   "result": "win"
   },
   "NFL|DEN @ ARI": {
    "sport": "NFL",
@@ -15805,7 +15817,7 @@
     }
    },
    "kickoffTs": 1792958700000,
-   "publicPctA": 61.8
+   "publicPctA": 62.3
   },
   "NFL|GB @ DET": {
    "sport": "NFL",
@@ -15818,12 +15830,12 @@
      "open": 2.5
     },
     "CBS": {
-     "value": 3.5,
+     "value": 4,
      "open": 3
     }
    },
    "kickoffTs": 1792959900000,
-   "publicPctA": 63.1
+   "publicPctA": 61.3
   },
   "NFL|LAR @ LV": {
    "sport": "NFL",
@@ -15841,7 +15853,7 @@
     }
    },
    "kickoffTs": 1792959900000,
-   "publicPctA": 37.6
+   "publicPctA": 37.3
   },
   "NFL|KC @ SEA": {
    "sport": "NFL",
@@ -15850,7 +15862,7 @@
    "sideB": "SEA",
    "lines": {
     "SBD": {
-     "value": 2.5,
+     "value": 3,
      "open": 2.5
     },
     "CBS": {
@@ -15859,7 +15871,7 @@
     }
    },
    "kickoffTs": 1792974000000,
-   "publicPctA": 86.1
+   "publicPctA": 84.8
   },
   "NFL|DAL @ PHI": {
    "sport": "NFL",
@@ -15877,7 +15889,7 @@
     }
    },
    "kickoffTs": 1793060100000,
-   "publicPctA": 60.1
+   "publicPctA": 54.4
   },
   "CFB|NCCU @ DSU": {
    "sport": "CFB",
@@ -16741,7 +16753,7 @@
    "sideB": "MTU",
    "lines": {
     "SBD": {
-     "value": 2.5,
+     "value": 3,
      "open": 3
     }
    },
@@ -16772,7 +16784,7 @@
    "lines": {
     "SBD": {
      "value": -30,
-     "open": -29
+     "open": -17.5
     },
     "CBS": {
      "value": -29.5,
@@ -16869,11 +16881,11 @@
    "sideB": "IND",
    "lines": {
     "SBD": {
-     "value": 20.5,
-     "open": 21
+     "value": 19.5,
+     "open": 20.5
     },
     "CBS": {
-     "value": 20.5,
+     "value": 19.5,
      "open": 22.5
     }
    },
@@ -16987,7 +16999,7 @@
    "lines": {
     "SBD": {
      "value": 9.5,
-     "open": 10
+     "open": 9.5
     },
     "CBS": {
      "value": 9.5,
@@ -17027,7 +17039,7 @@
      "open": -2.5
     },
     "SBD": {
-     "value": -2.5,
+     "value": -1.5,
      "open": -2
     }
    },
@@ -17047,7 +17059,7 @@
     },
     "SBD": {
      "value": 6,
-     "open": 6.5
+     "open": 6
     }
    },
    "conferences": [],
@@ -17079,7 +17091,7 @@
      "open": -3.5
     },
     "SBD": {
-     "value": -2.5,
+     "value": -3,
      "open": -3
     }
    },
@@ -17094,12 +17106,12 @@
    "sideB": "JMAD",
    "lines": {
     "CBS": {
-     "value": 19.5,
+     "value": 20.5,
      "open": 17.5
     },
     "SBD": {
-     "value": 18,
-     "open": 17.5
+     "value": 19.5,
+     "open": 18.5
     }
    },
    "conferences": [],
@@ -17113,11 +17125,11 @@
    "sideB": "NTEXAS",
    "lines": {
     "CBS": {
-     "value": 12,
+     "value": 12.5,
      "open": 13.5
     },
     "SBD": {
-     "value": 11.5,
+     "value": 12,
      "open": 12.5
     }
    },
@@ -17136,8 +17148,8 @@
      "open": -13.5
     },
     "SBD": {
-     "value": -12,
-     "open": -13.5
+     "value": -11,
+     "open": -12.5
     }
    },
    "conferences": [],
@@ -17178,7 +17190,7 @@
     },
     "SBD": {
      "value": -10.5,
-     "open": -9.5
+     "open": -10
     }
    },
    "conferences": [],
@@ -17192,12 +17204,12 @@
    "sideB": "CUSE",
    "lines": {
     "CBS": {
-     "value": -9.5,
+     "value": -8.5,
      "open": -12.5
     },
     "SBD": {
      "value": -9.5,
-     "open": -10.5
+     "open": -10
     }
    },
    "conferences": [
@@ -17242,8 +17254,8 @@
      "open": 4.5
     },
     "SBD": {
-     "value": 3.5,
-     "open": 4
+     "value": 3,
+     "open": 3.5
     }
    },
    "conferences": [
@@ -17266,7 +17278,7 @@
     },
     "SBD": {
      "value": -2.5,
-     "open": -3
+     "open": -2.5
     }
    },
    "conferences": [
@@ -17305,12 +17317,12 @@
    "sideB": "MISS",
    "lines": {
     "CBS": {
-     "value": 13,
+     "value": 13.5,
      "open": 10.5
     },
     "SBD": {
-     "value": 12.5,
-     "open": 11.5
+     "value": 13,
+     "open": 12
     }
    },
    "conferences": [
@@ -17328,7 +17340,7 @@
    "sideB": "BYU",
    "lines": {
     "CBS": {
-     "value": 15,
+     "value": 15.5,
      "open": 17.5
     },
     "SBD": {
@@ -17355,7 +17367,7 @@
      "open": -9.5
     },
     "SBD": {
-     "value": -7,
+     "value": -6.5,
      "open": -7.5
     }
    },
@@ -17374,11 +17386,11 @@
    "sideB": "WAKE",
    "lines": {
     "CBS": {
-     "value": 13.5,
+     "value": 14.5,
      "open": 13.5
     },
     "SBD": {
-     "value": 13.5,
+     "value": 14.5,
      "open": 13.5
     }
    },
@@ -17402,7 +17414,7 @@
     },
     "SBD": {
      "value": 3.5,
-     "open": 4.5
+     "open": 4
     }
    },
    "conferences": [
@@ -17419,11 +17431,11 @@
    "sideB": "UNC",
    "lines": {
     "CBS": {
-     "value": -15.5,
+     "value": -14.5,
      "open": -14.5
     },
     "SBD": {
-     "value": -16,
+     "value": -15,
      "open": -15.5
     }
    },
@@ -17442,11 +17454,11 @@
    "sideB": "USC",
    "lines": {
     "CBS": {
-     "value": -6.5,
+     "value": -7,
      "open": -7.5
     },
     "SBD": {
-     "value": -6.5,
+     "value": -7,
      "open": -7
     }
    },
@@ -17573,7 +17585,7 @@
    "sideB": "LVILLE",
    "lines": {
     "CBS": {
-     "value": 21.5,
+     "value": 22,
      "open": 20.5
     },
     "SBD": {
@@ -17599,8 +17611,8 @@
      "open": 3.5
     },
     "SBD": {
-     "value": 4,
-     "open": 5.5
+     "value": 3.5,
+     "open": 4.5
     }
    },
    "conferences": [
@@ -17623,7 +17635,7 @@
     },
     "SBD": {
      "value": 5,
-     "open": 4.5
+     "open": 5
     }
    },
    "conferences": [
@@ -17644,7 +17656,7 @@
      "open": 8.5
     },
     "SBD": {
-     "value": 8,
+     "value": 7.5,
      "open": 8
     }
    },
@@ -17666,8 +17678,8 @@
      "open": 23.5
     },
     "SBD": {
-     "value": 23,
-     "open": 23.5
+     "value": 22,
+     "open": 23
     }
    },
    "conferences": [
@@ -17688,7 +17700,7 @@
      "open": -8.5
     },
     "SBD": {
-     "value": -9.5,
+     "value": -10,
      "open": -9.5
     }
    },
@@ -17697,7 +17709,8 @@
     "Big 12"
    ],
    "kickoffTs": 1793487600000,
-   "publicPctA": 0
+   "publicPctA": 0,
+   "ranked": true
   },
   "CFB|GATECH @ PITT": {
    "sport": "CFB",
@@ -17706,7 +17719,7 @@
    "sideB": "PITT",
    "lines": {
     "CBS": {
-     "value": 7,
+     "value": 7.5,
      "open": 6.5
     },
     "SBD": {
@@ -17728,7 +17741,7 @@
    "sideB": "TEXAS",
    "lines": {
     "CBS": {
-     "value": 20.5,
+     "value": 21,
      "open": 17.5
     },
     "SBD": {
@@ -17770,11 +17783,11 @@
    "sideB": "SFLA",
    "lines": {
     "CBS": {
-     "value": 9.5,
+     "value": 8,
      "open": 6.5
     },
     "SBD": {
-     "value": 8.5,
+     "value": 8,
      "open": 8
     }
    },
@@ -17793,8 +17806,8 @@
      "open": -1.5
     },
     "SBD": {
-     "value": -2,
-     "open": -2
+     "value": -3,
+     "open": -2.5
     }
    },
    "conferences": [],
@@ -17831,7 +17844,7 @@
      "open": 3.5
     },
     "SBD": {
-     "value": 4,
+     "value": 4.5,
      "open": 4
     }
    },
@@ -17869,7 +17882,7 @@
      "open": 3.5
     },
     "SBD": {
-     "value": 3,
+     "value": 2.5,
      "open": 2.5
     }
    },
@@ -17884,12 +17897,12 @@
    "sideB": "UTAHST",
    "lines": {
     "CBS": {
-     "value": 4,
+     "value": 5.5,
      "open": 2.5
     },
     "SBD": {
-     "value": 3.5,
-     "open": 3
+     "value": 5,
+     "open": 3.5
     }
    },
    "conferences": [],
@@ -17918,10 +17931,15 @@
     "CBS": {
      "value": -2.5,
      "open": -3
+    },
+    "SBD": {
+     "value": -3,
+     "open": -3
     }
    },
    "conferences": [],
-   "kickoffTs": 1793475000000
+   "kickoffTs": 1793475000000,
+   "publicPctA": 0
   },
   "CFB|FIU @ LIB": {
    "sport": "CFB",
@@ -17930,12 +17948,12 @@
    "sideB": "LIB",
    "lines": {
     "CBS": {
-     "value": 13,
+     "value": 13.5,
      "open": 13.5
     },
     "SBD": {
-     "value": 11.5,
-     "open": 12
+     "value": 13,
+     "open": 12.5
     }
    },
    "conferences": [],
@@ -17988,10 +18006,15 @@
     "CBS": {
      "value": 3.5,
      "open": 2.5
+    },
+    "SBD": {
+     "value": 3,
+     "open": 3
     }
    },
    "conferences": [],
-   "kickoffTs": 1793487600000
+   "kickoffTs": 1793487600000,
+   "publicPctA": 0
   },
   "CFB|ARMY @ MEMP": {
    "sport": "CFB",
@@ -18005,7 +18028,7 @@
     },
     "SBD": {
      "value": 6.5,
-     "open": 7
+     "open": 6.5
     }
    },
    "conferences": [],
@@ -18023,7 +18046,7 @@
      "open": 10.5
     },
     "SBD": {
-     "value": 11.5,
+     "value": 12.5,
      "open": 11.5
     }
    },
@@ -18043,8 +18066,8 @@
      "open": 24.5
     },
     "SBD": {
-     "value": 24.5,
-     "open": 24.5
+     "value": 24,
+     "open": 24
     }
    },
    "conferences": [],
@@ -18059,11 +18082,193 @@
    "lines": {
     "SBD": {
      "value": 26,
-     "open": 26
+     "open": 26.5
     }
    },
    "conferences": [],
    "kickoffTs": 1793475000000,
+   "publicPctA": 0
+  },
+  "NFL|CAR @ GB": {
+   "sport": "NFL",
+   "matchup": "CAR @ GB",
+   "sideA": "CAR",
+   "sideB": "GB",
+   "lines": {
+    "SBD": {
+     "value": 3,
+     "open": 5.5
+    }
+   },
+   "kickoffTs": 1793319300000,
+   "publicPctA": 23.9
+  },
+  "NFL|BAL @ BUF": {
+   "sport": "NFL",
+   "matchup": "BAL @ BUF",
+   "sideA": "BAL",
+   "sideB": "BUF",
+   "lines": {
+    "SBD": {
+     "value": 3,
+     "open": 2.5
+    }
+   },
+   "kickoffTs": 1793556000000,
+   "publicPctA": 0
+  },
+  "NFL|TEN @ CIN": {
+   "sport": "NFL",
+   "matchup": "TEN @ CIN",
+   "sideA": "TEN",
+   "sideB": "CIN",
+   "lines": {
+    "SBD": {
+     "value": 10.5,
+     "open": 8.5
+    }
+   },
+   "kickoffTs": 1793556000000,
+   "publicPctA": 0
+  },
+  "NFL|ARI @ DAL": {
+   "sport": "NFL",
+   "matchup": "ARI @ DAL",
+   "sideA": "ARI",
+   "sideB": "DAL",
+   "lines": {
+    "SBD": {
+     "value": 6.5,
+     "open": 8.5
+    }
+   },
+   "kickoffTs": 1793556000000,
+   "publicPctA": 0
+  },
+  "NFL|MIN @ DET": {
+   "sport": "NFL",
+   "matchup": "MIN @ DET",
+   "sideA": "MIN",
+   "sideB": "DET",
+   "lines": {
+    "SBD": {
+     "value": 2.5,
+     "open": 4
+    }
+   },
+   "kickoffTs": 1793556000000,
+   "publicPctA": 76.3
+  },
+  "NFL|IND @ JAC": {
+   "sport": "NFL",
+   "matchup": "IND @ JAC",
+   "sideA": "IND",
+   "sideB": "JAC",
+   "lines": {
+    "SBD": {
+     "value": 7.5,
+     "open": 6
+    }
+   },
+   "kickoffTs": 1793556000000,
+   "publicPctA": 0
+  },
+  "NFL|LV @ NYJ": {
+   "sport": "NFL",
+   "matchup": "LV @ NYJ",
+   "sideA": "LV",
+   "sideB": "NYJ",
+   "lines": {
+    "SBD": {
+     "value": 0,
+     "open": 1.5
+    }
+   },
+   "kickoffTs": 1793556000000,
+   "publicPctA": 0
+  },
+  "NFL|CLE @ PIT": {
+   "sport": "NFL",
+   "matchup": "CLE @ PIT",
+   "sideA": "CLE",
+   "sideB": "PIT",
+   "lines": {
+    "SBD": {
+     "value": 4.5,
+     "open": 5
+    }
+   },
+   "kickoffTs": 1793556000000,
+   "publicPctA": 67.6
+  },
+  "NFL|ATL @ TB": {
+   "sport": "NFL",
+   "matchup": "ATL @ TB",
+   "sideA": "ATL",
+   "sideB": "TB",
+   "lines": {
+    "SBD": {
+     "value": 1.5,
+     "open": 3
+    }
+   },
+   "kickoffTs": 1793556000000,
+   "publicPctA": 0
+  },
+  "NFL|LAC @ LAR": {
+   "sport": "NFL",
+   "matchup": "LAC @ LAR",
+   "sideA": "LAC",
+   "sideB": "LAR",
+   "lines": {
+    "SBD": {
+     "value": 7,
+     "open": 5.5
+    }
+   },
+   "kickoffTs": 1793567100000,
+   "publicPctA": 0
+  },
+  "NFL|KC @ DEN": {
+   "sport": "NFL",
+   "matchup": "KC @ DEN",
+   "sideA": "KC",
+   "sideB": "DEN",
+   "lines": {
+    "SBD": {
+     "value": -1.5,
+     "open": 0
+    }
+   },
+   "kickoffTs": 1793568300000,
+   "publicPctA": 0
+  },
+  "NFL|NE @ MIA": {
+   "sport": "NFL",
+   "matchup": "NE @ MIA",
+   "sideA": "NE",
+   "sideB": "MIA",
+   "lines": {
+    "SBD": {
+     "value": -8.5,
+     "open": -7.5
+    }
+   },
+   "kickoffTs": 1793568300000,
+   "publicPctA": 0
+  },
+  "NFL|PHI @ WAS": {
+   "sport": "NFL",
+   "matchup": "PHI @ WAS",
+   "sideA": "PHI",
+   "sideB": "WAS",
+   "lines": {
+    "SBD": {
+     "value": 3.5,
+     "open": 0.5
+    }
+   },
+   "kickoffTs": 1793582400000,
    "publicPctA": 0
   }
  }
