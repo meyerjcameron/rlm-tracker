@@ -1,74 +1,5 @@
 [
   {
-    "matchup": "DEN @ ARI",
-    "sport": "NFL",
-    "sideA": "DEN",
-    "sideB": "ARI",
-    "lines": [
-      {
-        "book": "CBS",
-        "value": -4.5,
-        "open": -4.5,
-        "openTimestamp": 1792359192000
-      },
-      {
-        "book": "SBD",
-        "value": -5,
-        "open": -5.5,
-        "openTimestamp": 1792359192000
-      }
-    ],
-    "kickoff": "Sun, Oct 25, 2026 · 3:05 PM CT",
-    "kickoffTs": 1792958700000,
-    "public": 60.8
-  },
-  {
-    "matchup": "GB @ DET",
-    "sport": "NFL",
-    "sideA": "GB",
-    "sideB": "DET",
-    "lines": [
-      {
-        "book": "CBS",
-        "value": 3.5,
-        "open": 3,
-        "openTimestamp": 1792359192000
-      },
-      {
-        "book": "SBD",
-        "value": 3.5,
-        "open": 2.5,
-        "openTimestamp": 1792359192000
-      }
-    ],
-    "kickoff": "Sun, Oct 25, 2026 · 3:25 PM CT",
-    "kickoffTs": 1792959900000,
-    "public": 61.2
-  },
-  {
-    "matchup": "LAR @ LV",
-    "sport": "NFL",
-    "sideA": "LAR",
-    "sideB": "LV",
-    "lines": [
-      {
-        "book": "CBS",
-        "value": -3.5,
-        "open": -4.5,
-        "openTimestamp": 1792359192000
-      },
-      {
-        "book": "SBD",
-        "value": -3.5,
-        "open": -7,
-        "openTimestamp": 1792359192000
-      }
-    ],
-    "kickoff": "Sun, Oct 25, 2026 · 3:25 PM CT",
-    "kickoffTs": 1792959900000,
-    "public": 37.9
-  },
-  {
     "matchup": "KC @ SEA",
     "sport": "NFL",
     "sideA": "KC",
@@ -89,25 +20,8 @@
     ],
     "kickoff": "Sun, Oct 25, 2026 · 7:20 PM CT",
     "kickoffTs": 1792974000000,
-    "public": 83.8,
-    "injuriesA": [
-      {
-        "name": "R. Rice",
-        "position": "WR",
-        "status": "Out"
-      },
-      {
-        "name": "J. Moore",
-        "position": "OT",
-        "status": "Out"
-      }
-    ],
+    "public": 83.1,
     "injuriesB": [
-      {
-        "name": "D. Thomas",
-        "position": "LB",
-        "status": "Out"
-      },
       {
         "name": "S. Darnold",
         "position": "QB",
@@ -136,7 +50,7 @@
     ],
     "kickoff": "Mon, Oct 26, 2026 · 7:15 PM CT",
     "kickoffTs": 1793060100000,
-    "public": 52.4,
+    "public": 52,
     "injuriesA": [
       {
         "name": "D. Winters",
@@ -156,6 +70,66 @@
         "status": "Out"
       }
     ]
+  },
+  {
+    "matchup": "GB @ DET",
+    "sport": "NFL",
+    "sideA": "GB",
+    "sideB": "DET",
+    "lines": [
+      {
+        "book": "CBS",
+        "value": 3.5,
+        "open": 3,
+        "openTimestamp": 1792359192000
+      }
+    ],
+    "kickoff": "Sun, Oct 25, 2026 · 3:25 PM CT",
+    "kickoffTs": 1792959900000,
+    "score": {
+      "a": 17,
+      "b": 20
+    }
+  },
+  {
+    "matchup": "LAR @ LV",
+    "sport": "NFL",
+    "sideA": "LAR",
+    "sideB": "LV",
+    "lines": [
+      {
+        "book": "CBS",
+        "value": -3.5,
+        "open": -4.5,
+        "openTimestamp": 1792359192000
+      }
+    ],
+    "kickoff": "Sun, Oct 25, 2026 · 3:25 PM CT",
+    "kickoffTs": 1792959900000,
+    "score": {
+      "a": 35,
+      "b": 21
+    }
+  },
+  {
+    "matchup": "DEN @ ARI",
+    "sport": "NFL",
+    "sideA": "DEN",
+    "sideB": "ARI",
+    "lines": [
+      {
+        "book": "CBS",
+        "value": -4.5,
+        "open": -4.5,
+        "openTimestamp": 1792359192000
+      }
+    ],
+    "kickoff": "Sun, Oct 25, 2026 · 3:05 PM CT",
+    "kickoffTs": 1792958700000,
+    "score": {
+      "a": 30,
+      "b": 16
+    }
   },
   {
     "matchup": "SF @ ATL",
@@ -376,14 +350,14 @@
     "lines": [
       {
         "book": "SBD",
-        "value": 3,
+        "value": 3.5,
         "open": 2.5,
         "openTimestamp": 1792959545000
       }
     ],
     "kickoff": "Sun, Nov 1, 2026 · 12:00 PM CT",
     "kickoffTs": 1793556000000,
-    "public": 0
+    "public": 37.8
   },
   {
     "matchup": "TEN @ CIN",
@@ -400,7 +374,7 @@
     ],
     "kickoff": "Sun, Nov 1, 2026 · 12:00 PM CT",
     "kickoffTs": 1793556000000,
-    "public": 0
+    "public": 41
   },
   {
     "matchup": "ARI @ DAL",
@@ -427,14 +401,14 @@
     "lines": [
       {
         "book": "SBD",
-        "value": 2.5,
+        "value": 3,
         "open": 3.5,
         "openTimestamp": 1792959545000
       }
     ],
     "kickoff": "Sun, Nov 1, 2026 · 12:00 PM CT",
     "kickoffTs": 1793556000000,
-    "public": 76.3
+    "public": 75.4
   },
   {
     "matchup": "IND @ JAC",
@@ -451,7 +425,7 @@
     ],
     "kickoff": "Sun, Nov 1, 2026 · 12:00 PM CT",
     "kickoffTs": 1793556000000,
-    "public": 0
+    "public": 47.7
   },
   {
     "matchup": "LV @ NYJ",
@@ -461,7 +435,7 @@
     "lines": [
       {
         "book": "SBD",
-        "value": 0,
+        "value": 1.5,
         "open": 1.5,
         "openTimestamp": 1792959545000
       }
@@ -478,14 +452,14 @@
     "lines": [
       {
         "book": "SBD",
-        "value": 4,
+        "value": 3.5,
         "open": 5,
         "openTimestamp": 1792959545000
       }
     ],
     "kickoff": "Sun, Nov 1, 2026 · 12:00 PM CT",
     "kickoffTs": 1793556000000,
-    "public": 67.6
+    "public": 64.7
   },
   {
     "matchup": "ATL @ TB",
@@ -661,6 +635,7 @@
     "kickoff": "Wed, Oct 28, 2026 · 7:00 PM CT",
     "kickoffTs": 1793232000000,
     "public": 0,
+    "handlePublic": 100,
     "conferences": []
   },
   {
@@ -685,6 +660,7 @@
     "kickoff": "Thu, Oct 29, 2026 · 6:30 PM CT",
     "kickoffTs": 1793316600000,
     "public": 0,
+    "handlePublic": 100,
     "conferences": []
   },
   {
@@ -720,13 +696,13 @@
     "lines": [
       {
         "book": "CBS",
-        "value": -10.5,
+        "value": -10,
         "open": -13.5,
         "openTimestamp": 1792905279000
       },
       {
         "book": "SBD",
-        "value": -10.5,
+        "value": -10,
         "open": -12.5,
         "openTimestamp": 1792905279000
       }
@@ -734,6 +710,7 @@
     "kickoff": "Fri, Oct 30, 2026 · 6:00 PM CT",
     "kickoffTs": 1793401200000,
     "public": 0,
+    "handlePublic": 0,
     "conferences": []
   },
   {
@@ -744,13 +721,13 @@
     "lines": [
       {
         "book": "CBS",
-        "value": 2.5,
+        "value": 1.5,
         "open": 2.5,
         "openTimestamp": 1792905279000
       },
       {
         "book": "SBD",
-        "value": 2.5,
+        "value": 2,
         "open": 2,
         "openTimestamp": 1792905279000
       }
@@ -758,7 +735,7 @@
     "kickoff": "Fri, Oct 30, 2026 · 6:30 PM CT",
     "kickoffTs": 1793403000000,
     "public": 0,
-    "handlePublic": 100,
+    "handlePublic": 40,
     "conferences": [
       "Big 12",
       "Big 12"
@@ -803,7 +780,7 @@
       },
       {
         "book": "SBD",
-        "value": -9,
+        "value": -9.5,
         "open": -10,
         "openTimestamp": 1792905279000
       }
@@ -811,7 +788,7 @@
     "kickoff": "Sat, Oct 31, 2026 · 11:00 AM CT",
     "kickoffTs": 1793462400000,
     "public": 0,
-    "handlePublic": 100,
+    "handlePublic": 64,
     "conferences": [
       "ACC",
       "ACC"
@@ -864,7 +841,7 @@
       },
       {
         "book": "SBD",
-        "value": 3,
+        "value": 3.5,
         "open": 3.5,
         "openTimestamp": 1792905279000
       }
@@ -872,7 +849,7 @@
     "kickoff": "Sat, Oct 31, 2026 · 11:00 AM CT",
     "kickoffTs": 1793462400000,
     "public": 0,
-    "handlePublic": 61,
+    "handlePublic": 10,
     "conferences": [
       "Big Ten",
       "Big Ten"
@@ -912,7 +889,7 @@
     "lines": [
       {
         "book": "CBS",
-        "value": 7.5,
+        "value": 8,
         "open": 6.5,
         "openTimestamp": 1792950040000
       },
@@ -950,8 +927,8 @@
     ],
     "kickoff": "Sat, Oct 31, 2026 · 11:00 AM CT",
     "kickoffTs": 1793462400000,
-    "public": 0,
-    "handlePublic": 5,
+    "public": 43.1,
+    "handlePublic": 2,
     "conferences": [
       "Independent"
     ],
@@ -1346,7 +1323,7 @@
       },
       {
         "book": "SBD",
-        "value": 6,
+        "value": 6.5,
         "open": 3.5,
         "openTimestamp": 1792950040000
       }
@@ -1364,13 +1341,13 @@
     "lines": [
       {
         "book": "CBS",
-        "value": 14.5,
+        "value": 15.5,
         "open": 17.5,
         "openTimestamp": 1792905279000
       },
       {
         "book": "SBD",
-        "value": 14.5,
+        "value": 15,
         "open": 15,
         "openTimestamp": 1792905279000
       }
@@ -1491,7 +1468,7 @@
       },
       {
         "book": "SBD",
-        "value": 11,
+        "value": 10.5,
         "open": 10.5,
         "openTimestamp": 1790004049000
       }
@@ -1606,7 +1583,7 @@
       },
       {
         "book": "SBD",
-        "value": 7.5,
+        "value": 8,
         "open": 8,
         "openTimestamp": 1792921932000
       }
@@ -1628,13 +1605,13 @@
     "lines": [
       {
         "book": "CBS",
-        "value": 4.5,
+        "value": 5,
         "open": 5.5,
         "openTimestamp": 1792905279000
       },
       {
         "book": "SBD",
-        "value": 4.5,
+        "value": 5,
         "open": 4,
         "openTimestamp": 1792905279000
       }
@@ -1662,7 +1639,7 @@
       },
       {
         "book": "SBD",
-        "value": 22.5,
+        "value": 22,
         "open": 23,
         "openTimestamp": 1792921932000
       }
@@ -1845,7 +1822,7 @@
     "lines": [
       {
         "book": "CBS",
-        "value": 21,
+        "value": 20.5,
         "open": 17.5,
         "openTimestamp": 1792921932000
       },
@@ -1859,7 +1836,6 @@
     "kickoff": "Sat, Oct 31, 2026 · 6:30 PM CT",
     "kickoffTs": 1793489400000,
     "public": 0,
-    "handlePublic": 0,
     "conferences": [
       "SEC",
       "SEC"
@@ -1889,7 +1865,7 @@
     "kickoff": "Sat, Oct 31, 2026 · 6:30 PM CT",
     "kickoffTs": 1793489400000,
     "public": 0,
-    "handlePublic": 89,
+    "handlePublic": 91,
     "conferences": [
       "Big Ten",
       "Big Ten"
@@ -1911,7 +1887,7 @@
       },
       {
         "book": "SBD",
-        "value": -10,
+        "value": -9.5,
         "open": -10,
         "openTimestamp": 1792905279000
       }
@@ -1934,7 +1910,7 @@
     "lines": [
       {
         "book": "CBS",
-        "value": 6.5,
+        "value": 7,
         "open": 7.5,
         "openTimestamp": 1792950040000
       },
@@ -1964,7 +1940,7 @@
       },
       {
         "book": "SBD",
-        "value": 9,
+        "value": 8.5,
         "open": 9.5,
         "openTimestamp": 1792888227000
       }
