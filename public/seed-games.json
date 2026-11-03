@@ -1,329 +1,26 @@
 [
   {
-    "matchup": "CHI @ SEA",
-    "sport": "NFL",
-    "sideA": "CHI",
-    "sideB": "SEA",
-    "lines": [
-      {
-        "book": "CBS",
-        "value": 3.5,
-        "open": 3,
-        "openTimestamp": 1793066281000
-      },
-      {
-        "book": "SBD",
-        "value": 3.5,
-        "open": 3.5,
-        "openTimestamp": 1793066281000
-      }
-    ],
-    "kickoff": "Mon, Nov 2, 2026 · 7:15 PM CT",
-    "kickoffTs": 1793668500000,
-    "public": 56.1,
-    "injuriesB": [
-      {
-        "name": "C. Cross",
-        "position": "OT",
-        "status": "Out"
-      },
-      {
-        "name": "S. Darnold",
-        "position": "QB",
-        "status": "Out"
-      }
-    ]
-  },
-  {
-    "matchup": "PHI @ WAS",
-    "sport": "NFL",
-    "sideA": "PHI",
-    "sideB": "WAS",
-    "lines": [
-      {
-        "book": "CBS",
-        "value": 5.5,
-        "open": 3.5,
-        "openTimestamp": 1792959545000
-      }
-    ],
-    "kickoff": "Sun, Nov 1, 2026 · 7:20 PM CT",
-    "kickoffTs": 1793582400000,
-    "score": {
-      "a": 10,
-      "b": 27
-    }
-  },
-  {
-    "matchup": "KC @ DEN",
-    "sport": "NFL",
-    "sideA": "KC",
-    "sideB": "DEN",
-    "lines": [
-      {
-        "book": "CBS",
-        "value": 1.5,
-        "open": -1.5,
-        "openTimestamp": 1792959545000
-      }
-    ],
-    "kickoff": "Sun, Nov 1, 2026 · 3:25 PM CT",
-    "kickoffTs": 1793568300000,
-    "score": {
-      "a": 24,
-      "b": 28
-    }
-  },
-  {
-    "matchup": "NE @ MIA",
-    "sport": "NFL",
-    "sideA": "NE",
-    "sideB": "MIA",
-    "lines": [
-      {
-        "book": "CBS",
-        "value": -7,
-        "open": -7.5,
-        "openTimestamp": 1792959545000
-      }
-    ],
-    "kickoff": "Sun, Nov 1, 2026 · 3:25 PM CT",
-    "kickoffTs": 1793568300000,
-    "score": {
-      "a": 24,
-      "b": 19
-    },
-    "injuriesA": [
-      {
-        "name": "R. Gilliam",
-        "position": "RB",
-        "status": "IR"
-      }
-    ]
-  },
-  {
-    "matchup": "LAC @ LAR",
-    "sport": "NFL",
-    "sideA": "LAC",
-    "sideB": "LAR",
-    "lines": [
-      {
-        "book": "CBS",
-        "value": 6.5,
-        "open": 7.5,
-        "openTimestamp": 1792959545000
-      }
-    ],
-    "kickoff": "Sun, Nov 1, 2026 · 3:05 PM CT",
-    "kickoffTs": 1793567100000,
-    "score": {
-      "a": 9,
-      "b": 24
-    }
-  },
-  {
-    "matchup": "BAL @ BUF",
-    "sport": "NFL",
-    "sideA": "BAL",
-    "sideB": "BUF",
-    "lines": [
-      {
-        "book": "CBS",
-        "value": 3,
-        "open": 3,
-        "openTimestamp": 1792959545000
-      }
-    ],
-    "kickoff": "Sun, Nov 1, 2026 · 12:00 PM CT",
-    "kickoffTs": 1793556000000,
-    "score": {
-      "a": 10,
-      "b": 36
-    }
-  },
-  {
-    "matchup": "TEN @ CIN",
-    "sport": "NFL",
-    "sideA": "TEN",
-    "sideB": "CIN",
-    "lines": [
-      {
-        "book": "CBS",
-        "value": 13.5,
-        "open": 10,
-        "openTimestamp": 1792959545000
-      }
-    ],
-    "kickoff": "Sun, Nov 1, 2026 · 12:00 PM CT",
-    "kickoffTs": 1793556000000,
-    "score": {
-      "a": 36,
-      "b": 43
-    }
-  },
-  {
-    "matchup": "ARI @ DAL",
-    "sport": "NFL",
-    "sideA": "ARI",
-    "sideB": "DAL",
-    "lines": [
-      {
-        "book": "CBS",
-        "value": 7.5,
-        "open": 6.5,
-        "openTimestamp": 1792959545000
-      }
-    ],
-    "kickoff": "Sun, Nov 1, 2026 · 12:00 PM CT",
-    "kickoffTs": 1793556000000,
-    "score": {
-      "a": 33,
-      "b": 30
-    }
-  },
-  {
-    "matchup": "MIN @ DET",
-    "sport": "NFL",
-    "sideA": "MIN",
-    "sideB": "DET",
-    "lines": [
-      {
-        "book": "CBS",
-        "value": 3.5,
-        "open": 2.5,
-        "openTimestamp": 1792959545000
-      }
-    ],
-    "kickoff": "Sun, Nov 1, 2026 · 12:00 PM CT",
-    "kickoffTs": 1793556000000,
-    "score": {
-      "a": 15,
-      "b": 19
-    }
-  },
-  {
-    "matchup": "IND @ JAC",
-    "sport": "NFL",
-    "sideA": "IND",
-    "sideB": "JAC",
-    "lines": [
-      {
-        "book": "CBS",
-        "value": 10.5,
-        "open": 7.5,
-        "openTimestamp": 1792959545000
-      }
-    ],
-    "kickoff": "Sun, Nov 1, 2026 · 12:00 PM CT",
-    "kickoffTs": 1793556000000,
-    "score": {
-      "a": 7,
-      "b": 42
-    }
-  },
-  {
-    "matchup": "LV @ NYJ",
-    "sport": "NFL",
-    "sideA": "LV",
-    "sideB": "NYJ",
-    "lines": [
-      {
-        "book": "CBS",
-        "value": 2,
-        "open": -1.5,
-        "openTimestamp": 1792959545000
-      }
-    ],
-    "kickoff": "Sun, Nov 1, 2026 · 12:00 PM CT",
-    "kickoffTs": 1793556000000,
-    "score": {
-      "a": 38,
-      "b": 33
-    }
-  },
-  {
-    "matchup": "CLE @ PIT",
-    "sport": "NFL",
-    "sideA": "CLE",
-    "sideB": "PIT",
-    "lines": [
-      {
-        "book": "CBS",
-        "value": 4,
-        "open": 3.5,
-        "openTimestamp": 1792959545000
-      }
-    ],
-    "kickoff": "Sun, Nov 1, 2026 · 12:00 PM CT",
-    "kickoffTs": 1793556000000,
-    "score": {
-      "a": 6,
-      "b": 27
-    }
-  },
-  {
-    "matchup": "ATL @ TB",
-    "sport": "NFL",
-    "sideA": "ATL",
-    "sideB": "TB",
-    "lines": [
-      {
-        "book": "CBS",
-        "value": 2.5,
-        "open": 1.5,
-        "openTimestamp": 1792959545000
-      }
-    ],
-    "kickoff": "Sun, Nov 1, 2026 · 12:00 PM CT",
-    "kickoffTs": 1793556000000,
-    "score": {
-      "a": 0,
-      "b": 16
-    },
-    "injuriesB": [
-      {
-        "name": "Y. Diaby",
-        "position": "LB",
-        "status": "Out"
-      }
-    ]
-  },
-  {
-    "matchup": "CAR @ GB",
-    "sport": "NFL",
-    "sideA": "CAR",
-    "sideB": "GB",
-    "lines": [
-      {
-        "book": "CBS",
-        "value": 3.5,
-        "open": 3,
-        "openTimestamp": 1792959545000
-      }
-    ],
-    "kickoff": "Thu, Oct 29, 2026 · 7:15 PM CT",
-    "kickoffTs": 1793319300000,
-    "score": {
-      "a": 19,
-      "b": 27
-    }
-  },
-  {
     "matchup": "JAC @ BAL",
     "sport": "NFL",
     "sideA": "JAC",
     "sideB": "BAL",
     "lines": [
       {
-        "book": "SBD",
+        "book": "CBS",
         "value": -8.5,
+        "open": 3,
+        "openTimestamp": 1793577162000
+      },
+      {
+        "book": "SBD",
+        "value": -9,
         "open": 1.5,
         "openTimestamp": 1793577162000
       }
     ],
     "kickoff": "Thu, Nov 5, 2026 · 7:15 PM CT",
     "kickoffTs": 1793927700000,
-    "public": 67
+    "public": 67.5
   },
   {
     "matchup": "CIN @ ATL",
@@ -331,6 +28,12 @@
     "sideA": "CIN",
     "sideB": "ATL",
     "lines": [
+      {
+        "book": "CBS",
+        "value": -3,
+        "open": -3,
+        "openTimestamp": 1793577162000
+      },
       {
         "book": "SBD",
         "value": -3,
@@ -340,7 +43,7 @@
     ],
     "kickoff": "Sun, Nov 8, 2026 · 8:30 AM CT",
     "kickoffTs": 1794148200000,
-    "public": 26.5
+    "public": 26.9
   },
   {
     "matchup": "DEN @ CAR",
@@ -348,6 +51,12 @@
     "sideA": "DEN",
     "sideB": "CAR",
     "lines": [
+      {
+        "book": "CBS",
+        "value": -2.5,
+        "open": -2.5,
+        "openTimestamp": 1793577162000
+      },
       {
         "book": "SBD",
         "value": -3,
@@ -357,7 +66,7 @@
     ],
     "kickoff": "Sun, Nov 8, 2026 · 12:00 PM CT",
     "kickoffTs": 1794160800000,
-    "public": 71.5
+    "public": 73.5
   },
   {
     "matchup": "DAL @ IND",
@@ -366,15 +75,21 @@
     "sideB": "IND",
     "lines": [
       {
+        "book": "CBS",
+        "value": -5.5,
+        "open": -4.5,
+        "openTimestamp": 1793577162000
+      },
+      {
         "book": "SBD",
-        "value": -6,
+        "value": -5.5,
         "open": -2.5,
         "openTimestamp": 1793577162000
       }
     ],
     "kickoff": "Sun, Nov 8, 2026 · 12:00 PM CT",
     "kickoffTs": 1794160800000,
-    "public": 70.6
+    "public": 69.6
   },
   {
     "matchup": "NYJ @ KC",
@@ -383,15 +98,21 @@
     "sideB": "KC",
     "lines": [
       {
-        "book": "SBD",
+        "book": "CBS",
         "value": 9.5,
+        "open": 9.5,
+        "openTimestamp": 1793577162000
+      },
+      {
+        "book": "SBD",
+        "value": 9,
         "open": 9,
         "openTimestamp": 1793577162000
       }
     ],
     "kickoff": "Sun, Nov 8, 2026 · 12:00 PM CT",
     "kickoffTs": 1794160800000,
-    "public": 40.3
+    "public": 36.7
   },
   {
     "matchup": "DET @ MIA",
@@ -399,6 +120,12 @@
     "sideA": "DET",
     "sideB": "MIA",
     "lines": [
+      {
+        "book": "CBS",
+        "value": -7,
+        "open": -7,
+        "openTimestamp": 1793577162000
+      },
       {
         "book": "SBD",
         "value": -7,
@@ -408,7 +135,7 @@
     ],
     "kickoff": "Sun, Nov 8, 2026 · 12:00 PM CT",
     "kickoffTs": 1794160800000,
-    "public": 75.5
+    "public": 77.4
   },
   {
     "matchup": "CLE @ NO",
@@ -416,6 +143,12 @@
     "sideA": "CLE",
     "sideB": "NO",
     "lines": [
+      {
+        "book": "CBS",
+        "value": 2.5,
+        "open": 2.5,
+        "openTimestamp": 1793577162000
+      },
       {
         "book": "SBD",
         "value": 2.5,
@@ -425,7 +158,7 @@
     ],
     "kickoff": "Sun, Nov 8, 2026 · 12:00 PM CT",
     "kickoffTs": 1794160800000,
-    "public": 73
+    "public": 70.4
   },
   {
     "matchup": "NYG @ PHI",
@@ -434,15 +167,21 @@
     "sideB": "PHI",
     "lines": [
       {
+        "book": "CBS",
+        "value": -3,
+        "open": -1.5,
+        "openTimestamp": 1793577162000
+      },
+      {
         "book": "SBD",
-        "value": -3.5,
+        "value": -3,
         "open": 2.5,
         "openTimestamp": 1793577162000
       }
     ],
     "kickoff": "Sun, Nov 8, 2026 · 12:00 PM CT",
     "kickoffTs": 1794160800000,
-    "public": 58.9
+    "public": 58.8
   },
   {
     "matchup": "LAR @ WAS",
@@ -450,6 +189,12 @@
     "sideA": "LAR",
     "sideB": "WAS",
     "lines": [
+      {
+        "book": "CBS",
+        "value": -5.5,
+        "open": -5.5,
+        "openTimestamp": 1793577162000
+      },
       {
         "book": "SBD",
         "value": -5.5,
@@ -459,7 +204,7 @@
     ],
     "kickoff": "Sun, Nov 8, 2026 · 12:00 PM CT",
     "kickoffTs": 1794160800000,
-    "public": 58.2
+    "public": 58.8
   },
   {
     "matchup": "HOU @ LAC",
@@ -467,6 +212,12 @@
     "sideA": "HOU",
     "sideB": "LAC",
     "lines": [
+      {
+        "book": "CBS",
+        "value": -4.5,
+        "open": -3.5,
+        "openTimestamp": 1793577162000
+      },
       {
         "book": "SBD",
         "value": -4.5,
@@ -476,7 +227,7 @@
     ],
     "kickoff": "Sun, Nov 8, 2026 · 3:05 PM CT",
     "kickoffTs": 1794171900000,
-    "public": 73
+    "public": 73.4
   },
   {
     "matchup": "LV @ SF",
@@ -484,6 +235,12 @@
     "sideA": "LV",
     "sideB": "SF",
     "lines": [
+      {
+        "book": "CBS",
+        "value": 10,
+        "open": 8.5,
+        "openTimestamp": 1793577162000
+      },
       {
         "book": "SBD",
         "value": 9.5,
@@ -493,7 +250,7 @@
     ],
     "kickoff": "Sun, Nov 8, 2026 · 3:25 PM CT",
     "kickoffTs": 1794173100000,
-    "public": 51.9
+    "public": 51.4
   },
   {
     "matchup": "GB @ NE",
@@ -502,15 +259,28 @@
     "sideB": "NE",
     "lines": [
       {
-        "book": "SBD",
+        "book": "CBS",
         "value": 3,
+        "open": 2.5,
+        "openTimestamp": 1793577162000
+      },
+      {
+        "book": "SBD",
+        "value": 2.5,
         "open": 2,
         "openTimestamp": 1793577162000
       }
     ],
     "kickoff": "Sun, Nov 8, 2026 · 3:25 PM CT",
     "kickoffTs": 1794173100000,
-    "public": 57.8
+    "public": 61.1,
+    "injuriesB": [
+      {
+        "name": "R. Gilliam",
+        "position": "RB",
+        "status": "IR"
+      }
+    ]
   },
   {
     "matchup": "ARI @ SEA",
@@ -518,6 +288,12 @@
     "sideA": "ARI",
     "sideB": "SEA",
     "lines": [
+      {
+        "book": "CBS",
+        "value": 11.5,
+        "open": 11.5,
+        "openTimestamp": 1793577162000
+      },
       {
         "book": "SBD",
         "value": 11.5,
@@ -527,7 +303,14 @@
     ],
     "kickoff": "Sun, Nov 8, 2026 · 3:25 PM CT",
     "kickoffTs": 1794173100000,
-    "public": 50.8
+    "public": 50.3,
+    "injuriesB": [
+      {
+        "name": "S. Darnold",
+        "position": "QB",
+        "status": "Out"
+      }
+    ]
   },
   {
     "matchup": "TB @ CHI",
@@ -536,15 +319,66 @@
     "sideB": "CHI",
     "lines": [
       {
-        "book": "SBD",
+        "book": "CBS",
         "value": 5.5,
+        "open": 6,
+        "openTimestamp": 1793577162000
+      },
+      {
+        "book": "SBD",
+        "value": 5,
         "open": 5,
         "openTimestamp": 1793577162000
       }
     ],
     "kickoff": "Sun, Nov 8, 2026 · 7:20 PM CT",
     "kickoffTs": 1794187200000,
-    "public": 0
+    "public": 46.9,
+    "injuriesA": [
+      {
+        "name": "Y. Diaby",
+        "position": "LB",
+        "status": "Out"
+      }
+    ]
+  },
+  {
+    "matchup": "BUF @ MIN",
+    "sport": "NFL",
+    "sideA": "BUF",
+    "sideB": "MIN",
+    "lines": [
+      {
+        "book": "CBS",
+        "value": -3,
+        "open": -3.5
+      },
+      {
+        "book": "SBD",
+        "value": -3.5,
+        "open": -3
+      }
+    ],
+    "kickoff": "Mon, Nov 9, 2026 · 7:15 PM CT",
+    "kickoffTs": 1794273300000,
+    "public": 63.5
+  },
+  {
+    "matchup": "CHI @ SEA",
+    "sport": "NFL",
+    "sideA": "CHI",
+    "sideB": "SEA",
+    "lines": [
+      {
+        "book": "SBD",
+        "value": 3.5,
+        "open": 3.5,
+        "openTimestamp": 1793066281000
+      }
+    ],
+    "kickoff": "Mon, Nov 2, 2026 · 7:15 PM CT",
+    "kickoffTs": 1793668500000,
+    "public": 58.2
   },
   {
     "matchup": "OHIO @ AKRON",
@@ -567,7 +401,7 @@
     ],
     "kickoff": "Tue, Nov 3, 2026 · 6:00 PM CT",
     "kickoffTs": 1793750400000,
-    "public": 48.3,
+    "public": 47.7,
     "conferences": []
   },
   {
@@ -591,7 +425,7 @@
     ],
     "kickoff": "Tue, Nov 3, 2026 · 7:00 PM CT",
     "kickoffTs": 1793754000000,
-    "public": 50,
+    "public": 49.3,
     "conferences": []
   },
   {
@@ -639,7 +473,7 @@
     ],
     "kickoff": "Wed, Nov 4, 2026 · 6:00 PM CT",
     "kickoffTs": 1793836800000,
-    "public": 31.3,
+    "public": 34.9,
     "conferences": []
   },
   {
@@ -674,13 +508,13 @@
     "lines": [
       {
         "book": "CBS",
-        "value": -6.5,
+        "value": -7,
         "open": -6.5,
         "openTimestamp": 1793524828000
       },
       {
         "book": "SBD",
-        "value": -6.5,
+        "value": -7,
         "open": -7,
         "openTimestamp": 1793524828000
       }
@@ -711,7 +545,7 @@
     ],
     "kickoff": "Thu, Nov 5, 2026 · 7:00 PM CT",
     "kickoffTs": 1793926800000,
-    "public": 38.6,
+    "public": 40.7,
     "conferences": []
   },
   {
@@ -722,7 +556,7 @@
     "lines": [
       {
         "book": "CBS",
-        "value": 6.5,
+        "value": 6,
         "open": 7.5,
         "openTimestamp": 1793524828000
       },
@@ -735,7 +569,7 @@
     ],
     "kickoff": "Fri, Nov 6, 2026 · 6:00 PM CT",
     "kickoffTs": 1794009600000,
-    "public": 66.7,
+    "public": 65.5,
     "conferences": [
       "ACC",
       "ACC"
@@ -813,7 +647,7 @@
     ],
     "kickoff": "Fri, Nov 6, 2026 · 8:00 PM CT",
     "kickoffTs": 1794016800000,
-    "public": 23.1,
+    "public": 23,
     "conferences": [],
     "rankA": 22,
     "ranked": true
@@ -868,7 +702,7 @@
     ],
     "kickoff": "Sat, Nov 7, 2026 · 11:00 AM CT",
     "kickoffTs": 1794070800000,
-    "public": 75.5,
+    "public": 76.7,
     "conferences": [
       "SEC",
       "SEC"
@@ -898,7 +732,7 @@
     ],
     "kickoff": "Sat, Nov 7, 2026 · 11:00 AM CT",
     "kickoffTs": 1794070800000,
-    "public": 0,
+    "public": 57.3,
     "conferences": [
       "Big 12",
       "Big 12"
@@ -952,7 +786,7 @@
     ],
     "kickoff": "Sat, Nov 7, 2026 · 11:00 AM CT",
     "kickoffTs": 1794070800000,
-    "public": 0,
+    "public": 64.1,
     "conferences": [
       "Big Ten",
       "Big Ten"
@@ -1028,7 +862,7 @@
       },
       {
         "book": "SBD",
-        "value": -7,
+        "value": -6.5,
         "open": -8,
         "openTimestamp": 1793524828000
       }
@@ -1213,7 +1047,7 @@
       },
       {
         "book": "SBD",
-        "value": 4.5,
+        "value": 5,
         "open": 3.5,
         "openTimestamp": 1793549949000
       }
@@ -1298,7 +1132,7 @@
     "kickoff": "Sat, Nov 7, 2026 · 2:00 PM CT",
     "kickoffTs": 1794081600000,
     "public": 0,
-    "handlePublic": 0,
+    "handlePublic": 3,
     "conferences": []
   },
   {
@@ -1322,7 +1156,7 @@
     ],
     "kickoff": "Sat, Nov 7, 2026 · 2:30 PM CT",
     "kickoffTs": 1794083400000,
-    "public": 83.3,
+    "public": 83.5,
     "conferences": [
       "SEC",
       "SEC"
@@ -1471,7 +1305,7 @@
       },
       {
         "book": "SBD",
-        "value": 48.5,
+        "value": 47.5,
         "open": 48.5,
         "openTimestamp": 1793524828000
       }
@@ -1752,7 +1586,7 @@
     ],
     "kickoff": "Sat, Nov 7, 2026 · 5:15 PM CT",
     "kickoffTs": 1794093300000,
-    "public": 85.3,
+    "public": 82.8,
     "conferences": [
       "SEC",
       "SEC"
@@ -1769,7 +1603,7 @@
     "lines": [
       {
         "book": "CBS",
-        "value": 17,
+        "value": 17.5,
         "open": 14,
         "openTimestamp": 1793565406000
       },
@@ -1824,7 +1658,7 @@
       {
         "book": "SBD",
         "value": -14.5,
-        "open": -14,
+        "open": -13.5,
         "openTimestamp": 1793524828000
       }
     ],
@@ -1884,7 +1718,7 @@
     ],
     "kickoff": "Sat, Nov 7, 2026 · 6:30 PM CT",
     "kickoffTs": 1794097800000,
-    "public": 78.5,
+    "public": 81.3,
     "conferences": [
       "ACC",
       "Independent"
@@ -8723,6 +8557,97 @@
     "matchup": "UTEP @ NDSU",
     "kickoff": "Sat, Oct 31, 2026 · 2:30 PM CT",
     "kickoffTs": 1793475000000,
+    "lines": [],
+    "kickoffOnly": true
+  },
+  {
+    "matchup": "CAR @ GB",
+    "kickoff": "Thu, Oct 29, 2026 · 7:15 PM CT",
+    "kickoffTs": 1793319300000,
+    "lines": [],
+    "kickoffOnly": true
+  },
+  {
+    "matchup": "BAL @ BUF",
+    "kickoff": "Sun, Nov 1, 2026 · 12:00 PM CT",
+    "kickoffTs": 1793556000000,
+    "lines": [],
+    "kickoffOnly": true
+  },
+  {
+    "matchup": "TEN @ CIN",
+    "kickoff": "Sun, Nov 1, 2026 · 12:00 PM CT",
+    "kickoffTs": 1793556000000,
+    "lines": [],
+    "kickoffOnly": true
+  },
+  {
+    "matchup": "ARI @ DAL",
+    "kickoff": "Sun, Nov 1, 2026 · 12:00 PM CT",
+    "kickoffTs": 1793556000000,
+    "lines": [],
+    "kickoffOnly": true
+  },
+  {
+    "matchup": "MIN @ DET",
+    "kickoff": "Sun, Nov 1, 2026 · 12:00 PM CT",
+    "kickoffTs": 1793556000000,
+    "lines": [],
+    "kickoffOnly": true
+  },
+  {
+    "matchup": "IND @ JAC",
+    "kickoff": "Sun, Nov 1, 2026 · 12:00 PM CT",
+    "kickoffTs": 1793556000000,
+    "lines": [],
+    "kickoffOnly": true
+  },
+  {
+    "matchup": "LV @ NYJ",
+    "kickoff": "Sun, Nov 1, 2026 · 12:00 PM CT",
+    "kickoffTs": 1793556000000,
+    "lines": [],
+    "kickoffOnly": true
+  },
+  {
+    "matchup": "CLE @ PIT",
+    "kickoff": "Sun, Nov 1, 2026 · 12:00 PM CT",
+    "kickoffTs": 1793556000000,
+    "lines": [],
+    "kickoffOnly": true
+  },
+  {
+    "matchup": "ATL @ TB",
+    "kickoff": "Sun, Nov 1, 2026 · 12:00 PM CT",
+    "kickoffTs": 1793556000000,
+    "lines": [],
+    "kickoffOnly": true
+  },
+  {
+    "matchup": "LAC @ LAR",
+    "kickoff": "Sun, Nov 1, 2026 · 3:05 PM CT",
+    "kickoffTs": 1793567100000,
+    "lines": [],
+    "kickoffOnly": true
+  },
+  {
+    "matchup": "KC @ DEN",
+    "kickoff": "Sun, Nov 1, 2026 · 3:25 PM CT",
+    "kickoffTs": 1793568300000,
+    "lines": [],
+    "kickoffOnly": true
+  },
+  {
+    "matchup": "NE @ MIA",
+    "kickoff": "Sun, Nov 1, 2026 · 3:25 PM CT",
+    "kickoffTs": 1793568300000,
+    "lines": [],
+    "kickoffOnly": true
+  },
+  {
+    "matchup": "PHI @ WAS",
+    "kickoff": "Sun, Nov 1, 2026 · 7:20 PM CT",
+    "kickoffTs": 1793582400000,
     "lines": [],
     "kickoffOnly": true
   },
