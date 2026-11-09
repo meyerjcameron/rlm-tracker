@@ -5499,7 +5499,7 @@
    "sideB": "OKLA",
    "lines": {
     "SBD": {
-     "value": -2,
+     "value": -1.5,
      "open": -1
     },
     "CBS": {
@@ -21063,76 +21063,84 @@
    "result": "loss"
   },
   "NFL|HOU @ LAC": {
+   "final": true,
    "sport": "NFL",
    "matchup": "HOU @ LAC",
    "sideA": "HOU",
    "sideB": "LAC",
-   "lines": {
-    "SBD": {
-     "value": -5,
-     "open": -1
-    },
-    "CBS": {
-     "value": -4.5,
-     "open": -3.5
-    }
-   },
    "kickoffTs": 1794171900000,
-   "publicPctA": 65.1
+   "score": {
+    "a": 44,
+    "b": 22
+   },
+   "openAvg": -2.25,
+   "closeAvg": -4.75,
+   "publicPctA": 65.1,
+   "movementSide": "A",
+   "publicMajority": "A",
+   "isRlm": false,
+   "sharpSide": "HOU",
+   "result": "win"
   },
   "NFL|LV @ SF": {
+   "final": true,
    "sport": "NFL",
    "matchup": "LV @ SF",
    "sideA": "LV",
    "sideB": "SF",
-   "lines": {
-    "SBD": {
-     "value": 9,
-     "open": 9
-    },
-    "CBS": {
-     "value": 9.5,
-     "open": 8.5
-    }
-   },
    "kickoffTs": 1794173100000,
-   "publicPctA": 38.6
+   "score": {
+    "a": 17,
+    "b": 38
+   },
+   "openAvg": 8.5,
+   "closeAvg": 9.25,
+   "publicPctA": 38.6,
+   "movementSide": "B",
+   "publicMajority": "B",
+   "isRlm": false,
+   "sharpSide": "SF",
+   "result": "win"
   },
   "NFL|GB @ NE": {
+   "final": true,
    "sport": "NFL",
    "matchup": "GB @ NE",
    "sideA": "GB",
    "sideB": "NE",
-   "lines": {
-    "SBD": {
-     "value": 3.5,
-     "open": 2
-    },
-    "CBS": {
-     "value": 3.5,
-     "open": 2.5
-    }
-   },
    "kickoffTs": 1794173100000,
-   "publicPctA": 62.3
+   "score": {
+    "a": 45,
+    "b": 27
+   },
+   "openAvg": 2.25,
+   "closeAvg": 3.5,
+   "publicPctA": 62.3,
+   "movementSide": "B",
+   "publicMajority": "A",
+   "isRlm": true,
+   "sharpSide": "NE",
+   "result": "loss"
   },
   "NFL|ARI @ SEA": {
+   "final": true,
    "sport": "NFL",
    "matchup": "ARI @ SEA",
    "sideA": "ARI",
    "sideB": "SEA",
-   "lines": {
-    "SBD": {
-     "value": 9,
-     "open": 12.5
-    },
-    "CBS": {
-     "value": 9.5,
-     "open": 11.5
-    }
-   },
    "kickoffTs": 1794173100000,
-   "publicPctA": 37.8
+   "score": {
+    "a": 3,
+    "b": 17
+   },
+   "openAvg": 12,
+   "closeAvg": 9.25,
+   "publicPctA": 37.8,
+   "movementSide": "A",
+   "publicMajority": "B",
+   "isRlm": true,
+   "sharpSide": "ARI",
+   "result": "loss"
   },
   "NFL|TB @ CHI": {
    "sport": "NFL",
@@ -21141,16 +21149,16 @@
    "sideB": "CHI",
    "lines": {
     "SBD": {
-     "value": 6,
+     "value": 6.5,
      "open": 5
     },
     "CBS": {
-     "value": 6.5,
+     "value": 7,
      "open": 6
     }
    },
    "kickoffTs": 1794187200000,
-   "publicPctA": 29.2
+   "publicPctA": 30
   },
   "NFL|BUF @ MIN": {
    "sport": "NFL",
@@ -21168,7 +21176,7 @@
     }
    },
    "kickoffTs": 1794273300000,
-   "publicPctA": 66.8
+   "publicPctA": 67.6
   },
   "CFB|SCST @ HOW": {
    "sport": "CFB",
@@ -22182,11 +22190,11 @@
    "sideB": "UCLA",
    "lines": {
     "SBD": {
-     "value": 9.5,
+     "value": 10,
      "open": 10.5
     },
     "CBS": {
-     "value": 10,
+     "value": 10.5,
      "open": 12.5
     }
    },
@@ -22326,7 +22334,7 @@
    "sideB": "PSU",
    "lines": {
     "SBD": {
-     "value": 9,
+     "value": 9.5,
      "open": 7.5
     },
     "CBS": {
@@ -22410,7 +22418,7 @@
      "open": -13.5
     },
     "SBD": {
-     "value": -15,
+     "value": -14.5,
      "open": -14
     }
    },
@@ -22444,11 +22452,11 @@
    "sideB": "MIAOH",
    "lines": {
     "CBS": {
-     "value": 1.5,
+     "value": -1.5,
      "open": 1.5
     },
     "SBD": {
-     "value": 1,
+     "value": -1.5,
      "open": 1.5
     }
    },
@@ -22539,11 +22547,11 @@
    "sideB": "LAMON",
    "lines": {
     "CBS": {
-     "value": -11.5,
+     "value": -10.5,
      "open": -10.5
     },
     "SBD": {
-     "value": -11.5,
+     "value": -11,
      "open": -11.5
     }
    },
@@ -22558,11 +22566,11 @@
    "sideB": "PITT",
    "lines": {
     "CBS": {
-     "value": 4.5,
+     "value": 3.5,
      "open": 3.5
     },
     "SBD": {
-     "value": 4,
+     "value": 3.5,
      "open": 3.5
     }
    },
@@ -22625,11 +22633,11 @@
    "sideB": "OHIOST",
    "lines": {
     "CBS": {
-     "value": 11.5,
+     "value": 12,
      "open": 9.5
     },
     "SBD": {
-     "value": 11,
+     "value": 11.5,
      "open": 10
     }
    },
@@ -22697,7 +22705,7 @@
      "open": -9.5
     },
     "SBD": {
-     "value": -7.5,
+     "value": -8,
      "open": -8
     }
    },
@@ -22741,7 +22749,7 @@
      "open": -13.5
     },
     "SBD": {
-     "value": -13.5,
+     "value": -13,
      "open": -13
     }
    },
@@ -22763,7 +22771,7 @@
      "open": -18.5
     },
     "SBD": {
-     "value": -19.5,
+     "value": -19,
      "open": -19.5
     }
    },
@@ -22828,11 +22836,11 @@
    "sideB": "OREG",
    "lines": {
     "CBS": {
-     "value": 11.5,
+     "value": 10.5,
      "open": 13.5
     },
     "SBD": {
-     "value": 11,
+     "value": 10.5,
      "open": 10.5
     }
    },
@@ -22919,11 +22927,11 @@
    "sideB": "MICHST",
    "lines": {
     "CBS": {
-     "value": -3.5,
+     "value": -4,
      "open": -4.5
     },
     "SBD": {
-     "value": -3.5,
+     "value": -4,
      "open": -3.5
     }
    },
@@ -22987,7 +22995,7 @@
      "open": 15.5
     },
     "SBD": {
-     "value": 14.5,
+     "value": 15,
      "open": 16
     }
    },
@@ -23028,7 +23036,7 @@
    "sideB": "LSU",
    "lines": {
     "CBS": {
-     "value": 4.5,
+     "value": 4,
      "open": -3
     },
     "SBD": {
@@ -23116,7 +23124,7 @@
      "open": 10.5
     },
     "SBD": {
-     "value": 9,
+     "value": 8.5,
      "open": 8.5
     }
    },
@@ -23135,8 +23143,8 @@
      "open": 1.5
     },
     "SBD": {
-     "value": -0.5,
-     "open": -0.5
+     "value": 0,
+     "open": 0
     }
    },
    "conferences": [],
@@ -23150,7 +23158,7 @@
    "sideB": "SDGST",
    "lines": {
     "CBS": {
-     "value": -1.5,
+     "value": -1,
      "open": -2.5
     },
     "SBD": {
@@ -23169,7 +23177,7 @@
    "sideB": "WASHST",
    "lines": {
     "CBS": {
-     "value": 8.5,
+     "value": 9.5,
      "open": 3.5
     },
     "SBD": {
@@ -23192,7 +23200,7 @@
      "open": 1.5
     },
     "SBD": {
-     "value": 2,
+     "value": 2.5,
      "open": 1
     }
    },
@@ -23289,11 +23297,11 @@
    "sideB": "RICE",
    "lines": {
     "CBS": {
-     "value": 2.5,
+     "value": 3,
      "open": -1.5
     },
     "SBD": {
-     "value": 2.5,
+     "value": 3,
      "open": 0.5
     }
    },
@@ -23308,7 +23316,7 @@
    "sideB": "SAMST",
    "lines": {
     "CBS": {
-     "value": -8.5,
+     "value": -8,
      "open": -7.5
     },
     "SBD": {
@@ -23331,7 +23339,7 @@
      "open": 6.5
     },
     "SBD": {
-     "value": 5.5,
+     "value": 5,
      "open": 6
     }
    },
@@ -23349,7 +23357,7 @@
      "open": 1.5
     },
     "SBD": {
-     "value": 2,
+     "value": 2.5,
      "open": 2
     }
    },
@@ -23368,7 +23376,7 @@
      "open": -10.5
     },
     "SBD": {
-     "value": -8,
+     "value": -7.5,
      "open": -9.5
     }
    },
@@ -23383,11 +23391,11 @@
    "sideB": "WKY",
    "lines": {
     "CBS": {
-     "value": -6.5,
+     "value": -7,
      "open": -6
     },
     "SBD": {
-     "value": -7,
+     "value": -7.5,
      "open": -6
     }
    },
@@ -23498,11 +23506,11 @@
    "sideB": "MRSHL",
    "lines": {
     "CBS": {
-     "value": -2,
+     "value": -1.5,
      "open": -2.5
     },
     "SBD": {
-     "value": -2.5,
+     "value": -2,
      "open": -2.5
     }
    },
@@ -23555,11 +23563,11 @@
    "sideB": "NMEX",
    "lines": {
     "CBS": {
-     "value": 14,
+     "value": 14.5,
      "open": 13.5
     },
     "SBD": {
-     "value": 14,
+     "value": 14.5,
      "open": 13.5
     }
    },
@@ -23594,7 +23602,7 @@
    "sideB": "HAWAII",
    "lines": {
     "CBS": {
-     "value": -7,
+     "value": -6.5,
      "open": -8.5
     }
    },
@@ -23622,7 +23630,7 @@
    "sideB": "HAW",
    "lines": {
     "SBD": {
-     "value": -7,
+     "value": -6.5,
      "open": -8
     }
    },
@@ -23642,7 +23650,7 @@
     }
    },
    "kickoffTs": 1794532500000,
-   "publicPctA": 0
+   "publicPctA": 50
   },
   "NFL|NE @ DET": {
    "sport": "NFL",
@@ -23651,7 +23659,7 @@
    "sideB": "DET",
    "lines": {
     "SBD": {
-     "value": -1,
+     "value": 2,
      "open": 1.5
     }
    },
@@ -23665,7 +23673,7 @@
    "sideB": "ATL",
    "lines": {
     "SBD": {
-     "value": -3,
+     "value": -3.5,
      "open": -3.5
     }
    },
@@ -23679,7 +23687,7 @@
    "sideB": "CLE",
    "lines": {
     "SBD": {
-     "value": -4,
+     "value": -4.5,
      "open": -4
     }
    },
@@ -23694,7 +23702,7 @@
    "lines": {
     "SBD": {
      "value": 3,
-     "open": 4
+     "open": 3.5
     }
    },
    "kickoffTs": 1794765600000,
@@ -23722,7 +23730,7 @@
    "lines": {
     "SBD": {
      "value": -1.5,
-     "open": 0.5
+     "open": 0
     }
    },
    "kickoffTs": 1794765600000,
@@ -23735,8 +23743,8 @@
    "sideB": "NYJ",
    "lines": {
     "SBD": {
-     "value": -7.5,
-     "open": -7
+     "value": -8.5,
+     "open": -7.5
     }
    },
    "kickoffTs": 1794765600000,
@@ -23750,7 +23758,7 @@
    "lines": {
     "SBD": {
      "value": -10,
-     "open": -6
+     "open": -7
     }
    },
    "kickoffTs": 1794765600000,
@@ -23777,8 +23785,8 @@
    "sideB": "LV",
    "lines": {
     "SBD": {
-     "value": -5.5,
-     "open": -6
+     "value": -3.5,
+     "open": -5.5
     }
    },
    "kickoffTs": 1794776700000,
@@ -23791,8 +23799,8 @@
    "sideB": "DAL",
    "lines": {
     "SBD": {
-     "value": -4,
-     "open": -1.5
+     "value": -4.5,
+     "open": -2
     }
    },
    "kickoffTs": 1794777900000,
