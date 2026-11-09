@@ -1,28 +1,5 @@
 [
   {
-    "matchup": "TB @ CHI",
-    "sport": "NFL",
-    "sideA": "TB",
-    "sideB": "CHI",
-    "lines": [
-      {
-        "book": "CBS",
-        "value": 7,
-        "open": 6,
-        "openTimestamp": 1793577162000
-      },
-      {
-        "book": "SBD",
-        "value": 6.5,
-        "open": 5,
-        "openTimestamp": 1793577162000
-      }
-    ],
-    "kickoff": "Sun, Nov 8, 2026 · 7:20 PM CT",
-    "kickoffTs": 1794187200000,
-    "public": 30
-  },
-  {
     "matchup": "BUF @ MIN",
     "sport": "NFL",
     "sideA": "BUF",
@@ -43,7 +20,7 @@
     ],
     "kickoff": "Mon, Nov 9, 2026 · 7:15 PM CT",
     "kickoffTs": 1794273300000,
-    "public": 67.6,
+    "public": 69.2,
     "injuriesB": [
       {
         "name": "K. Murray",
@@ -51,6 +28,26 @@
         "status": "Out"
       }
     ]
+  },
+  {
+    "matchup": "TB @ CHI",
+    "sport": "NFL",
+    "sideA": "TB",
+    "sideB": "CHI",
+    "lines": [
+      {
+        "book": "CBS",
+        "value": 7,
+        "open": 6,
+        "openTimestamp": 1793577162000
+      }
+    ],
+    "kickoff": "Sun, Nov 8, 2026 · 7:20 PM CT",
+    "kickoffTs": 1794187200000,
+    "score": {
+      "a": 24,
+      "b": 27
+    }
   },
   {
     "matchup": "LV @ SF",
@@ -341,7 +338,7 @@
     ],
     "kickoff": "Thu, Nov 12, 2026 · 7:15 PM CT",
     "kickoffTs": 1794532500000,
-    "public": 50
+    "public": 53.8
   },
   {
     "matchup": "NE @ DET",
@@ -351,14 +348,14 @@
     "lines": [
       {
         "book": "SBD",
-        "value": 2,
+        "value": 2.5,
         "open": 1.5,
         "openTimestamp": 1794178667000
       }
     ],
     "kickoff": "Sun, Nov 15, 2026 · 8:30 AM CT",
     "kickoffTs": 1794753000000,
-    "public": 93.3
+    "public": 91.5
   },
   {
     "matchup": "KC @ ATL",
@@ -375,7 +372,7 @@
     ],
     "kickoff": "Sun, Nov 15, 2026 · 12:00 PM CT",
     "kickoffTs": 1794765600000,
-    "public": 0
+    "public": 84.7
   },
   {
     "matchup": "HOU @ CLE",
@@ -392,7 +389,7 @@
     ],
     "kickoff": "Sun, Nov 15, 2026 · 12:00 PM CT",
     "kickoffTs": 1794765600000,
-    "public": 0
+    "public": 66.9
   },
   {
     "matchup": "MIN @ GB",
@@ -409,7 +406,7 @@
     ],
     "kickoff": "Sun, Nov 15, 2026 · 12:00 PM CT",
     "kickoffTs": 1794765600000,
-    "public": 0
+    "public": 46.2
   },
   {
     "matchup": "MIA @ IND",
@@ -426,7 +423,7 @@
     ],
     "kickoff": "Sun, Nov 15, 2026 · 12:00 PM CT",
     "kickoffTs": 1794765600000,
-    "public": 0
+    "public": 39
   },
   {
     "matchup": "CAR @ NO",
@@ -436,14 +433,14 @@
     "lines": [
       {
         "book": "SBD",
-        "value": -1.5,
+        "value": 0.5,
         "open": 0,
         "openTimestamp": 1794178667000
       }
     ],
     "kickoff": "Sun, Nov 15, 2026 · 12:00 PM CT",
     "kickoffTs": 1794765600000,
-    "public": 0
+    "public": 66.2
   },
   {
     "matchup": "BUF @ NYJ",
@@ -453,14 +450,14 @@
     "lines": [
       {
         "book": "SBD",
-        "value": -8.5,
+        "value": -7.5,
         "open": -7.5,
         "openTimestamp": 1794178667000
       }
     ],
     "kickoff": "Sun, Nov 15, 2026 · 12:00 PM CT",
     "kickoffTs": 1794765600000,
-    "public": 0
+    "public": 84.2
   },
   {
     "matchup": "JAC @ TEN",
@@ -470,14 +467,14 @@
     "lines": [
       {
         "book": "SBD",
-        "value": -10,
+        "value": -9.5,
         "open": -7,
         "openTimestamp": 1794178667000
       }
     ],
     "kickoff": "Sun, Nov 15, 2026 · 12:00 PM CT",
     "kickoffTs": 1794765600000,
-    "public": 0
+    "public": 86.1
   },
   {
     "matchup": "LAR @ ARI",
@@ -494,7 +491,7 @@
     ],
     "kickoff": "Sun, Nov 15, 2026 · 3:05 PM CT",
     "kickoffTs": 1794776700000,
-    "public": 0
+    "public": 63.3
   },
   {
     "matchup": "SEA @ LV",
@@ -504,14 +501,14 @@
     "lines": [
       {
         "book": "SBD",
-        "value": -3.5,
+        "value": -3,
         "open": -5.5,
         "openTimestamp": 1794178667000
       }
     ],
     "kickoff": "Sun, Nov 15, 2026 · 3:05 PM CT",
     "kickoffTs": 1794776700000,
-    "public": 0
+    "public": 77.7
   },
   {
     "matchup": "SF @ DAL",
@@ -521,14 +518,14 @@
     "lines": [
       {
         "book": "SBD",
-        "value": -4.5,
+        "value": -4,
         "open": -2,
         "openTimestamp": 1794178667000
       }
     ],
     "kickoff": "Sun, Nov 15, 2026 · 3:25 PM CT",
     "kickoffTs": 1794777900000,
-    "public": 0
+    "public": 83.2
   },
   {
     "matchup": "PIT @ CIN",
@@ -545,7 +542,7 @@
     ],
     "kickoff": "Sun, Nov 15, 2026 · 7:20 PM CT",
     "kickoffTs": 1794792000000,
-    "public": 0
+    "public": 47.4
   },
   {
     "matchup": "WMICH @ AKRON",
@@ -568,7 +565,7 @@
     ],
     "kickoff": "Tue, Nov 10, 2026 · 6:00 PM CT",
     "kickoffTs": 1794355200000,
-    "public": 0,
+    "public": 46.9,
     "conferences": []
   },
   {
@@ -699,13 +696,13 @@
     "lines": [
       {
         "book": "CBS",
-        "value": -5.5,
+        "value": -5,
         "open": -6.5,
         "openTimestamp": 1794124546000
       },
       {
         "book": "SBD",
-        "value": -5.5,
+        "value": -5,
         "open": -6.5,
         "openTimestamp": 1794124546000
       }
@@ -729,7 +726,7 @@
       },
       {
         "book": "SBD",
-        "value": -11,
+        "value": -10.5,
         "open": -11.5,
         "openTimestamp": 1794124546000
       }
@@ -774,7 +771,7 @@
     "lines": [
       {
         "book": "CBS",
-        "value": 10.5,
+        "value": 10,
         "open": 12.5,
         "openTimestamp": 1794101320000
       },
@@ -803,7 +800,7 @@
     "lines": [
       {
         "book": "CBS",
-        "value": -10.5,
+        "value": -10,
         "open": -10.5,
         "openTimestamp": 1794124546000
       },
@@ -832,7 +829,7 @@
     "lines": [
       {
         "book": "CBS",
-        "value": 12,
+        "value": 11.5,
         "open": 9.5,
         "openTimestamp": 1794124546000
       },
@@ -861,7 +858,7 @@
     "lines": [
       {
         "book": "CBS",
-        "value": -3,
+        "value": -2.5,
         "open": -5.5,
         "openTimestamp": 1794124546000
       },
@@ -1106,13 +1103,13 @@
     "lines": [
       {
         "book": "CBS",
-        "value": -18.5,
+        "value": -17.5,
         "open": -18.5,
         "openTimestamp": 1794124546000
       },
       {
         "book": "SBD",
-        "value": -19,
+        "value": -17.5,
         "open": -19.5,
         "openTimestamp": 1794124546000
       }
@@ -1415,7 +1412,7 @@
     "lines": [
       {
         "book": "CBS",
-        "value": -7.5,
+        "value": -7,
         "open": -10.5,
         "openTimestamp": 1794165504000
       },
@@ -1494,7 +1491,7 @@
       {
         "book": "SBD",
         "value": 7.5,
-        "open": 8,
+        "open": 8.5,
         "openTimestamp": 1790004049000
       }
     ],
@@ -1676,7 +1673,7 @@
       },
       {
         "book": "SBD",
-        "value": 8.5,
+        "value": 9,
         "open": 8.5,
         "openTimestamp": 1794149033000
       }
@@ -1727,7 +1724,7 @@
       },
       {
         "book": "SBD",
-        "value": -1.5,
+        "value": -2,
         "open": -1,
         "openTimestamp": 1790004049000
       }
@@ -1780,7 +1777,7 @@
       },
       {
         "book": "SBD",
-        "value": 2.5,
+        "value": 3,
         "open": 2.5,
         "openTimestamp": 1794165504000
       }
@@ -1988,7 +1985,7 @@
       },
       {
         "book": "SBD",
-        "value": 15,
+        "value": 15.5,
         "open": 16,
         "openTimestamp": 1794124546000
       }
@@ -2038,13 +2035,13 @@
     "lines": [
       {
         "book": "CBS",
-        "value": 4,
+        "value": 3.5,
         "open": -3,
         "openTimestamp": 1794124546000
       },
       {
         "book": "SBD",
-        "value": 4.5,
+        "value": 3.5,
         "open": 3,
         "openTimestamp": 1794124546000
       }
@@ -2068,13 +2065,13 @@
     "lines": [
       {
         "book": "CBS",
-        "value": -1.5,
+        "value": -2.5,
         "open": -1.5,
         "openTimestamp": 1794101320000
       },
       {
         "book": "SBD",
-        "value": -2,
+        "value": -2.5,
         "open": -2.5,
         "openTimestamp": 1794101320000
       }
@@ -2206,13 +2203,13 @@
     "lines": [
       {
         "book": "CBS",
-        "value": -1,
+        "value": -1.5,
         "open": -2.5,
         "openTimestamp": 1794149033000
       },
       {
         "book": "SBD",
-        "value": -2,
+        "value": -1.5,
         "open": -2.5,
         "openTimestamp": 1794149033000
       }
@@ -2260,7 +2257,7 @@
       },
       {
         "book": "SBD",
-        "value": 8.5,
+        "value": 9.5,
         "open": 6.5,
         "openTimestamp": 1794149033000
       }
