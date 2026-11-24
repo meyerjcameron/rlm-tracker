@@ -20,7 +20,7 @@
     ],
     "kickoff": "Wed, Nov 25, 2026 · 7:00 PM CT",
     "kickoffTs": 1795654800000,
-    "public": 59.8,
+    "public": 57.5,
     "injuriesA": [
       {
         "name": "M. Parsons",
@@ -57,7 +57,7 @@
     ],
     "kickoff": "Thu, Nov 26, 2026 · 12:00 PM CT",
     "kickoffTs": 1795716000000,
-    "public": 60.4
+    "public": 59.2
   },
   {
     "matchup": "PHI @ DAL",
@@ -80,7 +80,7 @@
     ],
     "kickoff": "Thu, Nov 26, 2026 · 3:30 PM CT",
     "kickoffTs": 1795728600000,
-    "public": 60.5,
+    "public": 59.2,
     "injuriesB": [
       {
         "name": "T. Booker",
@@ -110,7 +110,7 @@
     ],
     "kickoff": "Thu, Nov 26, 2026 · 7:20 PM CT",
     "kickoffTs": 1795742400000,
-    "public": 57.6
+    "public": 57.4
   },
   {
     "matchup": "DEN @ PIT",
@@ -133,7 +133,7 @@
     ],
     "kickoff": "Fri, Nov 27, 2026 · 2:00 PM CT",
     "kickoffTs": 1795809600000,
-    "public": 75.9
+    "public": 74.1
   },
   {
     "matchup": "NO @ CIN",
@@ -143,20 +143,20 @@
     "lines": [
       {
         "book": "CBS",
-        "value": 10.5,
+        "value": 9.5,
         "open": 10,
         "openTimestamp": 1795385849000
       },
       {
         "book": "SBD",
-        "value": 10,
+        "value": 9.5,
         "open": 8.5,
         "openTimestamp": 1795385849000
       }
     ],
     "kickoff": "Sun, Nov 29, 2026 · 12:00 PM CT",
     "kickoffTs": 1795975200000,
-    "public": 11.2
+    "public": 12.6
   },
   {
     "matchup": "BAL @ HOU",
@@ -179,7 +179,7 @@
     ],
     "kickoff": "Sun, Nov 29, 2026 · 12:00 PM CT",
     "kickoffTs": 1795975200000,
-    "public": 44.1
+    "public": 39.9
   },
   {
     "matchup": "NYG @ IND",
@@ -202,7 +202,7 @@
     ],
     "kickoff": "Sun, Nov 29, 2026 · 12:00 PM CT",
     "kickoffTs": 1795975200000,
-    "public": 85.5,
+    "public": 86.8,
     "injuriesA": [
       {
         "name": "G. Newsome II",
@@ -232,7 +232,7 @@
     ],
     "kickoff": "Sun, Nov 29, 2026 · 12:00 PM CT",
     "kickoffTs": 1795975200000,
-    "public": 64.3
+    "public": 62.9
   },
   {
     "matchup": "ATL @ MIN",
@@ -255,7 +255,7 @@
     ],
     "kickoff": "Sun, Nov 29, 2026 · 12:00 PM CT",
     "kickoffTs": 1795975200000,
-    "public": 13.6
+    "public": 14.2
   },
   {
     "matchup": "TEN @ JAC",
@@ -278,7 +278,7 @@
     ],
     "kickoff": "Sun, Nov 29, 2026 · 12:00 PM CT",
     "kickoffTs": 1795975200000,
-    "public": 13.4,
+    "public": 13.2,
     "injuriesA": [
       {
         "name": "J. Williams",
@@ -308,7 +308,7 @@
     ],
     "kickoff": "Sun, Nov 29, 2026 · 3:05 PM CT",
     "kickoffTs": 1795986300000,
-    "public": 65.5
+    "public": 64
   },
   {
     "matchup": "WAS @ ARI",
@@ -318,7 +318,7 @@
     "lines": [
       {
         "book": "CBS",
-        "value": -7,
+        "value": -7.5,
         "open": -7,
         "openTimestamp": 1795385849000
       },
@@ -331,7 +331,7 @@
     ],
     "kickoff": "Sun, Nov 29, 2026 · 3:25 PM CT",
     "kickoffTs": 1795987500000,
-    "public": 0,
+    "public": 81,
     "injuriesB": [
       {
         "name": "M. Wilson",
@@ -354,7 +354,7 @@
       },
       {
         "book": "SBD",
-        "value": 3.5,
+        "value": 3,
         "open": 2,
         "openTimestamp": 1795385849000
       }
@@ -391,7 +391,7 @@
     ],
     "kickoff": "Sun, Nov 29, 2026 · 7:20 PM CT",
     "kickoffTs": 1796001600000,
-    "public": 62,
+    "public": 65,
     "injuriesB": [
       {
         "name": "M. Burton",
@@ -409,17 +409,19 @@
       {
         "book": "CBS",
         "value": 3,
-        "open": 3
+        "open": 3,
+        "openTimestamp": 1795503521000
       },
       {
         "book": "SBD",
         "value": 3,
-        "open": 3
+        "open": 3,
+        "openTimestamp": 1795503521000
       }
     ],
     "kickoff": "Mon, Nov 30, 2026 · 7:15 PM CT",
     "kickoffTs": 1796087700000,
-    "public": 55.8
+    "public": 60.7
   },
   {
     "matchup": "KENTST @ EMICH",
@@ -429,7 +431,7 @@
     "lines": [
       {
         "book": "CBS",
-        "value": 5.5,
+        "value": 6,
         "open": 5.5,
         "openTimestamp": 1795337150000
       },
@@ -453,20 +455,20 @@
     "lines": [
       {
         "book": "CBS",
-        "value": 6.5,
+        "value": 5.5,
         "open": 7.5,
         "openTimestamp": 1795337150000
       },
       {
         "book": "SBD",
-        "value": 6.5,
+        "value": 6,
         "open": 7.5,
         "openTimestamp": 1795337150000
       }
     ],
     "kickoff": "Tue, Nov 24, 2026 · 6:00 PM CT",
     "kickoffTs": 1795564800000,
-    "public": 30.6,
+    "public": 45.2,
     "conferences": []
   },
   {
@@ -490,7 +492,7 @@
     ],
     "kickoff": "Thu, Nov 26, 2026 · 7:00 PM CT",
     "kickoffTs": 1795741200000,
-    "public": 0,
+    "public": 42.2,
     "conferences": [
       "Big 12",
       "Big 12"
@@ -506,7 +508,7 @@
     "lines": [
       {
         "book": "CBS",
-        "value": -7.5,
+        "value": -7,
         "open": -10.5,
         "openTimestamp": 1795337150000
       },
@@ -519,7 +521,7 @@
     ],
     "kickoff": "Fri, Nov 27, 2026 · 11:00 AM CT",
     "kickoffTs": 1795798800000,
-    "public": 53,
+    "public": 56.4,
     "conferences": []
   },
   {
@@ -554,7 +556,7 @@
     "lines": [
       {
         "book": "CBS",
-        "value": 4.5,
+        "value": 5,
         "open": 3.5,
         "openTimestamp": 1795311148000
       },
@@ -567,7 +569,7 @@
     ],
     "kickoff": "Fri, Nov 27, 2026 · 11:00 AM CT",
     "kickoffTs": 1795798800000,
-    "public": 40.4,
+    "public": 38.5,
     "conferences": [
       "Big Ten",
       "Big Ten"
@@ -589,7 +591,7 @@
       },
       {
         "book": "SBD",
-        "value": 19.5,
+        "value": 19,
         "open": 18,
         "openTimestamp": 1795337150000
       }
@@ -705,7 +707,7 @@
       },
       {
         "book": "SBD",
-        "value": -6,
+        "value": -6.5,
         "open": -5.5,
         "openTimestamp": 1790004049000
       }
@@ -765,7 +767,7 @@
     ],
     "kickoff": "Fri, Nov 27, 2026 · 6:30 PM CT",
     "kickoffTs": 1795825800000,
-    "public": 0,
+    "public": 70,
     "conferences": [
       "SEC",
       "SEC"
@@ -814,7 +816,7 @@
       },
       {
         "book": "SBD",
-        "value": 22.5,
+        "value": 22,
         "open": 19.5,
         "openTimestamp": 1795337150000
       }
@@ -952,7 +954,7 @@
       },
       {
         "book": "SBD",
-        "value": -17,
+        "value": -16.5,
         "open": -15.5,
         "openTimestamp": 1795366291000
       }
@@ -976,7 +978,7 @@
       },
       {
         "book": "SBD",
-        "value": 25,
+        "value": 25.5,
         "open": 25.5,
         "openTimestamp": 1795337150000
       }
@@ -1005,7 +1007,7 @@
       },
       {
         "book": "SBD",
-        "value": -2.5,
+        "value": -3,
         "open": -0.5,
         "openTimestamp": 1795337150000
       }
@@ -1136,7 +1138,7 @@
       },
       {
         "book": "SBD",
-        "value": 0.5,
+        "value": 1.5,
         "open": 2.5,
         "openTimestamp": 1795366291000
       }
@@ -1184,7 +1186,7 @@
       },
       {
         "book": "SBD",
-        "value": -5,
+        "value": -4.5,
         "open": -4.5,
         "openTimestamp": 1795366291000
       }
@@ -1390,13 +1392,13 @@
     "lines": [
       {
         "book": "CBS",
-        "value": 4.5,
+        "value": 3.5,
         "open": 5.5,
         "openTimestamp": 1795337150000
       },
       {
         "book": "SBD",
-        "value": 4,
+        "value": 3.5,
         "open": 5,
         "openTimestamp": 1795337150000
       }
@@ -1813,13 +1815,13 @@
     "lines": [
       {
         "book": "CBS",
-        "value": 2,
+        "value": 2.5,
         "open": 1.5,
         "openTimestamp": 1795337150000
       },
       {
         "book": "SBD",
-        "value": 2,
+        "value": 1.5,
         "open": 1.5,
         "openTimestamp": 1795337150000
       }
@@ -1926,7 +1928,7 @@
       },
       {
         "book": "SBD",
-        "value": 22.5,
+        "value": 23,
         "open": 22,
         "openTimestamp": 1795337150000
       }
@@ -1978,13 +1980,13 @@
     "lines": [
       {
         "book": "CBS",
-        "value": 16.5,
+        "value": 15.5,
         "open": 10,
         "openTimestamp": 1795337150000
       },
       {
         "book": "SBD",
-        "value": 16,
+        "value": 15.5,
         "open": 14.5,
         "openTimestamp": 1795337150000
       }
@@ -2063,13 +2065,13 @@
     "lines": [
       {
         "book": "CBS",
-        "value": 9.5,
+        "value": 9,
         "open": 4.5,
         "openTimestamp": 1795337150000
       },
       {
         "book": "SBD",
-        "value": 9,
+        "value": 8.5,
         "open": 7.5,
         "openTimestamp": 1795337150000
       }
@@ -2122,7 +2124,7 @@
       },
       {
         "book": "SBD",
-        "value": 5,
+        "value": 4.5,
         "open": 5,
         "openTimestamp": 1795337150000
       }
@@ -2145,7 +2147,7 @@
     "lines": [
       {
         "book": "CBS",
-        "value": -7,
+        "value": -6.5,
         "open": -7.5,
         "openTimestamp": 1795385849000
       },
@@ -2193,13 +2195,13 @@
     "lines": [
       {
         "book": "CBS",
-        "value": 14,
+        "value": 13.5,
         "open": 14.5,
         "openTimestamp": 1795385849000
       },
       {
         "book": "SBD",
-        "value": 14,
+        "value": 13.5,
         "open": 13.5,
         "openTimestamp": 1795385849000
       }
@@ -2290,7 +2292,7 @@
       {
         "book": "SBD",
         "value": 5.5,
-        "open": 6.5,
+        "open": 6,
         "openTimestamp": 1795434109000
       }
     ],
@@ -2326,7 +2328,7 @@
       {
         "book": "SBD",
         "value": 21.5,
-        "open": 16.5,
+        "open": 19,
         "openTimestamp": 1795434109000
       }
     ],
@@ -2344,7 +2346,7 @@
       {
         "book": "SBD",
         "value": 2.5,
-        "open": 1.5,
+        "open": 2,
         "openTimestamp": 1795434109000
       }
     ],
@@ -2362,7 +2364,7 @@
       {
         "book": "SBD",
         "value": 24.5,
-        "open": 21.5,
+        "open": 23,
         "openTimestamp": 1795434109000
       }
     ],
@@ -2380,7 +2382,7 @@
       {
         "book": "SBD",
         "value": 2.5,
-        "open": -2.5,
+        "open": 0,
         "openTimestamp": 1795434109000
       }
     ],
